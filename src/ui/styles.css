@@ -322,3 +322,173 @@ kbd:not(:first-child) { margin-inline-start: .55rem; }
 .storage-notice { color: var(--accent); padding: .75rem clamp(1rem, 5vw, 3rem); margin: 0; border-top: 1px solid var(--line); }
 .challenge-target progress { display: block; width: 100%; margin: .7rem 0 0; accent-color: var(--accent); }
 .challenge-target #typing-target { color: var(--accent); font-weight: 700; }
+
+.venice-screen { overflow-wrap: anywhere; }
+.venice-ready-panel {
+  display: grid;
+  grid-template-columns: auto minmax(8rem, 12rem);
+  align-items: center;
+  gap: .8rem 1rem;
+  width: min(100%, 32rem);
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.venice-ready-panel label { color: var(--quiet); }
+.venice-start-level { min-height: 2.6rem; padding: .4rem; }
+.venice-recommendation { grid-column: 1 / -1; margin: 0; color: var(--quiet); }
+.venice-header { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; }
+.venice-pause-button { flex: 0 0 auto; }
+.venice-hud {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: .5rem;
+  margin: 1rem 0;
+  padding: .8rem;
+  border-block: 1px solid var(--line);
+}
+.venice-hud > div { min-width: 0; }
+.venice-hud dt { color: var(--quiet); font-size: .76rem; }
+.venice-hud dd { margin: .2rem 0 0; color: var(--accent); font: 650 1.05rem/1.3 var(--mono); }
+.venice-hud dd.venice-tower {
+  display: grid;
+  grid-template-columns: repeat(6, .75rem);
+  gap: .18rem;
+}
+.venice-board {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: clamp(14rem, 38vh, 21rem);
+  min-height: 14rem;
+  overflow: hidden;
+  border: 2px solid #607f9c;
+  background:
+    linear-gradient(to bottom, transparent 69%, #1f607c 69%, #1f607c 73%, #123a50 73%),
+    linear-gradient(to bottom, #101d32, #1d3554 60%, #31536e);
+  box-shadow: inset 0 0 0 3px #14283e;
+}
+.venice-skyline {
+  position: absolute;
+  inset: auto 0 27% 0;
+  height: 34%;
+  opacity: .42;
+  background: repeating-linear-gradient(90deg, transparent 0 8%, #182a42 8% 12%, transparent 12% 17%);
+  clip-path: polygon(0 40%, 7% 40%, 7% 13%, 13% 13%, 13% 33%, 22% 33%, 22% 5%, 30% 5%, 30% 38%, 40% 38%, 40% 20%, 48% 20%, 48% 44%, 58% 44%, 58% 0, 67% 0, 67% 34%, 75% 34%, 75% 18%, 82% 18%, 82% 42%, 91% 42%, 91% 8%, 98% 8%, 98% 46%, 100% 46%, 100% 100%, 0 100%);
+}
+.venice-waterline { position: absolute; inset: 73% 0 auto; border-top: 2px dashed #93c6d4; opacity: .8; }
+.venice-collision-line {
+  position: absolute;
+  z-index: 3;
+  inset: 75% 0 auto;
+  border-top: 3px solid #ff766f;
+  box-shadow: 0 -1px 0 #fff2d0;
+  pointer-events: none;
+}
+.venice-collision-line > span {
+  position: absolute;
+  top: -.2rem;
+  right: .25rem;
+  padding: .1rem .3rem;
+  transform: translateY(-100%);
+  border: 1px solid #ffb0a9;
+  border-radius: .15rem;
+  color: #fff8eb;
+  background: #641f28;
+  font-size: .62rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.venice-falling-word {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: max-content;
+  max-width: none;
+  padding: .12rem .28rem;
+  transform: translateX(-50%);
+  border: 1px solid #b8d1db;
+  border-radius: .15rem;
+  color: #f3f5df;
+  background: #264b67;
+  box-shadow: 2px 2px 0 #09121d;
+  font-family: var(--practice-font);
+  font-size: clamp(.9rem, 2.4vw, 1.3rem);
+  font-weight: 700;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  white-space: nowrap;
+  text-align: center;
+}
+.venice-falling-word.virus {
+  border-color: #ffe584;
+  color: #291e04;
+  background: #ffdb4f;
+  box-shadow: 2px 2px 0 #60470a;
+}
+.venice-falling-word.hidden-word { visibility: hidden; }
+.venice-mine {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  color: #ffe584;
+  font-size: 1.5rem;
+  text-shadow: 0 0 8px #ffcc4d;
+}
+.venice-tower-visual {
+  position: absolute;
+  z-index: 1;
+  bottom: .35rem;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1.45rem);
+  gap: .18rem;
+  transform: translateX(-50%);
+  padding: .35rem;
+  border: 1px solid #aebec2;
+  background: #1c3240;
+}
+.venice-block {
+  display: block;
+  width: .75rem;
+  height: .68rem;
+  border: 1px solid #d5bc87;
+  background: linear-gradient(135deg, #dcbf83, #8b6e46);
+  box-shadow: inset -2px -2px #513f2b;
+}
+.venice-block.damaged { border-color: #69737a; background: linear-gradient(135deg, #33424b, #202d35); box-shadow: inset -2px -2px #111b21; }
+.venice-pause-overlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff2cf;
+  background: #101923d9;
+  font: 700 clamp(1.5rem, 7vw, 3rem)/1 var(--mono);
+  letter-spacing: .08em;
+}
+.venice-entry { margin-top: .8rem; }
+.venice-entry input { font-family: var(--practice-font); }
+.venice-bottom-actions { align-items: flex-start; margin-top: .75rem; }
+.venice-bottom-actions .keys { flex: 1 1 14rem; margin: .25rem 0; }
+.venice-fall-hint { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.venice-result-summary { margin: .8rem 0 1.2rem; }
+.venice-table-title { margin: 1.3rem 0 .55rem; font-size: 1.05rem; }
+.venice-table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--line); }
+.venice-scores-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+.venice-scores-table th, .venice-scores-table td { padding: .55rem .7rem; border-bottom: 1px solid var(--line); text-align: end; font-variant-numeric: tabular-nums; }
+.venice-scores-table th { color: var(--quiet); font-size: .8rem; text-align: end; }
+.venice-scores-table th:first-child, .venice-scores-table td:first-child { text-align: start; }
+.venice-scores-table tr[aria-current="true"] { color: var(--accent); background: var(--hover); font-weight: 700; }
+.venice-storage-notice { color: var(--accent); }
+.venice-actions { margin-top: 1rem; }
+
+@media (max-width: 40rem) {
+  .venice-ready-panel { grid-template-columns: 1fr; }
+  .venice-recommendation { grid-column: auto; }
+  .venice-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .venice-falling-word { padding: .1rem .22rem; }
+  .venice-result-summary > div { flex-basis: 6rem; }
+}

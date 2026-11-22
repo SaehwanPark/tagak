@@ -106,6 +106,40 @@ export type InterfaceText = Readonly<{
   stopChallenge: string;
   blockedWordInput: string;
   retryWord: string;
+  veniceTitle: string;
+  veniceInstruction: string;
+  veniceCollisionLine: string;
+  veniceLevel: string;
+  veniceRecommended: (level: number) => string;
+  veniceStart: string;
+  veniceReadyHint: string;
+  veniceTargetCpm: string;
+  veniceScore: string;
+  veniceTower: string;
+  veniceStageProgress: (spawned: number, total: number) => string;
+  veniceEndlessProgress: (spawned: number) => string;
+  veniceInputLabel: string;
+  veniceSubmit: string;
+  veniceFinish: string;
+  venicePaused: string;
+  venicePause: string;
+  veniceResume: string;
+  veniceMismatch: string;
+  veniceEffectLabel: (effect: string) => string;
+  veniceInfectionActive: string;
+  veniceResult: string;
+  venicePlayAgain: string;
+  veniceChooseLevel: string;
+  veniceStartLevel: string;
+  veniceHighestLevel: string;
+  veniceTypedWords: string;
+  veniceMissedWords: string;
+  veniceTopScores: string;
+  veniceRank: string;
+  veniceDate: string;
+  veniceNoScores: string;
+  veniceSaveFailed: string;
+  veniceReadFailed: string;
   freePractice: string;
   freePracticeLabel: string;
   freePracticeHint: string;
@@ -168,8 +202,8 @@ const ko: InterfaceText = {
   resetFont: "기본 글꼴로 되돌리기",
   gothicFont: "고딕",
   serifFont: "명조",
-  completionSound: "완료 효과음",
-  completionSoundHelp: "한 연습을 마칠 때 한 번 재생합니다. 입력 중에는 소리가 나지 않습니다.",
+  completionSound: "효과음",
+  completionSoundHelp: "연습 완료와 베네치아의 입력·정답·피격·종료 때 재생합니다. 기본은 끔입니다.",
   soundOn: "켬",
   soundOff: "끔",
   resetSettings: "환경설정을 기본값으로 되돌리기",
@@ -232,6 +266,50 @@ const ko: InterfaceText = {
   stopChallenge: "중단",
   blockedWordInput: "제시된 낱말과 같은지 확인하세요.",
   retryWord: "낱말 연습",
+  veniceTitle: "베네치아",
+  veniceInstruction: "낱말을 입력해 탑을 지키세요. 일반 낱말 상단이 빨간 충돌선에 닿으면 탑 블록 1개가 손상됩니다. 노란 특수 낱말을 맞히면 효과가 발동하며, 감염된 레벨에서는 놓친 특수 낱말도 탑에 피해를 줍니다.",
+  veniceCollisionLine: "충돌선 · 일반 낱말이 닿으면 탑 -1",
+  veniceLevel: "레벨",
+  veniceRecommended: (level) => `최근 플레이 기준 ${level}레벨 추천`,
+  veniceStart: "게임 시작",
+  veniceReadyHint: "↑/↓로 시작 레벨 선택 · 1~9 숫자로 바로 선택 · Enter 시작 · Esc 메뉴",
+  veniceTargetCpm: "목표 CPM",
+  veniceScore: "점수",
+  veniceTower: "탑 블록",
+  veniceStageProgress: (spawned, total) => `일반 낱말 ${spawned} / ${total}`,
+  veniceEndlessProgress: (spawned) => `최종 점수 구간 · 일반 낱말 ${spawned}개`,
+  veniceInputLabel: "보이는 낱말을 입력하세요",
+  veniceSubmit: "낱말 확정",
+  veniceFinish: "게임 마치기",
+  venicePaused: "일시 정지",
+  venicePause: "게임 일시 정지",
+  veniceResume: "게임 계속",
+  veniceMismatch: "보이는 낱말과 일치하는 입력이 없습니다. 고쳐서 다시 확정하세요.",
+  veniceEffectLabel: (effect) => ({
+    clear: "낱말 싹쓸이",
+    freeze: "낙하 정지",
+    repair: "탑 재건 +4",
+    haste: "낙하 가속",
+    slow: "낙하 감속",
+    hide: "낱말 숨기기",
+    swarm: "낱말 무리 출현",
+    mine: "지뢰 설치",
+    infection: "감염 차단",
+  }[effect] ?? "특수 효과"),
+  veniceInfectionActive: "감염 중: 이번 레벨에서 놓친 바이러스도 탑에 피해를 줍니다.",
+  veniceResult: "베네치아 결과",
+  venicePlayAgain: "같은 레벨로 다시 시작",
+  veniceChooseLevel: "다른 레벨 선택",
+  veniceStartLevel: "시작 레벨",
+  veniceHighestLevel: "최고 레벨",
+  veniceTypedWords: "완성한 낱말",
+  veniceMissedWords: "놓친 낱말",
+  veniceTopScores: "로컬 Top 10 하이스코어",
+  veniceRank: "순위",
+  veniceDate: "플레이 날짜",
+  veniceNoScores: "아직 저장된 점수가 없습니다.",
+  veniceSaveFailed: "결과를 저장하지 못했습니다. 이번 결과는 화면에서 확인할 수 있습니다.",
+  veniceReadFailed: "저장된 베네치아 기록을 읽지 못했습니다. 기존 값은 보존했습니다.",
   freePractice: "연습장",
   freePracticeLabel: "원하는 내용을 자유롭게 입력하세요",
   freePracticeHint: "Enter 줄바꿈 · Esc 메뉴",
@@ -270,6 +348,7 @@ const ko: InterfaceText = {
     "short-library": "짧은 글",
     "long-library": "긴 글",
     challenge: "30초 낱말 도전",
+    venice: "베네치아",
     "free-practice": "연습장",
     history: "최근 연습 기록",
     settings: "환경설정",
@@ -316,8 +395,8 @@ const en: InterfaceText = {
   resetFont: "Reset practice font",
   gothicFont: "Sans-serif",
   serifFont: "Serif",
-  completionSound: "Completion sound",
-  completionSoundHelp: "Plays once when a practice item is submitted, never while typing.",
+  completionSound: "Sound effects",
+  completionSoundHelp: "Plays for completed practice items and Venice typing, hits, damage, and game over. Off by default.",
   soundOn: "On",
   soundOff: "Off",
   resetSettings: "Reset settings to defaults",
@@ -380,6 +459,50 @@ const en: InterfaceText = {
   stopChallenge: "Stop",
   blockedWordInput: "Check that the prompt and your input match.",
   retryWord: "Word practice",
+  veniceTitle: "Venice",
+  veniceInstruction: "Type words to defend the tower. When the top of a regular word reaches the red line, one tower block is damaged. Hitting a yellow special word triggers its effect; while infected, missed special words also damage the tower.",
+  veniceCollisionLine: "Impact line · missed regular word: −1 block",
+  veniceLevel: "Level",
+  veniceRecommended: (level) => `Level ${level} recommended from recent runs`,
+  veniceStart: "Start game",
+  veniceReadyHint: "Use ↑/↓ to choose a start level · press 1–9 to jump · Enter to start · Esc for menu",
+  veniceTargetCpm: "Target CPM",
+  veniceScore: "Score",
+  veniceTower: "Tower blocks",
+  veniceStageProgress: (spawned, total) => `Regular words ${spawned} / ${total}`,
+  veniceEndlessProgress: (spawned) => `Endless score run · ${spawned} regular words`,
+  veniceInputLabel: "Type a visible word",
+  veniceSubmit: "Submit word",
+  veniceFinish: "Finish game",
+  venicePaused: "Paused",
+  venicePause: "Pause",
+  veniceResume: "Resume game",
+  veniceMismatch: "No visible word matches this input. Edit it and submit again.",
+  veniceEffectLabel: (effect) => ({
+    clear: "Clear falling words",
+    freeze: "Freeze falling words",
+    repair: "Repair tower +4",
+    haste: "Speed up falling words",
+    slow: "Slow falling words",
+    hide: "Hide words briefly",
+    swarm: "Spawn a word swarm",
+    mine: "Place a mine",
+    infection: "Block infection",
+  }[effect] ?? "Special effect"),
+  veniceInfectionActive: "Infected: missed viruses damage the tower until this level ends.",
+  veniceResult: "Venice result",
+  venicePlayAgain: "Play again at this level",
+  veniceChooseLevel: "Choose another level",
+  veniceStartLevel: "Start level",
+  veniceHighestLevel: "Highest level",
+  veniceTypedWords: "Words completed",
+  veniceMissedWords: "Words missed",
+  veniceTopScores: "Local Top 10 scores",
+  veniceRank: "Rank",
+  veniceDate: "Played",
+  veniceNoScores: "There are no saved scores yet.",
+  veniceSaveFailed: "The result could not be saved. It remains visible here.",
+  veniceReadFailed: "Saved Venice records could not be read. The existing value was preserved.",
   freePractice: "Free typing",
   freePracticeLabel: "Type anything you like",
   freePracticeHint: "Enter for a new line · Esc for menu",
@@ -418,6 +541,7 @@ const en: InterfaceText = {
     "short-library": "Short passages",
     "long-library": "Long passages",
     challenge: "30-second word challenge",
+    venice: "Venice",
     "free-practice": "Free typing",
     history: "Recent practice",
     settings: "Settings",

@@ -27,6 +27,8 @@ function restoreContentFocus(root: HTMLDivElement | null, state: PracticeState):
     target = root.querySelector("h1[tabindex='-1']");
   } else if (visible.screen === "challenge") {
     target = root.querySelector("#typing-input") ?? root.querySelector("button:not(.back)");
+  } else if (visible.screen === "venice") {
+    target = root.querySelector("#venice-input") ?? root.querySelector(".venice-start-level");
   }
   target?.focus({ preventScroll: true });
 }

@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   challengeEntry,
   completionTime,
   freePracticeEntry,
   historyEntry,
   settingsEntry,
+  veniceEntry,
   usePracticeState,
 } from "../app/usePractice";
 import { useAppPreferences } from "../app/useAppPreferences";
@@ -37,6 +38,8 @@ import { ScreenCaptureControl } from "./ScreenCaptureControl";
 import { playCompletionTone } from "./completionSound";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 
+const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
+
 function shouldPlayForCurrentSubmission(state: ReturnType<typeof usePracticeState>["state"], input?: string): boolean {
   if (state.screen === "practice") return hasReachedEnd(state.lesson.text, input ?? state.session.input);
   if (state.screen === "passage") return submissionEndsBundle(state.activity.lines, state.session, input);
@@ -50,7 +53,7 @@ function activityLanguage(activity: Activity | PassageActivity): Language {
 }
 
 function menuCategory(kind: string): MenuCategory {
-  if (kind === "challenge") return "game";
+  if (kind === "challenge" || kind === "venice") return "game";
   if (kind === "free-practice" || kind === "history" || kind === "settings") return "other";
   return "practice";
 }
@@ -70,7 +73,8 @@ export function App() {
   const screenCapture = useScreenCapture(shell);
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
-    settingsReturnScreen === "positions" || settingsReturnScreen === "challenge" || settingsReturnScreen === "result";
+    settingsReturnScreen === "positions" || settingsReturnScreen === "challenge" ||
+    settingsReturnScreen === "venice" || settingsReturnScreen === "result";
   const settingsNotice = [appPreferences.notice, textSize.notice, colorTheme.notice, practiceFont.notice]
     .filter(Boolean).join(" ");
   const back = () => dispatch({ type: "return-to-menu" });
@@ -109,7 +113,7 @@ export function App() {
     ...languageActivities,
     ...(shortPassages.length ? [{ ...shortPassageEntry }] : []),
     ...(longPassages.length ? [{ ...longPassageEntry }] : []),
-    ...(practiceLanguage === "ko" ? [challengeEntry] : []),
+    ...(practiceLanguage === "ko" ? [challengeEntry, veniceEntry] : []),
     freePracticeEntry,
     historyEntry,
     settingsEntry,
@@ -169,6 +173,7 @@ export function App() {
             if (activity.kind === "short-library") dispatch({ type: "open-library", length: "short" });
             else if (activity.kind === "long-library") dispatch({ type: "open-library", length: "long" });
             else if (activity.kind === "challenge") dispatch({ type: "open-challenge" });
+            else if (activity.kind === "venice") dispatch({ type: "open-venice" });
             else if (activity.kind === "free-practice") dispatch({ type: "open-free-practice" });
             else if (activity.kind === "history") dispatch({ type: "open-history" });
             else if (activity.kind === "settings") openSettings();
@@ -178,6 +183,17 @@ export function App() {
       )}
 
       {currentScreen.screen === "challenge" && <ChallengeView onBack={back} copy={copy} onWordComplete={notifyCompletion} />}
+      {currentScreen.screen === "venice" && (
+        <Suspense fallback={<section className="screen" aria-busy="true" />}>
+          <VeniceView
+            onBack={back}
+            copy={copy}
+            interfaceLanguage={interfaceLanguage}
+            soundEnabled={completionSound}
+            settingsOpen={state.screen === "settings" && state.returnState.screen === "venice"}
+          />
+        </Suspense>
+      )}
       {currentScreen.screen === "free-practice" && <FreePracticeView onBack={back} copy={copy} />}
 
       {currentScreen.screen === "history" && (
