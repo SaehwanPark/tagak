@@ -34,18 +34,21 @@ src/
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
 │   ├── positions.ts        # 두벌식 자리 연습 세션
 │   ├── challenge.ts        # 30초 도전 상태 기계
+│   ├── venice.ts           # 베네치아 게임 상태 전이·레벨·효과·추천·득점
 │   └── history.ts          # 기록 모드·정렬·중복 제거·직전 기록 비교
 ├── content/
 │   ├── interfaceText.ts    # 한국어/영어 UI 문구 (InterfaceText 타입)
 │   ├── lessons.ts          # 낱말·한 줄 자료 타입과 검증, 한글 문장부호 정리
 │   ├── library.ts          # 애셋 JSON → 활동 목록, 도전 낱말
+│   ├── veniceWords.ts      # 베네치아 한글 낱말 애셋 검증·타수 계산
 │   ├── passages.ts         # 글 애셋 검증(라이선스·출처)과 줄바꿈
 │   ├── textLicenseInventory.ts # 연습문 출처·라이선스 문서 생성
-│   └── assets/*.json       # 연습 자료 원본
+│   └── assets/*.json       # 연습 자료 원본 (venice-words.ko.json 별도 풀)
 ├── storage/
 │   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위 (v2)
 │   ├── settingsStorage.ts  # 글자 크기 / 테마 / 언어별 글꼴
-│   └── historyStorage.ts   # 최근 기록 (v3, 구버전 마이그레이션)
+│   ├── historyStorage.ts   # 최근 기록 (v3, 구버전 마이그레이션)
+│   └── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
 ├── app/
 │   ├── usePractice.ts      # 화면 전환 reducer + 완료 기록 큐
 │   ├── useHistory.ts       # 기록 저장·동기화·초기화
@@ -60,11 +63,11 @@ src/
     ├── TypingInput.tsx     # IME 이벤트 어댑터 (가장 민감한 경계)
     ├── PracticeView.tsx    # 낱말·한 줄·글 한 줄 공통 화면
     ├── PassageView.tsx     # 5줄 묶음 문맥
-    ├── ChallengeView.tsx / PositionView.tsx / FreePracticeView.tsx
+    ├── ChallengeView.tsx / VeniceView.tsx / PositionView.tsx / FreePracticeView.tsx
     ├── ResultView.tsx / HistoryView.tsx / DisplaySettings.tsx
     ├── Scoreboard.tsx / ActivityMenu.tsx / ScreenCaptureControl.tsx
     ├── useFocus.ts         # 마운트 시 초점
-    ├── completionSound.ts  # Web Audio 1회 재생
+    ├── completionSound.ts / veniceSound.ts # Web Audio 피드백
     ├── screenCapture.ts    # html-to-image → PNG 다운로드
     └── styles.css          # CSS 사용자 정의 속성 기반 테마·글꼴
 ```
@@ -104,6 +107,20 @@ src/
 
 `countKoreanKeystrokes`는 문자열을 문자소로 나눈 뒤, 각 글자를 NFD로 분해해 자모 수를 셉니다. 기본 자음·단모음은 1타, 이중모음·겹받침·겹자음은 2타, 쌍자음은 1타입니다. 한글 음절이 아닌 문자소(공백·문장부호·영문)는 1타입니다.
 
+## 베네치아 게임 (A30)
+
+`domain/venice.ts`는 `ready | playing | paused | finished` 상태와 액션으로 게임 규칙을 전이한다. RNG seed, 시각, 실행 ID와 한글 낱말 풀을 인자로 주입해 같은 상태와 액션에서 같은 결과가 나온다. 화면은 준비·게임·결과를 표시하고, `requestAnimationFrame`을 약 50ms 간격으로 도메인에 전달한다. 도메인은 큰 프레임 지연을 100ms로 제한한다. 탭·창 이탈, 설정 진입, 사용자 일시 정지에서는 시간을 멈추고 다시 시작할 때 시뮬레이션 기준 시각을 재설정한다.
+
+목표 CPM과 점수 배율은 `round(100 * 10 ** ((level - 1) / 13))`으로 100~1000 범위를 만든다. `stageDesign` 표는 레벨별 생성 간격(3,000ms → 409ms), 낙하 시간(9,000ms → 2,015ms), 동시 낱말 상한(4 → 10), 단어 길이와 특수 낱말 확률(7% → 14%)을 보관한다. 이는 원판 실측값이 아니라 타각판의 초기 밸런스 가정이다. 일반 단어 20개를 생성하고 화면의 낱말이 정리되면 다음 단계로 가며 14단계는 계속 생성한다. 12블록 탑이 모두 손상되면 종료한다.
+
+이 게임은 고전 DOS 게임 분위기에 대한 비공식 타각판 재구성이다. 효과 이름과 세부 규칙은 타각이 정의하며 역사적 정확성을 주장하지 않는다. 원작 실행 파일, 이미지, 폰트, 사운드, 단어 데이터베이스를 배포물에 포함하지 않는다.
+
+맞는 단어 선택, 두벌식 타수 기반 점수, 감염, 지뢰와 9개 특수 효과는 순수 전이 안에 있다. 직접 맞힌 단어만 점수를 받고, 싹쓸이·지뢰의 연쇄 제거는 점수를 만들지 않는다. 시작 레벨 추천은 최근 최대 5회의 레벨별 실적 중앙값을 사용하고 언제든 사용자가 바꿀 수 있다. `content/assets/venice-words.ko.json`은 기존 30초 낱말 풀과 분리해 한글·길이·중복을 검증한다.
+
+`storage/veniceStorage.ts`는 `tagak:venice:records`에 버전 1의 최근 30회와 Top 10을 일반 연습 기록과 분리해 저장한다. 날짜·레벨 통계·규칙 버전·목록 길이를 경계에서 검증한다. Web Locks가 있는 브라우저에서는 ID 기반 중복 방지와 병합 저장을 직렬화하며, 손상된 값은 덮어쓰지 않는다. 저장 실패는 결과를 감추지 않고 메모리 기록과 안내를 유지한다.
+
+`VeniceView`는 IME 입력과 게임 제출을 분리하며 조합 중 Enter/Space/Escape를 제출·종료로 재사용하지 않는다. 붙여넣기와 드롭은 막는다. 게임 효과음은 기존 완료 효과음 설정을 따르므로 기본 무음이다. 브라우저 오디오 API가 실패해도 게임은 계속된다.
+
 ## IME 입력 경계 (`ui/TypingInput.tsx`)
 
 이 파일이 이 앱에서 가장 까다로운 부분입니다. 브라우저·OS마다 `compositionstart`/`compositionend`/`beforeinput`/`input`/`keydown` 순서가 다르기 때문입니다.
@@ -122,7 +139,7 @@ src/
 
 `usePracticeState`는 `useReducer` 하나로 화면을 전환합니다.
 
-- 화면 상태: `menu` · `library` · `history` · `challenge` · `free-practice` · `practice` · `positions` · `passage` · `result` (+ `settings`는 `returnState`를 감싼 래퍼)
+- 화면 상태: `menu` · `library` · `history` · `challenge` · `venice` · `free-practice` · `practice` · `positions` · `passage` · `result` (+ `settings`는 `returnState`를 감싼 래퍼)
 - 이벤트: `start`, `input-changed`, `submit`, `position-key`, `retry`, `back`, 설정 열기/닫기 등
 - 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
@@ -141,10 +158,11 @@ src/
 | `tagak:color-theme` | 색상 테마 | v1 |
 | `tagak:practice-font` | 한국어/영어별 글꼴 | v2, v1(공통 글꼴)을 두 언어에 복사 |
 | `tagak:history` | 최근 기록(최대 100) | v3, v1·v2 읽기 지원, `sentence`→`line`, `article`→`long` 변환 |
+| `tagak:venice:records` | 베네치아 최근 플레이(최대 30), 하이스코어 Top 10 | 별도 규칙 버전 1; 손상·호환 불가 데이터는 보존 |
 
 각 항목의 `tagak:migration:*` 표식은 이미 처리했거나 초기화한 이전 키를 다시 가져오지 않게 합니다. 표식은 연습 데이터와 분리되어 있으며 사용자 기록으로 노출되지 않습니다.
 
-쓰기는 `navigator.locks.request`로 직렬화합니다. 여러 탭이 동시에 완료해도 기록이 유실되지 않습니다. 잠금을 쓸 수 없으면 저장 실패로 처리하고 연습은 계속됩니다. 탭 간 동기화는 `storage` 이벤트로 읽기 상태만 갱신합니다.
+설정과 일반 연습 기록 쓰기는 `navigator.locks.request`로 직렬화합니다. 여러 탭이 동시에 완료해도 기록이 유실되지 않습니다. 잠금을 쓸 수 없으면 저장 실패로 처리하고 연습은 계속됩니다. 탭 간 동기화는 `storage` 이벤트로 읽기 상태만 갱신합니다. 베네치아 저장소의 잠금 및 실패 규칙은 위 A30 절을 따릅니다.
 
 A16 이전 한국어 기록은 두벌식 타수를 복원할 수 없으므로 정확도·시간은 남기고 CPM만 `null`로 감춥니다(`decodeRecord`).
 

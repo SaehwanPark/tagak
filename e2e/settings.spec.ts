@@ -20,7 +20,7 @@ test("settings are reachable by keyboard and return focus to the home entry", as
 test("completion sound is off by default", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "[기타] 환경설정" }).click();
-  await expect(page.getByRole("button", { name: /완료 효과음/ })).toContainText("끔");
+  await expect(page.getByRole("button", { name: /효과음/ })).toContainText("끔");
 });
 
 test("interface and practice languages are independent and filter home content", async ({ page }) => {
@@ -39,6 +39,7 @@ test("interface and practice languages are independent and filter home content",
   await expect(page.getByRole("button", { name: "[Practice] Short passages" })).toBeVisible();
   await expect(page.getByRole("button", { name: "[Practice] Long passages" })).toBeVisible();
   await expect(page.getByRole("button", { name: "[Game] 30-second word challenge" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "[Game] Venice" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "[Other] Free typing" })).toBeVisible();
   await expect(page.getByRole("button", { name: "[Other] Recent practice" })).toBeVisible();
   await expect(page.getByRole("button", { name: "[Other] Settings" })).toBeVisible();
