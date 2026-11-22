@@ -14,6 +14,8 @@ type TypingInputProps = {
 };
 
 const imeShortcuts = new Set<string>();
+// Keep WebView2's compositionend/confirmation Enter pair separate from a later submit key.
+const imeEnterConfirmationWindowMs = 100;
 
 if (typeof window !== "undefined") {
   window.addEventListener("keyup", (event) => {
@@ -32,6 +34,7 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
   const spacePressedDuringComposition = useRef(false);
   const spaceInputDuringComposition = useRef(false);
   const compositionJustEnded = useRef(false);
+  const compositionEndedAt = useRef<number | null>(null);
   // A trailing IME Space event can arrive after keyup, so key release must not clear this guard.
   const pendingCompositionSpace = useRef<{ input: string; caret: number } | null>(null);
   const confirmed = useRef("");
@@ -83,6 +86,17 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
       event.preventDefault();
       return;
     }
+    if (
+      event.key === "Enter" &&
+      compositionJustEnded.current &&
+      compositionEndedAt.current !== null &&
+      performance.now() - compositionEndedAt.current <= imeEnterConfirmationWindowMs
+    ) {
+      event.preventDefault();
+      compositionJustEnded.current = false;
+      imeShortcuts.add(code);
+      return;
+    }
     pendingCompositionSpace.current = null;
     // Some browsers report isComposing=false on the key that ends an IME edit.
     if (composing.current || native.isComposing || native.keyCode === 229) {
@@ -102,11 +116,13 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
     if (spaceKey && compositionJustEnded.current) {
       event.preventDefault();
       compositionJustEnded.current = false;
+      compositionEndedAt.current = null;
       imeShortcuts.add(code);
       applyCompositionSpace(event.currentTarget, performance.now());
       return;
     }
     compositionJustEnded.current = false;
+    compositionEndedAt.current = null;
     if (event.key === "Enter") {
       event.preventDefault();
       onSubmit();
@@ -135,6 +151,7 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
       onCompositionStart={() => {
         composing.current = true;
         compositionJustEnded.current = false;
+        compositionEndedAt.current = null;
         if (!spacePressedDuringComposition.current) {
           spaceInputDuringComposition.current = false;
         }
@@ -144,12 +161,14 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
         const value = event.currentTarget.value;
         if (!spacePressedDuringComposition.current) {
           compositionJustEnded.current = true;
+          compositionEndedAt.current = performance.now();
           commit(value);
           return;
         }
 
         spacePressedDuringComposition.current = false;
         compositionJustEnded.current = false;
+        compositionEndedAt.current = null;
         const selectionStart = event.currentTarget.selectionStart ?? value.length;
         const selectionEnd = event.currentTarget.selectionEnd ?? value.length;
         // macOS IME may commit Space before compositionend without a matching input event.
@@ -227,6 +246,7 @@ export function TypingInput({ language, target, onInput, onSubmit, onSpaceSubmit
         spacePressedDuringComposition.current = false;
         spaceInputDuringComposition.current = false;
         compositionJustEnded.current = false;
+        compositionEndedAt.current = null;
         pendingCompositionSpace.current = null;
       }}
       onPaste={(event) => {
