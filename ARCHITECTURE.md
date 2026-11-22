@@ -3,8 +3,8 @@
 타각(Tagak)의 구조와 설계 결정을 정리한 문서입니다. 처음 코드를 보는 개발자가 "어디를 고쳐야 하는지" 빨리 찾을 수 있도록 계층, 데이터 흐름, 불변식, 검증 방법을 다룹니다. 제품 요구사항은 [docs/PROJECT-SPEC.md](docs/PROJECT-SPEC.md)를 따릅니다.
 
 - 스택: TypeScript(strict) + React 19 + CSS, Vite 빌드, Vitest + Playwright 검증
-- 실행: 같은 정적 `dist/`를 Tauri 2/WebKit 앱 또는 브라우저의 `serve.mjs` 경로에서 제공
-- 기준 환경: macOS 14+ 데스크톱 앱, Windows 11 + Chrome은 보조 검증
+- 실행: 같은 정적 `dist/`를 Tauri 2/WebKit·WebView2 앱 또는 브라우저의 `serve.mjs` 경로에서 제공
+- 기준 환경: macOS 14+ 데스크톱 앱. Windows 11 Tauri 앱은 A32에서 확인했고 Windows 11 + Chrome은 별도 보조 경로
 - 상태: 도메인은 순수 함수, 브라우저 입출력은 경계로 격리
 
 ## 한눈에 보는 구조
@@ -22,7 +22,7 @@
 | `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐 | React 훅 |
 | `src/ui/` | React 화면, IME 입력 어댑터, 초점, PNG 저장, 데이터 이전, 효과음 | DOM, React |
 | `src/platform/` | Tauri 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
-| `src-tauri/` | macOS 앱 창·패키지·WebKit 데이터 저장소와 사용자 선택 파일 I/O | Tauri/Rust |
+| `src-tauri/` | macOS·Windows 앱 창과 패키지, macOS WebKit 저장소 식별자, Windows WebView2 키 이벤트, 사용자 선택 파일 I/O | Tauri/Rust |
 
 의존 방향은 대체로 `ui → app → storage → domain`이고, `content/`는 `domain/` 위에 놓입니다. 지켜야 할 규칙은 **`domain/`이 브라우저·React·저장소에 의존하지 않는다**는 점입니다. `domain/`은 `content/`에서 `Language`·`NonEmpty` 같은 **타입만** 가져오고, `content/`는 `domain/`의 순수 함수(`splitCharacters`, `wrapText`)를 값으로 씁니다. 이 경계가 깨지면 순수 함수 테스트가 브라우저 환경을 요구하게 되므로 리뷰에서 우선 확인합니다.
 
@@ -206,7 +206,7 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 
 ## 화면 저장과 효과음
 
-- **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 macOS `⌘S`를 앱 화면 안에서만 처리하고 IME 조합 중에는 가로채지 않습니다. Tauri 앱은 네이티브 대화상자에서 선택한 경로에 쓰고 브라우저 경로는 다운로드를 사용합니다.
+- **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 macOS `⌘S`와 브라우저의 `Ctrl+S`를 앱 화면 안에서 처리하고 IME 조합 중에는 가로채지 않습니다. WebView2는 `Ctrl+S`를 브라우저 가속키 이벤트로 분리하므로 Windows Tauri 호스트가 해당 키만 앱 이벤트로 전달합니다. Tauri 앱은 네이티브 대화상자에서 선택한 경로에 쓰고 브라우저 경로는 다운로드를 사용합니다.
 - **완료 효과음**: `completionSound.ts`가 Web Audio로 짧은 톤을 1회 재생합니다. 트리거는 `App.tsx`에서 `submissionEndsBundle`(글)과 `hasReachedEnd`(낱말·한 줄·자리)로 판단하며, 오디오 실패는 연습을 막지 않습니다.
 
 ## 콘텐츠 애셋
@@ -237,8 +237,8 @@ Playwright의 `CompositionEvent`는 앱의 이벤트 순서 처리를 검증할 
 ## 빌드와 실행
 
 - `npm run build` = `tsc -b`(프로젝트 참조 타입 검사) + `vite build`
-- `npm run desktop:dev`는 Vite 개발 서버를 Tauri 창에 연결합니다. `npm run desktop:build`는 번들된 `dist/`로 macOS DMG를 만듭니다. A31의 macOS 수동 완료 검증은 통과했으며, 이 저장소에는 빌드 산출물 대신 재현 가능한 빌드 명령을 기록합니다.
-- Tauri 설정은 식별자 `com.saehwanpark.tagak`, macOS 14+용 WebKit 저장소 ID, `tauri://localhost`의 고정 조합을 사용합니다. 이 값은 업데이트로 바꾸지 않습니다. 단일 인스턴스 플러그인은 두 번째 실행에서 기존 창을 활성화합니다. 파일 시스템 플러그인은 네이티브 대화상자에서 사용자가 고른 파일의 읽기·쓰기만 허용합니다.
+- `npm run desktop:dev`는 Vite 개발 서버를 Tauri 창에 연결합니다. `npm run desktop:build`는 macOS DMG를, `npm run desktop:build:windows`는 Windows NSIS 설치 파일을 만듭니다. 패키지 빌드와 앱 실행 증거는 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 기록합니다.
+- Tauri 설정은 식별자 `com.saehwanpark.tagak`, macOS 14+ 전용 WebKit 저장소 ID, `tauri://localhost`의 고정 조합을 사용합니다. `tauri.windows.conf.json`은 Windows NSIS per-user 설치를 설정하며 macOS DMG 대상은 기본 설정에 둡니다. Windows 빌드는 WebView2를 사용하고 macOS 전용 저장소 ID를 설정하지 않습니다. 앱 ID와 프로토콜은 업데이트로 바꾸지 않습니다. 단일 인스턴스 플러그인은 두 번째 실행에서 기존 창을 활성화합니다. 파일 시스템 플러그인은 네이티브 대화상자에서 사용자가 고른 파일의 읽기·쓰기만 허용합니다.
 - `serve.mjs`는 `127.0.0.1:41793`에만 바인딩하고 `dist/` 안의 파일만 제공합니다. `Host` 헤더 검사, 경로 탈출 방지(`realpath` 기준), 허용 MIME 목록, `X-Content-Type-Options: nosniff`를 적용합니다. 포트가 사용 중이면 원인을 안내하고 종료합니다.
 - 포트를 Vite 개발·미리보기 기본 포트와 분리해 다른 앱의 Service Worker나 저장소가 겹치지 않게 합니다.
 - `serve.mjs`는 npm 패키지에 의존하지 않습니다. Node.js 내장 모듈만 씁니다.

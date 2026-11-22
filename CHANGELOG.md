@@ -6,6 +6,22 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-22
+
+### Added
+
+- Windows 11용 Tauri 2/WebView2 앱과 per-user NSIS 설치 패키지 빌드 명령 `npm run desktop:build:windows`를 추가했습니다. macOS 전용 WebKit 저장소 ID는 Windows 빌드에서 분리했습니다.
+- Windows 데스크톱 앱에서 네이티브 파일 대화상자를 통한 PNG 저장과 JSON 데이터 백업·가져오기를 지원합니다.
+
+### Fixed
+
+- WebView2가 자체 처리하던 `Ctrl+S`를 앱 화면 저장 단축키로 연결했습니다.
+- WebView2 한국어 IME에서 조합을 확정하는 Enter와 제출 Enter가 분리되도록 처리했습니다.
+
+### Verified
+
+- Windows 11 Pro + WSL2 Fedora 43에서 Windows 호스트 도구로 NSIS 설치 파일을 빌드하고 격리 프로필에서 오프라인 실행, 단일 인스턴스, Type 3 Microsoft 한국어 IME(Shift+Space), `Ctrl+S` PNG, JSON 백업·가져오기, 설정·연습·베네치아 기록의 재실행 보존을 확인했습니다. 자동화 테스트 스위트는 실행하지 않았습니다.
+
 ## [0.2.0] - 2026-11-22
 
 ### Added

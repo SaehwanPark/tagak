@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.2.0`이다. 다음 버전 후보는 `v0.3.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.3.0`이다. 다음 버전 후보는 `v0.4.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,12 +11,17 @@
 
 ## 진행 중
 
-- [지금 구현중] **A32 · Windows 11 Tauri 2 데스크톱 앱** · 다음 버전 후보 `v0.3.0`
-  - A31의 정적 Tauri 앱, 네이티브 파일 대화상자, 단일 인스턴스와 데이터 이전 흐름을 Windows 11 + WebView2로 확장한다. macOS 전용 WebKit 데이터 저장소 설정은 대상에 맞게 분리하고, 기존 브라우저 경로와 앱 식별자는 유지한다.
-  - NSIS 설치 패키지를 만들고 Windows 11에서 오프라인 실행, 실제 Microsoft 한국어 IME와 키보드 흐름, 네이티브 `Ctrl+S` PNG 저장, 데이터 백업·가져오기, 재실행 후 설정·연습·베네치아 기록 보존을 확인한다.
-  - 현재 개발 머신은 Windows 11 Pro + WSL2 Fedora 43이다. WSL에서 Windows 호스트 도구를 쓸 수 있는지와 실제 설치·실행 증거를 이 슬라이스에 기록한다. 실제 입력기 검증이 남으면 완료와 지원 선언을 보류한다.
+진행 중인 사용자 기능 슬라이스가 없습니다.
 
 ## 완료
+
+- [x] **A32 · Windows 11 Tauri 2 데스크톱 앱** · `v0.3.0`
+  - A31의 정적 앱, 네이티브 파일 대화상자, 단일 인스턴스와 백업 흐름을 Windows 11 + WebView2로 확장했다. macOS 전용 WebKit 저장소 설정은 macOS 빌드에만 적용하고 앱 ID와 브라우저 경로를 유지했다.
+  - WebView2가 자체 가속키로 처리하는 `Ctrl+S`를 Tauri 호스트에서 화면 저장 동작으로 전달한다. IME 조합 종료 직후 확인용 Enter와 다음 제출 Enter를 분리한다.
+  - Windows 11 Pro + WSL2 Fedora 43에서 소스 스냅샷을 Windows 임시 작업 폴더에 두고 Windows Node/npm·Rust MSVC·Visual Studio Build Tools로 `npm run desktop:build:windows`를 실행했다. `npm ci`, 프로덕션 프런트엔드 빌드, Rust 릴리스 빌드, NSIS 패키징이 통과했다. Windows용 설치 파일은 per-user 모드로 만들었고 최종 `Tagak_0.3.0_x64-setup.exe`는 2.27 MiB다.
+  - 설치 패키지를 새 격리 프로필에 설치하고 외부 네트워크를 차단한 WebView2 설정에서 오프라인 시작을 확인했다. Type 3 Microsoft 한국어 IME를 `Shift+Space`로 전환해 `연필`을 입력했다. 첫 Enter는 IME 조합만 확정하고 두 번째 Enter가 제출하는 것을 확인했다.
+  - Windows WebView2 `Ctrl+S`가 네이티브 저장 대화상자를 열고 선택 경로에 PNG를 저장했다. 설정·연습·베네치아 데이터를 JSON으로 내보냈고, 네이티브 파일 선택으로 가져와 병합했다. 두 번째 앱 실행은 기존 단일 창을 사용했다.
+  - 앱을 종료·재실행한 뒤 영어 인터페이스 설정, 연습 기록 1건, 베네치아 최근 기록 1건과 Top 10 1건을 다시 내보내 확인했다. OS 입력기 키 입력 이벤트, 단일 인스턴스, 백업·가져오기와 저장 결과는 Windows 11 호스트의 격리 프로필에서 확인했다. 자동화 테스트 스위트는 실행하지 않았다.
 
 - [x] **A31 · macOS Tauri 2 데스크톱 앱과 데이터 이전** · `v0.2.0` · 이슈 [#55](https://github.com/SaehwanPark/tagak/issues/55)
   - Tauri 2 호스트에서 정적 `dist/`를 제공하고 macOS 14+ 최소 버전, 앱 ID `com.saehwanpark.tagak`, WebKit 저장소 ID, `tauri://localhost`, 단일 인스턴스를 고정했다. 기존 브라우저 개발·대체 실행·E2E 경로를 유지한다.
