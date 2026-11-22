@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
+import { isTauri } from "@tauri-apps/api/core";
 import { downloadScreenCapture } from "../ui/screenCapture";
 import { isMacKeyboard } from "../platform/fileAccess";
 
@@ -31,6 +32,7 @@ export function useScreenCapture(target: RefObject<HTMLElement | null>) {
 
   useEffect(() => {
     let composing = false;
+    const nativeWindowsApp = isTauri() && navigator.platform.startsWith("Win");
     const onCompositionStart = () => { composing = true; };
     const onCompositionEnd = () => { composing = false; };
     const onKeyDown = (event: KeyboardEvent) => {
@@ -44,14 +46,23 @@ export function useScreenCapture(target: RefObject<HTMLElement | null>) {
       event.preventDefault();
       if (!event.repeat) void save();
     };
+    const onNativeShortcut = () => {
+      if (!composing) void save();
+    };
+
+    if (nativeWindowsApp) {
+      window.addEventListener("tagak:screen-capture-shortcut", onNativeShortcut);
+    } else {
+      window.addEventListener("keydown", onKeyDown);
+    }
 
     window.addEventListener("compositionstart", onCompositionStart);
     window.addEventListener("compositionend", onCompositionEnd);
-    window.addEventListener("keydown", onKeyDown);
     return () => {
       window.removeEventListener("compositionstart", onCompositionStart);
       window.removeEventListener("compositionend", onCompositionEnd);
-      window.removeEventListener("keydown", onKeyDown);
+      if (nativeWindowsApp) window.removeEventListener("tagak:screen-capture-shortcut", onNativeShortcut);
+      else window.removeEventListener("keydown", onKeyDown);
     };
   }, [save]);
 

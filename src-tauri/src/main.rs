@@ -27,9 +27,65 @@ fn main() {
             #[cfg(target_os = "macos")]
             let window = window.data_store_identifier(WEBKIT_DATA_STORE_ID);
 
-            window.build()?;
+            let window = window.build()?;
+
+            #[cfg(target_os = "windows")]
+            register_windows_screen_capture_shortcut(window);
+
             Ok(())
         })
         .run(tauri::generate_context!())
         .expect("failed to run Tagak");
+}
+
+#[cfg(target_os = "windows")]
+fn register_windows_screen_capture_shortcut(window: tauri::WebviewWindow) {
+    use webview2_com::{
+        AcceleratorKeyPressedEventHandler,
+        Microsoft::Web::WebView2::Win32::COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN,
+    };
+
+    // WebView2 reserves Ctrl+S for its browser accelerator, so forward that key to the app.
+    let app_window = window.clone();
+    let _ = window.with_webview(move |webview| unsafe {
+        let controller = webview.controller();
+        let handler = AcceleratorKeyPressedEventHandler::create(Box::new(move |_, args| {
+            let Some(args) = args else { return Ok(()) };
+            let mut key = 0;
+            let mut kind = COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN;
+            let mut key_event_lparam = 0;
+            args.VirtualKey(&mut key)?;
+            args.KeyEventKind(&mut kind)?;
+            args.KeyEventLParam(&mut key_event_lparam)?;
+
+            if key == b'S' as u32
+                && kind.0 == COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN.0
+                && key_event_lparam & (1 << 30) == 0
+                && key_is_down(0x11)
+                && !key_is_down(0x10)
+                && !key_is_down(0x12)
+            {
+                args.SetHandled(true)?;
+                let _ = app_window
+                    .eval("window.dispatchEvent(new Event('tagak:screen-capture-shortcut'))");
+            }
+
+            Ok(())
+        }));
+
+        let mut token = 0;
+        controller
+            .add_AcceleratorKeyPressed(&handler, &mut token)
+            .expect("failed to register WebView2 keyboard shortcut");
+    });
+}
+
+#[cfg(target_os = "windows")]
+fn key_is_down(virtual_key: i32) -> bool {
+    #[link(name = "user32")]
+    unsafe extern "system" {
+        fn GetKeyState(virtual_key: i32) -> i16;
+    }
+
+    unsafe { GetKeyState(virtual_key) < 0 }
 }
