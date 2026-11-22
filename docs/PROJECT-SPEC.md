@@ -1,6 +1,6 @@
 # 타각(Tagak) 프로젝트 명세
 
-타각(Tagak)은 한메타자교실의 연습 경험을 오늘날에 맞게 재해석한 로컬 타자 연습 앱이다. macOS 데스크톱 앱을 기준 환경으로 삼고 한글 우선·키보드 중심으로 자리, 낱말, 한 줄, 짧은 글과 긴 글을 오프라인에서 연습한다. Tauri 앱은 A31에서 구현·수동 검증을 완료했으며 브라우저 실행 경로는 개발과 대체 사용을 위해 유지한다. 구현 순서와 현재 상태는 [SPEC.md](SPEC.md), 개발자용 구조 설명은 [ARCHITECTURE.md](../ARCHITECTURE.md), 버전별 변경 이력은 [CHANGELOG.md](../CHANGELOG.md)에서 확인한다.
+타각(Tagak)은 한메타자교실의 연습 경험을 오늘날에 맞게 재해석한 로컬 타자 연습 앱이다. macOS 데스크톱 앱을 기준 환경으로 삼고 한글 우선·키보드 중심으로 자리, 낱말, 한 줄, 짧은 글과 긴 글을 오프라인에서 연습한다. A31은 macOS Tauri 앱을 구현·수동 검증했고 A32는 Windows 11 Tauri 앱 지원을 확장 중이다. 브라우저 실행 경로는 개발과 대체 사용을 위해 유지한다. 구현 순서와 현재 상태는 [SPEC.md](SPEC.md), 개발자용 구조 설명은 [ARCHITECTURE.md](../ARCHITECTURE.md), 버전별 변경 이력은 [CHANGELOG.md](../CHANGELOG.md)에서 확인한다.
 
 제품 이름은 한국어 `타각`, 영어 `Tagak`으로 쓴다. 화면 헤더는 인터페이스 언어에 맞추며, 브라우저 제목은 `타각 — Tagak`이다. 한 줄 소개는 한국어 UI에서 `키보드 중심의 로컬 타자 연습 프로그램`, 영어 UI에서 `A keyboard-first, local typing practice app.`이다. 프로젝트 고유명사는 이 표기를 따르며, 일반적인 `타자 연습`과 디자인 배경을 설명하는 `레트로`는 그대로 쓸 수 있다.
 
@@ -36,9 +36,10 @@ Windows Chrome에서 참조 앱의 메뉴 이동, 설정 항목의 방향키 이
 | 전 모드 Space 제출 (A15) | 낱말·한 줄·글의 각 줄·도전 낱말에서 요구 입력을 마친 뒤 Space로 제출한다. 입력 중의 Space는 제시문 공백으로 입력한다. IME 조합을 끝내는 Space는 글자를 확정한 뒤 필요한 공백 삽입 또는 제출로 한 번 처리한다. |
 | 한글 타수 속도 (A16) | 한국어 CPM은 완성 글자 수가 아니라 입력에 남아 있는 두벌식 타수를 기준으로 계산한다. 정확도는 글자 단위로 별도 표시하며, 영어 WPM은 현재 계산을 유지한다. |
 | 데스크톱 앱 (A31) | macOS 14+에서 Tauri 2 앱을 더블클릭으로 실행한다. 정적 자산을 앱에 포함하고 앱 식별자·WebKit 데이터 저장소 식별자를 고정해 업데이트 후 설정과 기록을 이어간다. 브라우저와 앱 사이 데이터는 사용자가 로컬 백업 파일로 내보내고 가져온다. 앱 설치·오프라인 실행·IME·키보드·저장 지속성 수동 확인을 마쳐 기준 환경 지원을 완료했다. |
-| 후속 범위 | Windows 데스크톱 패키지와 다른 자판 배열은 별도 검증한다. |
+| Windows 데스크톱 앱 (A32 진행 중) | Windows 11에서 Tauri 2/WebView2 앱을 설치·실행한다. 앱 식별자를 유지하고 Windows 기본 프로필의 앱 저장소에 설정과 기록을 보존한다. NSIS 설치 파일, 오프라인 시작, 실제 한국어 IME·키보드, 네이티브 PNG 저장, 데이터 이전, 재실행 지속성 확인을 마친 뒤 지원을 선언한다. |
+| 후속 범위 | Linux 데스크톱 패키지, Windows Edge 브라우저와 다른 자판 배열은 별도 검증한다. |
 
-앱의 실행과 연습은 오프라인을 기본으로 한다. macOS 앱은 Tauri가 번들 `dist/`를 WebKit에서 열며 `serve.mjs`, localhost 포트, Node.js, 인터넷 연결을 요구하지 않는다. 브라우저 대체 경로는 Vite와 `serve.mjs`를 계속 사용한다. 계정, 서버 동기화, 공개 순위, 원격 측정, 외부 폰트와 CDN은 제외한다. 데스크톱과 물리 키보드를 우선한다.
+앱의 실행과 연습은 오프라인을 기본으로 한다. macOS 앱은 Tauri가 번들 `dist/`를 WebKit에서 열고 Windows 앱은 WebView2에서 열며, 둘 다 `serve.mjs`, localhost 포트, Node.js, 네트워크를 요구하지 않는다. 브라우저 대체 경로는 Vite와 `serve.mjs`를 계속 사용한다. 계정, 서버 동기화, 공개 순위, 원격 측정, 외부 폰트와 CDN은 제외한다. 데스크톱과 물리 키보드를 우선한다.
 
 ## 화면과 사용 흐름
 
@@ -80,11 +81,11 @@ macOS 앱과 브라우저 대체 경로에서 확대 200%의 제시문, 입력�
 
 ## 실행과 기술 선택
 
-같은 정적 React 앱을 macOS Tauri 데스크톱 호스트와 브라우저 대체 경로에서 실행한다. 현재 기준 환경은 macOS 14+의 Tauri 앱(WebKit)이며, macOS Chrome은 브라우저 경로를 보조 확인한다. Windows 11 + Chrome과 Linux는 후속 검증 범위다. macOS에서 앱 번들을 열면 내장된 `dist/`를 WebKit이 직접 표시해 `serve.mjs`, localhost 포트, Node.js, 네트워크를 요구하지 않는다. 브라우저에서는 Node.js 내장 HTTP·파일 모듈을 쓰는 `serve.mjs`가 `127.0.0.1:41793`에만 바인딩해 기존 사용·E2E 경로를 제공한다. Tauri 식별자 `com.saehwanpark.tagak`과 macOS WebKit 데이터 저장소 식별자를 고정한다. 이 값과 `tauri://localhost` 프로토콜은 앱 업데이트에서 바꾸지 않는다. 저장 데이터의 이전 주소는 명시적으로 로컬 백업/가져오기 기능을 통해 지원한다.
+같은 정적 React 앱을 macOS Tauri/WebKit, A32에서 추가하는 Windows 11 Tauri/WebView2 데스크톱 호스트, 브라우저 대체 경로에서 실행한다. 개발 기준 환경은 macOS 14+ Tauri 앱이며 macOS Chrome과 Windows 11 + Chrome은 각각 브라우저 경로의 보조 확인이다. Linux는 개발 호스트일 뿐 이 슬라이스의 데스크톱 지원 선언에 포함하지 않는다. 데스크톱 앱은 내장된 `dist/`를 시스템 웹뷰가 직접 표시해 `serve.mjs`, localhost 포트, Node.js, 네트워크를 요구하지 않는다. 브라우저에서는 Node.js 내장 HTTP·파일 모듈을 쓰는 `serve.mjs`가 `127.0.0.1:41793`에만 바인딩해 기존 사용·E2E 경로를 제공한다. Tauri 식별자 `com.saehwanpark.tagak`을 유지하고, macOS 전용 WebKit 데이터 저장소 식별자는 해당 플랫폼에서만 설정한다. `tauri://localhost` 프로토콜과 앱 식별자는 앱 업데이트에서 바꾸지 않는다. 각 호스트의 저장소는 분리되며, 데이터 이전은 로컬 백업/가져오기 경계를 통해 지원한다.
 
 | 선택 | 이유 |
 | --- | --- |
-| Tauri 2 + WebKit | macOS 14+의 `.app`/`.dmg`에서 `dist/`를 직접 열어 Node·서버·인터넷 없는 실행을 제공한다. 앱 식별자와 WebKit 데이터 저장소 ID는 업데이트 간 저장 유지의 일부다. Windows 패키징은 후속 검증 범위다. |
+| Tauri 2 + WebKit/WebView2 | macOS 14+의 `.app`/`.dmg`와 A32의 Windows 11 NSIS 설치 파일에서 각각 WebKit과 WebView2로 `dist/`를 직접 열어 Node·서버 없는 실행을 제공한다. macOS WebKit 데이터 저장소 ID는 macOS 전용이며 Windows 앱은 Tauri 앱 ID와 사용자 프로필에서 저장을 지속한다. |
 | Tauri dialog/fs 플러그인 | 파일 열기·저장 대화상자에서 고른 경로만 읽고 쓴다. 앱에 임의 경로 검색 권한을 주지 않는다. |
 | 브라우저 웹앱 | 공통 React 화면과 도메인 코드를 유지하고, 기존 macOS Chrome 및 다른 데스크톱 브라우저 경로를 개발·대체 실행에 쓴다. |
 | TypeScript strict + React + CSS | 모드·세션 상태를 타입으로 제한하고, 순수 상태 전이의 결과를 화면에 표시한다. 색상 테마와 연습 글꼴은 CSS 사용자 정의 속성으로 분리하고 스타일과 입력에는 브라우저 기본 기능을 우선한다. [React의 useReducer](https://react.dev/reference/react/useReducer) |
@@ -99,7 +100,7 @@ macOS 앱과 브라우저 대체 경로에서 확대 200%의 제시문, 입력�
 
 | 위치 | 책임 |
 | --- | --- |
-| `src-tauri/` | Tauri 창·앱 식별자·WebKit 저장소 ID·macOS 패키징, 단일 인스턴스와 파일 대화상자 경계. 대화상자에서 고른 파일만 읽고 쓴다. 연습 규칙과 화면 상태는 Rust로 옮기지 않는다. |
+| `src-tauri/` | Tauri 창·앱 식별자·macOS WebKit 저장소 ID·macOS/Windows 패키징, 단일 인스턴스와 파일 대화상자 경계. 대화상자에서 고른 파일만 읽고 쓴다. 연습 규칙과 화면 상태는 Rust로 옮기지 않는다. |
 | `src/domain/` | 연습 자료, 세션 타입, 상태 전이, 입력 비교와 점수 계산. 브라우저, React, 시스템 시각, 저장소를 직접 참조하지 않는다. |
 | `src/app/` | 메뉴·설정·연습·결과의 전환과 기능 연결. 타입이 지정된 이벤트를 도메인에 넘기고 초점 이동·결과 저장을 실행한다. `useScreenCapture`는 플랫폼 단축키와 IME 경계를 관리한다. |
 | `src/ui/` | React 화면과 접근 가능한 폼, 한글 입력 어댑터, 결과 표시. `DataTransferView`는 충돌 선택을 제공한다. 화면 저장은 DOM을 PNG로 렌더링하고, 선택된 효과음은 Web Audio로 생성한다. |

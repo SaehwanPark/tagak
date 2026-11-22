@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.2.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.2.0`이다. 다음 버전 후보는 `v0.3.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,7 +11,10 @@
 
 ## 진행 중
 
-현재 진행 중인 사용자 기능 슬라이스는 없다.
+- [지금 구현중] **A32 · Windows 11 Tauri 2 데스크톱 앱** · 다음 버전 후보 `v0.3.0`
+  - A31의 정적 Tauri 앱, 네이티브 파일 대화상자, 단일 인스턴스와 데이터 이전 흐름을 Windows 11 + WebView2로 확장한다. macOS 전용 WebKit 데이터 저장소 설정은 대상에 맞게 분리하고, 기존 브라우저 경로와 앱 식별자는 유지한다.
+  - NSIS 설치 패키지를 만들고 Windows 11에서 오프라인 실행, 실제 Microsoft 한국어 IME와 키보드 흐름, 네이티브 `Ctrl+S` PNG 저장, 데이터 백업·가져오기, 재실행 후 설정·연습·베네치아 기록 보존을 확인한다.
+  - 현재 개발 머신은 Windows 11 Pro + WSL2 Fedora 43이다. WSL에서 Windows 호스트 도구를 쓸 수 있는지와 실제 설치·실행 증거를 이 슬라이스에 기록한다. 실제 입력기 검증이 남으면 완료와 지원 선언을 보류한다.
 
 ## 완료
 
@@ -187,4 +190,4 @@
   - `npm run verify` 통과: Vitest 10개 파일 38개 테스트, 프로덕션 빌드, Playwright E2E 41개. 초점 복구·환경설정 왕복·기록 흐름 회귀와 가상 시계 기반 WPM 검증을 확인했다. Windows 11 + Chrome 수동 확인은 이 변경에서 수행하지 않았다.
 
 ## 호환성 후속 (개발 비차단)
-- Windows 11 + Chrome과 Linux는 A31의 현재 수용 기준이 아니다. macOS Tahoe · Chrome 157의 A17 IME 확인은 브라우저 대체 경로에 한정되며, Tauri/WebKit 앱의 검증을 대신하지 않는다. 필요가 생기면 Windows 패키징이나 다른 브라우저를 별도 호환성 슬라이스로 검증한다.
+- A31은 macOS 14+ Tauri/WebKit 기준을 확정했다. A32에서 Windows 11 Tauri/WebView2 데스크톱 지원을 별도로 추가한다. Windows 11 + Chrome의 브라우저 검증은 네이티브 앱 검증을 대신하지 않으며, Linux·Windows Edge·macOS Safari는 이 슬라이스의 지원 선언 범위가 아니다.
