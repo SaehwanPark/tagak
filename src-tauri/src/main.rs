@@ -2,6 +2,7 @@
 
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 
+#[cfg(target_os = "macos")]
 const WEBKIT_DATA_STORE_ID: [u8; 16] = [
     59, 115, 200, 135, 242, 170, 77, 19, 135, 10, 94, 240, 36, 52, 200, 57,
 ];
@@ -17,12 +18,16 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .setup(|app| {
-            WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
-                .title("타각 — Tagak")
-                .inner_size(1120.0, 820.0)
-                .min_inner_size(760.0, 560.0)
-                .data_store_identifier(WEBKIT_DATA_STORE_ID)
-                .build()?;
+            let window =
+                WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
+                    .title("타각 — Tagak")
+                    .inner_size(1120.0, 820.0)
+                    .min_inner_size(760.0, 560.0);
+
+            #[cfg(target_os = "macos")]
+            let window = window.data_store_identifier(WEBKIT_DATA_STORE_ID);
+
+            window.build()?;
             Ok(())
         })
         .run(tauri::generate_context!())
