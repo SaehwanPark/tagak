@@ -20,7 +20,7 @@ export type VeniceEffect =
   | "mine"
   | "infection";
 
-export type VeniceWord = Readonly<{ text: string; keystrokes: number }>;
+export type VeniceWord = Readonly<{ text: string; keystrokes: number; minimumLevel?: number }>;
 export type VeniceWordKind = "regular" | "virus";
 export type VeniceStageConfig = Readonly<{
   level: number;
@@ -133,8 +133,8 @@ const stageDesign: readonly VeniceStageConfig[] = [
   { level: 10, spawnIntervalMs: 763, fallDurationMs: 3_195, maxActive: 8, minSyllables: 3, maxSyllables: 6, specialChance: 0.11 },
   { level: 11, spawnIntervalMs: 653, fallDurationMs: 2_845, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
   { level: 12, spawnIntervalMs: 559, fallDurationMs: 2_536, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
-  { level: 13, spawnIntervalMs: 478, fallDurationMs: 2_260, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.13 },
-  { level: 14, spawnIntervalMs: 409, fallDurationMs: 2_015, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.14 },
+  { level: 13, spawnIntervalMs: 599, fallDurationMs: 2_260, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.13 },
+  { level: 14, spawnIntervalMs: 512, fallDurationMs: 2_015, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.14 },
 ];
 
 function safeLevel(level: number): number {
@@ -150,6 +150,16 @@ export function targetCpm(level: number): number {
 
 export function veniceStageConfig(level: number): VeniceStageConfig {
   return stageDesign[safeLevel(level) - 1] ?? stageDesign[0]!;
+}
+
+export function candidateVeniceWords(pool: readonly VeniceWord[], level: number): readonly VeniceWord[] {
+  const config = veniceStageConfig(level);
+  return pool.filter((word) => {
+    const syllableCount = Array.from(word.text).length;
+    return (word.minimumLevel ?? 1) <= level
+      && syllableCount >= config.minSyllables
+      && syllableCount <= config.maxSyllables;
+  });
 }
 
 export function scoreVeniceWord(word: string, level: number): number {
@@ -292,8 +302,7 @@ function addWord(
   effect: VeniceEffect | null,
 ): VeniceRuntime {
   if (pool.length === 0) return runtime;
-  const config = veniceStageConfig(runtime.level);
-  const preferredWords = pool.filter((word) => word.text.length >= config.minSyllables && word.text.length <= config.maxSyllables);
+  const preferredWords = candidateVeniceWords(pool, runtime.level);
   const words = preferredWords.length > 0 ? preferredWords : pool;
   const selectedWord = randomIndex(runtime, words.length);
   const afterWord = { ...runtime, randomState: selectedWord.randomState };
