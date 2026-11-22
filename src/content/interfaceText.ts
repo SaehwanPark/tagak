@@ -108,6 +108,7 @@ export type InterfaceText = Readonly<{
   retryWord: string;
   veniceTitle: string;
   veniceInstruction: string;
+  veniceCollisionLine: string;
   veniceLevel: string;
   veniceRecommended: (level: number) => string;
   veniceStart: string;
@@ -266,7 +267,8 @@ const ko: InterfaceText = {
   blockedWordInput: "제시된 낱말과 같은지 확인하세요.",
   retryWord: "낱말 연습",
   veniceTitle: "베네치아",
-  veniceInstruction: "낱말을 입력해 탑을 지키세요. 특수 낱말을 맞히면 효과가 발동하고, 놓친 감염 낱말은 현재 레벨 동안 위험해집니다.",
+  veniceInstruction: "낱말을 입력해 탑을 지키세요. 일반 낱말 상단이 빨간 충돌선에 닿으면 탑 블록 1개가 손상됩니다. 노란 특수 낱말을 맞히면 효과가 발동하며, 감염된 레벨에서는 놓친 특수 낱말도 탑에 피해를 줍니다.",
+  veniceCollisionLine: "충돌선 · 일반 낱말이 닿으면 탑 -1",
   veniceLevel: "레벨",
   veniceRecommended: (level) => `최근 플레이 기준 ${level}레벨 추천`,
   veniceStart: "게임 시작",
@@ -458,7 +460,8 @@ const en: InterfaceText = {
   blockedWordInput: "Check that the prompt and your input match.",
   retryWord: "Word practice",
   veniceTitle: "Venice",
-  veniceInstruction: "Type words to defend the tower. Special words trigger an effect; a missed infection word makes viruses dangerous for the rest of the level.",
+  veniceInstruction: "Type words to defend the tower. When the top of a regular word reaches the red line, one tower block is damaged. Hitting a yellow special word triggers its effect; while infected, missed special words also damage the tower.",
+  veniceCollisionLine: "Impact line · missed regular word: −1 block",
   veniceLevel: "Level",
   veniceRecommended: (level) => `Level ${level} recommended from recent runs`,
   veniceStart: "Start game",

@@ -33,6 +33,9 @@ test("Venice starts from a keyboard-selected level, scores words, and saves a lo
   await page.clock.runFor(3_500);
   const fallingWords = page.locator(".venice-falling-word");
   await expect(fallingWords.first()).toBeVisible();
+  await expect(page.locator(".venice-collision-line")).toBeVisible();
+  await expect(page.locator(".venice-collision-line")).toContainText("충돌선");
+  expect(await fallingWords.first().evaluate((element) => getComputedStyle(element).whiteSpace)).toBe("nowrap");
   const word = (await fallingWords.first().textContent())?.trim();
   expect(word).toBeTruthy();
 
@@ -60,6 +63,10 @@ test("Venice starts from a keyboard-selected level, scores words, and saves a lo
   await level.selectOption("14");
   await page.getByRole("button", { name: "게임 시작" }).click();
   await expect(page.locator(".venice-hud dd").nth(1)).toHaveText("1000");
+  await page.clock.runFor(600);
+  const highLevelWord = page.locator(".venice-falling-word").first();
+  await expect(highLevelWord).toBeVisible();
+  expect(await highLevelWord.evaluate((element) => getComputedStyle(element).whiteSpace)).toBe("nowrap");
   await page.getByRole("button", { name: "게임 마치기" }).click();
   await expect.poll(() => page.evaluate((key) => {
     const stored = JSON.parse(localStorage.getItem(key) ?? "null");

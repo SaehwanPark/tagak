@@ -353,13 +353,21 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
       <div className="venice-board">
         <div className="venice-skyline" aria-hidden="true" />
         <div className="venice-waterline" aria-hidden="true" />
+        <div className="venice-collision-line" aria-hidden="true"><span>{copy.veniceCollisionLine}</span></div>
         {(runtime?.words ?? []).map((word) => {
           const hidden = runtime !== null && isVeniceWordHidden(word.id, runtime);
+          const syllables = Array.from(word.text).length;
+          const fontSizeRem = Math.max(0.58, 1.15 - (syllables - 2) * 0.095);
+          const lanePosition = ((word.lane + 0.5) / 7) * 100;
           return (
             <span
               key={word.id}
               className={"venice-falling-word" + (word.kind === "virus" ? " virus" : "") + (hidden ? " hidden-word" : "")}
-              style={{ left: (((word.lane + 0.5) / 7) * 100) + "%", top: word.y + "%" }}
+              style={{
+                left: `clamp(2.7rem, ${lanePosition}%, calc(100% - 2.7rem))`,
+                top: word.y + "%",
+                fontSize: fontSizeRem + "rem",
+              }}
               aria-hidden={hidden}
             >
               {word.text}

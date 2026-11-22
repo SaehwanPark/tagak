@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { candidateVeniceWords, targetCpm, veniceLevelCount, veniceStageConfig } from "../domain/venice";
+import {
+  availableVeniceWords,
+  candidateVeniceWords,
+  targetCpm,
+  veniceLevelCount,
+  veniceStageConfig,
+} from "../domain/venice";
 import { countKoreanKeystrokes } from "../domain/typing";
 import { readVeniceWords, veniceWords } from "./veniceWords";
 
@@ -7,6 +13,8 @@ describe("Venice word content", () => {
   it("validates optional minimum-level metadata and keeps legacy string entries", () => {
     const words = readVeniceWords([
       { text: "우주선", minimumLevel: 13 },
+      { text: "등굣길", minimumLevel: 7 },
+      { text: "발전소", minimumLevel: 11 },
       { text: "나무", minimumLevel: 0 },
       { text: "강물" },
       "우주선",
@@ -14,6 +22,8 @@ describe("Venice word content", () => {
 
     expect(words.map(({ text, minimumLevel }) => [text, minimumLevel])).toEqual([
       ["우주선", 13],
+      ["등굣길", 7],
+      ["발전소", 11],
       ["강물", undefined],
     ]);
   });
@@ -24,7 +34,21 @@ describe("Venice word content", () => {
     expect(veniceWords.every((word) => /^[가-힣]{2,8}$/u.test(word.text)
       && word.keystrokes === countKoreanKeystrokes(word.text))).toBe(true);
     expect(veniceWords.filter((word) => word.minimumLevel !== undefined)
-      .every((word) => word.minimumLevel === 13)).toBe(true);
+      .every((word) => [7, 11, 13].includes(word.minimumLevel ?? 0))).toBe(true);
+  });
+
+  it("supplies 24 fresh words at every level of a normal level 1 to 14 run", () => {
+    const usedWordTexts = new Set<string>();
+    for (let level = 1; level <= veniceLevelCount; level += 1) {
+      for (let draw = 0; draw < 24; draw += 1) {
+        const available = availableVeniceWords(veniceWords, level, [...usedWordTexts]);
+        const word = available[0];
+        expect(word).toBeDefined();
+        expect(usedWordTexts.has(word!.text)).toBe(false);
+        usedWordTexts.add(word!.text);
+      }
+    }
+    expect(usedWordTexts.size).toBe(336);
   });
 
   it("keeps each level's filtered pool and keystroke distribution within its design", () => {
@@ -45,10 +69,24 @@ describe("Venice word content", () => {
     });
 
     expect(summaries.slice(0, 12).map(({ count }) => count)).toEqual([
-      148, 148, 148, 149, 149, 149, 57, 57, 57, 57, 57, 57,
+      148, 148, 148, 149, 149, 149, 167, 167, 167, 167, 237, 237,
     ]);
-    expect(summaries[12]?.count).toBeGreaterThanOrEqual(30);
-    expect(summaries[13]?.count).toBeGreaterThanOrEqual(30);
+    expect(summaries[12]?.count).toBe(209);
+    expect(summaries[13]?.count).toBe(209);
+
+    const originalPool = veniceWords.filter((word) => word.minimumLevel === undefined);
+    const originalSpawnIntervals = [1_212, 1_037, 891, 763, 653, 559];
+    for (let level = 7; level <= 12; level += 1) {
+      const currentAverage = summaries[level - 1]!.averageKeystrokes;
+      const originalCandidates = candidateVeniceWords(originalPool, level);
+      const originalAverage = originalCandidates.reduce((total, word) => total + word.keystrokes, 0)
+        / originalCandidates.length;
+      const previousInterval = originalSpawnIntervals[level - 7]!;
+      expect(veniceStageConfig(level).spawnIntervalMs)
+        .toBe(Math.round(previousInterval * currentAverage / originalAverage));
+      expect(currentAverage * 60_000 / veniceStageConfig(level).spawnIntervalMs)
+        .toBeLessThanOrEqual(targetCpm(level) * 1.4);
+    }
 
     for (const level of [13, 14]) {
       const stage = veniceStageConfig(level);

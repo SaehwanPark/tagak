@@ -103,6 +103,28 @@ describe("Venice level curve and scoring", () => {
     expect(state.runtime.elapsedMs).toBe(3_000);
     expect(state.runtime.words).toHaveLength(1);
   });
+
+  it("does not repeat a word while unused eligible words remain", () => {
+    const state = playing({ nextSpawnAt: 1 });
+    const first = reduceVeniceState(state, { type: "tick", at: 50, completedAt: 1_050 }, pool);
+    expect(first.phase).toBe("playing");
+    if (first.phase !== "playing") return;
+
+    const firstText = first.runtime.words[0]?.text;
+    expect(firstText).toBeTruthy();
+    expect(first.runtime.usedWordTexts).toEqual([firstText]);
+
+    const secondRuntime = { ...first.runtime, nextSpawnAt: first.runtime.elapsedMs + 50 };
+    const second = reduceVeniceState(
+      { phase: "playing", runtime: secondRuntime },
+      { type: "tick", at: first.runtime.lastAt + 50, completedAt: 1_100 },
+      pool,
+    );
+    expect(second.phase).toBe("playing");
+    if (second.phase !== "playing") return;
+    expect(new Set(second.runtime.words.map((word) => word.text)).size).toBe(2);
+    expect(second.runtime.usedWordTexts).toHaveLength(2);
+  });
 });
 
 describe("Venice word and stage rules", () => {

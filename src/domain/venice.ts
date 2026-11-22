@@ -72,6 +72,7 @@ export type VeniceRuntime = Readonly<{
   highestLevel: number;
   score: number;
   towerBlocks: number;
+  usedWordTexts: readonly string[];
   words: readonly FallingWord[];
   mines: readonly Readonly<{ id: number; lane: number; y: number; expiresAt: number }>[];
   input: string;
@@ -127,12 +128,12 @@ const stageDesign: readonly VeniceStageConfig[] = [
   { level: 4, spawnIntervalMs: 1_913, fallDurationMs: 6_375, maxActive: 5, minSyllables: 2, maxSyllables: 5, specialChance: 0.09 },
   { level: 5, spawnIntervalMs: 1_643, fallDurationMs: 5_680, maxActive: 6, minSyllables: 2, maxSyllables: 5, specialChance: 0.09 },
   { level: 6, spawnIntervalMs: 1_413, fallDurationMs: 5_067, maxActive: 6, minSyllables: 2, maxSyllables: 5, specialChance: 0.1 },
-  { level: 7, spawnIntervalMs: 1_212, fallDurationMs: 4_515, maxActive: 7, minSyllables: 3, maxSyllables: 6, specialChance: 0.1 },
-  { level: 8, spawnIntervalMs: 1_037, fallDurationMs: 4_016, maxActive: 7, minSyllables: 3, maxSyllables: 6, specialChance: 0.1 },
-  { level: 9, spawnIntervalMs: 891, fallDurationMs: 3_586, maxActive: 8, minSyllables: 3, maxSyllables: 6, specialChance: 0.11 },
-  { level: 10, spawnIntervalMs: 763, fallDurationMs: 3_195, maxActive: 8, minSyllables: 3, maxSyllables: 6, specialChance: 0.11 },
-  { level: 11, spawnIntervalMs: 653, fallDurationMs: 2_845, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
-  { level: 12, spawnIntervalMs: 559, fallDurationMs: 2_536, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
+  { level: 7, spawnIntervalMs: 1_383, fallDurationMs: 4_515, maxActive: 7, minSyllables: 3, maxSyllables: 6, specialChance: 0.1 },
+  { level: 8, spawnIntervalMs: 1_184, fallDurationMs: 4_016, maxActive: 7, minSyllables: 3, maxSyllables: 6, specialChance: 0.1 },
+  { level: 9, spawnIntervalMs: 1_017, fallDurationMs: 3_586, maxActive: 8, minSyllables: 3, maxSyllables: 6, specialChance: 0.11 },
+  { level: 10, spawnIntervalMs: 871, fallDurationMs: 3_195, maxActive: 8, minSyllables: 3, maxSyllables: 6, specialChance: 0.11 },
+  { level: 11, spawnIntervalMs: 795, fallDurationMs: 2_845, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
+  { level: 12, spawnIntervalMs: 680, fallDurationMs: 2_536, maxActive: 9, minSyllables: 3, maxSyllables: 7, specialChance: 0.12 },
   { level: 13, spawnIntervalMs: 599, fallDurationMs: 2_260, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.13 },
   { level: 14, spawnIntervalMs: 512, fallDurationMs: 2_015, maxActive: 10, minSyllables: 4, maxSyllables: 8, specialChance: 0.14 },
 ];
@@ -160,6 +161,18 @@ export function candidateVeniceWords(pool: readonly VeniceWord[], level: number)
       && syllableCount >= config.minSyllables
       && syllableCount <= config.maxSyllables;
   });
+}
+
+export function availableVeniceWords(
+  pool: readonly VeniceWord[],
+  level: number,
+  usedWordTexts: readonly string[],
+): readonly VeniceWord[] {
+  const candidates = candidateVeniceWords(pool, level);
+  const eligible = candidates.length > 0 ? candidates : pool;
+  const used = new Set(usedWordTexts);
+  const unused = eligible.filter((word) => !used.has(word.text));
+  return unused.length > 0 ? unused : eligible;
 }
 
 export function scoreVeniceWord(word: string, level: number): number {
@@ -267,6 +280,7 @@ export function startVeniceGame(level: number, at: number, startedAt: number, se
     highestLevel: levelNumber,
     score: 0,
     towerBlocks: veniceTowerBlockCount,
+    usedWordTexts: [],
     words: [],
     mines: [],
     input: "",
@@ -302,8 +316,7 @@ function addWord(
   effect: VeniceEffect | null,
 ): VeniceRuntime {
   if (pool.length === 0) return runtime;
-  const preferredWords = candidateVeniceWords(pool, runtime.level);
-  const words = preferredWords.length > 0 ? preferredWords : pool;
+  const words = availableVeniceWords(pool, runtime.level, runtime.usedWordTexts);
   const selectedWord = randomIndex(runtime, words.length);
   const afterWord = { ...runtime, randomState: selectedWord.randomState };
   const selectedLane = selectLane(afterWord);
@@ -314,6 +327,9 @@ function addWord(
     ...runtime,
     randomState: selectedLane.randomState,
     nextId: nextId + 1,
+    usedWordTexts: runtime.usedWordTexts.includes(word.text)
+      ? runtime.usedWordTexts
+      : [...runtime.usedWordTexts, word.text],
     words: [...runtime.words, {
       id: nextId,
       order: nextId,
