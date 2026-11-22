@@ -78,8 +78,8 @@ node serve.mjs
 
 | 환경 | 상태 |
 | --- | --- |
-| Windows 11 · Chrome | **기준 환경.** 실제 Microsoft 한국어 IME 조합, 제출, 오프라인 프로필, 200% 확대를 확인했습니다. 베네치아는 리뷰어가 게임 실행을 확인했지만, 게임에서 실제 IME 조합·제출·일시 정지 흐름을 별도로 점검할 필요가 있습니다. |
-| macOS Tahoe · Chrome 157 | 이슈 범위의 한국어 IME `Space` 동작(공백 1칸, 단일 단계 이동)을 실제 입력기로 확인했습니다. 전체 macOS 지원을 뜻하지 않습니다. |
+| Windows 11 · Chrome | **기준 환경.** 실제 Microsoft 한국어 IME 조합, 제출, 오프라인 프로필, 200% 확대를 확인했습니다. 2026-11-22 사용자 확인으로 베네치아 게임 동작과 밸런스도 검증했습니다. |
+| macOS Tahoe · Chrome 157 | 이슈 범위의 한국어 IME `Space` 동작(공백 1칸, 단일 단계 이동)을 실제 입력기로 확인했습니다. 사용자가 베네치아 게임의 macOS · Chrome 동작과 밸런스도 확인했습니다. 전체 macOS 지원을 뜻하지 않습니다. |
 | Ubuntu · Firefox · IBus 한글 두벌식 | 보조 환경으로 확인했습니다. |
 | Windows Edge · macOS Safari | 후속 범위입니다. |
 
