@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { recentRecords } from "../domain/history";
 import type { PracticeRecord } from "../domain/history";
 import { clearHistory, historyKey, migrateHistory, readHistory, saveRecord } from "../storage/historyStorage";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 
 export function useHistory(record: PracticeRecord | undefined, acknowledge: (id: string) => void) {
   const [saved, setSaved] = useState(readHistory);
@@ -17,9 +18,16 @@ export function useHistory(record: PracticeRecord | undefined, acknowledge: (id:
       if (event.key === historyKey || event.key === null) setSaved(readHistory());
     }
     window.addEventListener("storage", sync);
+    const syncRestored = () => {
+      setSaved(readHistory());
+      setTemporary([]);
+      setNotice("");
+    };
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       active = false;
       window.removeEventListener("storage", sync);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 

@@ -50,7 +50,7 @@ export function isPracticeFont(value: unknown): value is PracticeFont {
   return typeof value === "string" && Object.hasOwn(practiceFonts, value);
 }
 
-function decodeTextSize(raw: string | null): TextSize | null {
+export function decodeTextSize(raw: string | null): TextSize | null {
   if (raw === null) return defaultSize;
   try {
     const value: unknown = JSON.parse(raw);
@@ -93,7 +93,7 @@ export async function saveTextSize(size: TextSize, reset: boolean): Promise<bool
   }
 }
 
-function decodeColorTheme(raw: string | null): ColorTheme | null {
+export function decodeColorTheme(raw: string | null): ColorTheme | null {
   if (raw === null) return defaultColorTheme;
   try {
     const value: unknown = JSON.parse(raw);
@@ -136,7 +136,7 @@ export async function saveColorTheme(theme: ColorTheme, reset: boolean): Promise
   }
 }
 
-function decodePracticeFonts(raw: string | null): PracticeFonts | null {
+export function decodePracticeFonts(raw: string | null): PracticeFonts | null {
   if (raw === null) return defaultPracticeFonts;
   try {
     const value: unknown = JSON.parse(raw);

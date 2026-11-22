@@ -5,9 +5,10 @@ type ScreenCaptureControlProps = {
   status: "idle" | "saving" | "saved" | "failed";
   onSave: () => void;
   copy: InterfaceText;
+  shortcutLabel: string;
 };
 
-export function ScreenCaptureControl({ isSaving, status, onSave, copy }: ScreenCaptureControlProps) {
+export function ScreenCaptureControl({ isSaving, status, onSave, copy, shortcutLabel }: ScreenCaptureControlProps) {
   const message = status === "saved" ? copy.screenCaptureSuccess :
     status === "failed" ? copy.screenCaptureError : "";
   return (
@@ -18,7 +19,7 @@ export function ScreenCaptureControl({ isSaving, status, onSave, copy }: ScreenC
         onClick={onSave}
         disabled={isSaving}
       >
-        {isSaving ? copy.saving : copy.screenCapture} <kbd>Ctrl+S</kbd>
+        {isSaving ? copy.saving : copy.screenCapture} <kbd>{shortcutLabel}</kbd>
       </button>
       <span className="capture-status" aria-live="polite" aria-atomic="true">{message}</span>
     </div>

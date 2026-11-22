@@ -23,7 +23,7 @@ function restoreContentFocus(root: HTMLDivElement | null, state: PracticeState):
     target = root.querySelector("#free-practice-input");
   } else if (visible.screen === "positions") {
     target = root.querySelector(".keyboard");
-  } else if (visible.screen === "result" || visible.screen === "history") {
+  } else if (visible.screen === "result" || visible.screen === "history" || visible.screen === "data-transfer") {
     target = root.querySelector("h1[tabindex='-1']");
   } else if (visible.screen === "challenge") {
     target = root.querySelector("#typing-input") ?? root.querySelector("button:not(.back)");

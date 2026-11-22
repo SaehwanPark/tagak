@@ -7,6 +7,7 @@ import {
   saveAppPreferences,
 } from "../storage/appPreferences";
 import type { AppPreferences, AppPreferencesRead } from "../storage/appPreferences";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 
 export function useAppPreferences() {
   const [stored, setStored] = useState<AppPreferencesRead>(readAppPreferences);
@@ -29,9 +30,16 @@ export function useAppPreferences() {
       }
     }
     window.addEventListener("storage", sync);
+    const syncRestored = () => {
+      setStored(readAppPreferences());
+      setTemporary(null);
+      setSaveFailed(false);
+    };
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       active = false;
       window.removeEventListener("storage", sync);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 

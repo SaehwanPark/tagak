@@ -56,7 +56,7 @@ function isAppPreferences(value: unknown): value is AppPreferences {
     "en" in value.typingSpeedUnits && isTypingSpeedUnit(value.typingSpeedUnits.en);
 }
 
-function decodeAppPreferences(raw: string | null): AppPreferencesRead {
+export function decodeAppPreferences(raw: string | null): AppPreferencesRead {
   if (raw === null) return { value: defaultAppPreferences, valid: true };
   try {
     const value: unknown = JSON.parse(raw);

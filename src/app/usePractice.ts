@@ -19,6 +19,7 @@ export const challengeEntry = { id: "challenge", label: "30초 낱말 도전", k
 export const veniceEntry = { id: "venice", label: "베네치아", kind: "venice" } as const;
 export const freePracticeEntry = { id: "free-practice", label: "연습장", kind: "free-practice" } as const;
 export const settingsEntry = { id: "settings", label: "환경설정", kind: "settings" } as const;
+export const dataTransferEntry = { id: "data-transfer", label: "데이터 백업·가져오기", kind: "data-transfer" } as const;
 export const passageEntries = [shortPassageEntry, longPassageEntry] as const;
 
 /** Position of a word drill inside its word list, kept so the result can offer the next word. */
@@ -28,6 +29,7 @@ export type PracticeContentState =
   | { screen: "menu"; selected: string | null }
   | { screen: "library"; length: PassageLength; selected: string | null }
   | { screen: "history" }
+  | { screen: "data-transfer" }
   | { screen: "challenge" }
   | { screen: "venice" }
   | { screen: "free-practice" }
@@ -59,6 +61,7 @@ export type AppAction =
   | { type: "start"; activity: Activity | PassageActivity }
   | { type: "open-library"; length: PassageLength }
   | { type: "open-history" }
+  | { type: "open-data-transfer" }
   | { type: "open-settings" }
   | { type: "close-settings" }
   | { type: "open-challenge" }
@@ -156,6 +159,7 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
   }
   if (action.type === "open-library") return { screen: "library", length: action.length, selected: null };
   if (action.type === "open-history") return { screen: "history" };
+  if (action.type === "open-data-transfer") return { screen: "data-transfer" };
   if (action.type === "open-challenge") return { screen: "challenge" };
   if (action.type === "open-venice") return { screen: "venice" };
   if (action.type === "open-free-practice") return { screen: "free-practice" };
@@ -168,6 +172,9 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
   }
   if (state.screen === "history") {
     return action.type === "return-to-menu" ? { screen: "menu", selected: historyEntry.id } : state;
+  }
+  if (state.screen === "data-transfer") {
+    return action.type === "return-to-menu" ? { screen: "menu", selected: dataTransferEntry.id } : state;
   }
   if (state.screen === "settings") {
     return action.type === "close-settings" ? state.returnState : state;

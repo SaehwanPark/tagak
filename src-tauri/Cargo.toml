@@ -1,0 +1,17 @@
+[package]
+name = "tagak"
+version = "0.1.0"
+description = "Tagak desktop typing practice"
+authors = ["SaehwanPark"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
+tauri-plugin-single-instance = "2"

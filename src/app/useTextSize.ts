@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { defaultSize, migrateTextSize, readTextSize, saveTextSize, settingsKey } from "../storage/settingsStorage";
 import type { TextSize } from "../storage/settingsStorage";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 
 export function useTextSize() {
   const [stored, setStored] = useState(readTextSize);
@@ -17,9 +18,12 @@ export function useTextSize() {
       if (event.key === settingsKey || event.key === null) setStored(readTextSize());
     }
     window.addEventListener("storage", sync);
+    const syncRestored = () => { setStored(readTextSize()); setTemporary(null); setNotice(""); };
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       active = false;
       window.removeEventListener("storage", sync);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 
