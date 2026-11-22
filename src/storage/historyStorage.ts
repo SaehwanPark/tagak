@@ -11,7 +11,7 @@ import {
 } from "./legacyStorage";
 
 export const historyKey = storageKeys.history;
-const historyVersion = 3;
+export const historyVersion = 3;
 const previousHistoryVersions = new Set([1, 2]);
 const legacyModeNames: Record<string, PracticeRecord["mode"]> = {
   sentence: "line",

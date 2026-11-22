@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect } from "react";
 import {
   challengeEntry,
   completionTime,
+  dataTransferEntry,
   freePracticeEntry,
   historyEntry,
   settingsEntry,
@@ -39,6 +40,7 @@ import { playCompletionTone } from "./completionSound";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
+const DataTransferView = lazy(() => import("./DataTransferView").then(({ DataTransferView: view }) => ({ default: view })));
 
 function shouldPlayForCurrentSubmission(state: ReturnType<typeof usePracticeState>["state"], input?: string): boolean {
   if (state.screen === "practice") return hasReachedEnd(state.lesson.text, input ?? state.session.input);
@@ -54,7 +56,7 @@ function activityLanguage(activity: Activity | PassageActivity): Language {
 
 function menuCategory(kind: string): MenuCategory {
   if (kind === "challenge" || kind === "venice") return "game";
-  if (kind === "free-practice" || kind === "history" || kind === "settings") return "other";
+  if (kind === "free-practice" || kind === "history" || kind === "settings" || kind === "data-transfer") return "other";
   return "practice";
 }
 
@@ -116,6 +118,7 @@ export function App() {
     ...(practiceLanguage === "ko" ? [challengeEntry, veniceEntry] : []),
     freePracticeEntry,
     historyEntry,
+    dataTransferEntry,
     settingsEntry,
   ].map((activity) => ({
     ...activity,
@@ -156,6 +159,7 @@ export function App() {
           <ScreenCaptureControl
             isSaving={screenCapture.isSaving}
             status={screenCapture.status}
+            shortcutLabel={screenCapture.shortcutLabel}
             copy={copy}
             onSave={() => { void screenCapture.save(); }}
           />
@@ -176,6 +180,7 @@ export function App() {
             else if (activity.kind === "venice") dispatch({ type: "open-venice" });
             else if (activity.kind === "free-practice") dispatch({ type: "open-free-practice" });
             else if (activity.kind === "history") dispatch({ type: "open-history" });
+            else if (activity.kind === "data-transfer") dispatch({ type: "open-data-transfer" });
             else if (activity.kind === "settings") openSettings();
             else dispatch({ type: "start", activity });
           }}
@@ -205,6 +210,12 @@ export function App() {
           interfaceLanguage={interfaceLanguage}
           typingSpeedUnits={typingSpeedUnits}
         />
+      )}
+
+      {currentScreen.screen === "data-transfer" && (
+        <Suspense fallback={<section className="screen" aria-busy="true" />}>
+          <DataTransferView onBack={back} copy={copy} />
+        </Suspense>
       )}
 
       {currentScreen.screen === "library" && (

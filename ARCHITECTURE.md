@@ -3,7 +3,8 @@
 타각(Tagak)의 구조와 설계 결정을 정리한 문서입니다. 처음 코드를 보는 개발자가 "어디를 고쳐야 하는지" 빨리 찾을 수 있도록 계층, 데이터 흐름, 불변식, 검증 방법을 다룹니다. 제품 요구사항은 [docs/PROJECT-SPEC.md](docs/PROJECT-SPEC.md)를 따릅니다.
 
 - 스택: TypeScript(strict) + React 19 + CSS, Vite 빌드, Vitest + Playwright 검증
-- 배포: 정적 `dist/` + Node.js 내장 모듈만 쓰는 `serve.mjs`
+- 실행: 같은 정적 `dist/`를 Tauri 2/WebKit 앱 또는 브라우저의 `serve.mjs` 경로에서 제공
+- 기준 환경: macOS 14+ 데스크톱 앱, Windows 11 + Chrome은 보조 검증
 - 상태: 도메인은 순수 함수, 브라우저 입출력은 경계로 격리
 
 ## 한눈에 보는 구조
@@ -17,9 +18,11 @@
 | --- | --- | --- |
 | `src/domain/` | 세션 타입, 상태 전이, 입력 비교, 점수 계산, 줄바꿈, 기록 정렬 | 없음 (순수) |
 | `src/content/` | 애셋 JSON 읽기·검증, 화면 문구, 연습 자료 구성 | 없음 (모듈 로드 시 검증) |
-| `src/storage/` | localStorage 읽기·검증·마이그레이션·저장 | `localStorage`, `navigator.locks` |
+| `src/storage/` | localStorage 읽기·검증·마이그레이션·저장·가져오기 | `localStorage`, `navigator.locks` |
 | `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐 | React 훅 |
-| `src/ui/` | React 화면, IME 입력 어댑터, 초점, PNG 저장, 효과음 | DOM, React |
+| `src/ui/` | React 화면, IME 입력 어댑터, 초점, PNG 저장, 데이터 이전, 효과음 | DOM, React |
+| `src/platform/` | Tauri 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
+| `src-tauri/` | macOS 앱 창·패키지·WebKit 데이터 저장소와 사용자 선택 파일 I/O | Tauri/Rust |
 
 의존 방향은 대체로 `ui → app → storage → domain`이고, `content/`는 `domain/` 위에 놓입니다. 지켜야 할 규칙은 **`domain/`이 브라우저·React·저장소에 의존하지 않는다**는 점입니다. `domain/`은 `content/`에서 `Language`·`NonEmpty` 같은 **타입만** 가져오고, `content/`는 `domain/`의 순수 함수(`splitCharacters`, `wrapText`)를 값으로 씁니다. 이 경계가 깨지면 순수 함수 테스트가 브라우저 환경을 요구하게 되므로 리뷰에서 우선 확인합니다.
 
@@ -48,7 +51,9 @@ src/
 │   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위 (v2)
 │   ├── settingsStorage.ts  # 글자 크기 / 테마 / 언어별 글꼴
 │   ├── historyStorage.ts   # 최근 기록 (v3, 구버전 마이그레이션)
-│   └── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
+│   ├── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
+│   ├── dataBackup.ts       # JSON 검증, 충돌 병합, 제한·복구를 갖춘 가져오기/내보내기
+│   └── storageEvents.ts    # 현재 창의 설정·기록 상태 갱신 알림
 ├── app/
 │   ├── usePractice.ts      # 화면 전환 reducer + 완료 기록 큐
 │   ├── useHistory.ts       # 기록 저장·동기화·초기화
@@ -56,7 +61,7 @@ src/
 │   ├── useTextSize.ts
 │   ├── useColorTheme.ts
 │   ├── usePracticeFont.ts
-│   └── useScreenCapture.ts # Ctrl+S 경계, IME 조합 중 차단
+│   └── useScreenCapture.ts # ⌘S 경계, IME 조합 중 차단
 └── ui/
     ├── App.tsx             # 화면 조립, 효과음 트리거
     ├── useScreenFocus.ts   # 탭 복귀·환경설정 왕복 초점 복구
@@ -64,13 +69,15 @@ src/
     ├── PracticeView.tsx    # 낱말·한 줄·글 한 줄 공통 화면
     ├── PassageView.tsx     # 5줄 묶음 문맥
     ├── ChallengeView.tsx / VeniceView.tsx / PositionView.tsx / FreePracticeView.tsx
-    ├── ResultView.tsx / HistoryView.tsx / DisplaySettings.tsx
+    ├── ResultView.tsx / HistoryView.tsx / DisplaySettings.tsx / DataTransferView.tsx
     ├── Scoreboard.tsx / ActivityMenu.tsx / ScreenCaptureControl.tsx
     ├── useFocus.ts         # 마운트 시 초점
     ├── completionSound.ts / veniceSound.ts # Web Audio 피드백
-    ├── screenCapture.ts    # html-to-image → PNG 다운로드
+    ├── screenCapture.ts    # html-to-image → PNG 이미지
     └── styles.css          # CSS 사용자 정의 속성 기반 테마·글꼴
 ```
+
+데스크톱 호스트는 별도 `src-tauri/`에 둡니다. Tauri는 현재 앱의 정적 빌드만 제공하며, React 상태·채점·입력 규칙은 웹 공통 코드에 남습니다. 네이티브 `dialog`·`fs` 권한은 파일 선택 대화상자를 연 뒤 그 경로에만 사용합니다. `src/platform/fileAccess.ts`가 선택 경로 읽기·쓰기와 브라우저 다운로드를 나눕니다.
 
 ## 핵심 도메인 모델
 
@@ -143,7 +150,7 @@ src/
 
 `usePracticeState`는 `useReducer` 하나로 화면을 전환합니다.
 
-- 화면 상태: `menu` · `library` · `history` · `challenge` · `venice` · `free-practice` · `practice` · `positions` · `passage` · `result` (+ `settings`는 `returnState`를 감싼 래퍼)
+- 화면 상태: `menu` · `library` · `history` · `data-transfer` · `challenge` · `venice` · `free-practice` · `practice` · `positions` · `passage` · `result` (+ `settings`는 `returnState`를 감싼 래퍼)
 - 이벤트: `start`, `input-changed`, `submit`, `position-key`, `retry`, `back`, 설정 열기/닫기 등
 - 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
@@ -153,7 +160,7 @@ src/
 
 현재 데이터 키는 `tagak:` 접두사와 스키마 `version`을 가집니다. `legacyStorage.ts`는 이전 저장 키와 현재 키의 연결, 검증된 이전, 완료 표식을 한곳에서 관리합니다. 동기 읽기는 현재 키를 우선하고, 현재 값이 없으면 마이그레이션 전까지 이전 값을 읽기 전용으로 사용합니다. 비동기 이전과 저장·초기화는 현재 키 잠금 다음 이전 키 잠금을 고정 순서로 획득해 구버전 탭의 쓰기와도 직렬화합니다.
 
-이전은 원본을 검증한 뒤 새 키에 복사하고 다시 읽어 확인합니다. 새 값이 유효하고 완료 표식이 저장된 경우에만 이전 키를 지웁니다. 한쪽이라도 이미 데이터가 있으면 현재 키가 우선하고 이전 값은 보존합니다. 깨진 값이나 쓰기 실패는 원본을 덮어쓰지 않으며, 초기화는 표식을 먼저 저장해 이전 버전의 열린 탭이 다시 쓴 값이 되살아나지 않도록 합니다. 표식을 저장할 수 없으면 초기화를 실패 처리해 데이터를 지키고, 이전 호스트의 `localStorage`는 새 origin으로 자동 이동하지 않습니다.
+이전은 원본을 검증한 뒤 새 키에 복사하고 다시 읽어 확인합니다. 새 값이 유효하고 완료 표식이 저장된 경우에만 이전 키를 지웁니다. 한쪽이라도 이미 데이터가 있으면 현재 키가 우선하고 이전 값은 보존합니다. 깨진 값이나 쓰기 실패는 원본을 덮어쓰지 않으며, 초기화는 표식을 먼저 저장해 이전 버전의 열린 탭이 다시 쓴 값이 되살아나지 않도록 합니다. 표식을 저장할 수 없으면 초기화를 실패 처리해 데이터를 지킵니다. 브라우저와 Tauri 앱은 저장 origin이 다르므로 버전형 로컬 백업을 통해 사용자가 명시적으로 이전합니다.
 
 | 키 | 내용 | 버전 / 마이그레이션 |
 | --- | --- | --- |
@@ -165,6 +172,10 @@ src/
 | `tagak:venice:records` | 베네치아 최근 플레이(최대 30), 하이스코어 Top 10 | 별도 규칙 버전 1; 손상·호환 불가 데이터는 보존 |
 
 각 항목의 `tagak:migration:*` 표식은 이미 처리했거나 초기화한 이전 키를 다시 가져오지 않게 합니다. 표식은 연습 데이터와 분리되어 있으며 사용자 기록으로 노출되지 않습니다.
+
+`tagak-data-backup` v1은 설정 네 가지, 최근 100회 연습 기록, 베네치아 최근 30회와 Top 10을 담습니다. 현재 입력 중인 문장은 저장되지 않으므로 백업에도 들어가지 않습니다. 가져오기 전에 모든 데이터의 기존 버전형 디코더를 적용하며, 손상·미지원 파일은 거부합니다. 저장 데이터가 있으면 병합·전체 교체·취소를 고르게 합니다. 병합은 기존 설정을 우선하고 기록 ID 중복은 현재 데이터를 보존하며 각 목록의 제한을 유지합니다.
+
+가져오기는 현재 키와 이전 키의 Web Locks를 고정 순서로 잡고 베네치아 기록 잠금도 잡습니다. 쓰기 뒤 값을 다시 확인하고 실패하면 기록한 이전 키를 복원합니다. 브라우저와 앱은 서로 다른 origin을 쓰므로 이 파일이 명시적 이전 경계입니다. Tauri 파일 접근은 사용자가 네이티브 대화상자에서 선택한 경로에 한정합니다.
 
 설정과 일반 연습 기록 쓰기는 `navigator.locks.request`로 직렬화합니다. 여러 탭이 동시에 완료해도 기록이 유실되지 않습니다. 잠금을 쓸 수 없으면 저장 실패로 처리하고 연습은 계속됩니다. 탭 간 동기화는 `storage` 이벤트로 읽기 상태만 갱신합니다. 베네치아 저장소의 잠금 및 실패 규칙은 위 A30 절을 따릅니다.
 
@@ -195,7 +206,7 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 
 ## 화면 저장과 효과음
 
-- **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 `Ctrl+S`를 앱 화면 안에서만 처리하고 IME 조합 중에는 가로채지 않습니다.
+- **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 macOS `⌘S`를 앱 화면 안에서만 처리하고 IME 조합 중에는 가로채지 않습니다. Tauri 앱은 네이티브 대화상자에서 선택한 경로에 쓰고 브라우저 경로는 다운로드를 사용합니다.
 - **완료 효과음**: `completionSound.ts`가 Web Audio로 짧은 톤을 1회 재생합니다. 트리거는 `App.tsx`에서 `submissionEndsBundle`(글)과 `hasReachedEnd`(낱말·한 줄·자리)로 판단하며, 오디오 실패는 연습을 막지 않습니다.
 
 ## 콘텐츠 애셋
@@ -214,7 +225,7 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 | 계층 | 도구 | 확인 내용 |
 | --- | --- | --- |
 | `domain/`, `content/`, `storage/` | Vitest (`src/**/*.test.ts`) | 채점·타수·묶음 경계·문자소·줄바꿈·마이그레이션·손상 데이터 |
-| 브라우저 흐름 | Playwright (`e2e/*.spec.ts`) | 메뉴/설정 키보드 조작, 제출, IME 합성 이벤트, 초점 복귀, PNG, 기록, 효과음 재생 횟수 |
+| 브라우저 흐름 | Playwright (`e2e/*.spec.ts`) | 메뉴/설정 키보드 조작, 제출, IME 합성 이벤트, 초점 복귀, PNG, 기록·백업 가져오기/내보내기, 효과음 재생 횟수 |
 | 실제 입력기 | 수동 확인 | OS 한국어 IME 조합, Alt+Tab 복귀, 확대 |
 
 Playwright의 `CompositionEvent`는 앱의 이벤트 순서 처리를 검증할 뿐, 실제 OS 입력기를 대신하지 않습니다. 이 구분을 [docs/PLATFORM-VERIFICATION.md](docs/PLATFORM-VERIFICATION.md)에 유지합니다.
@@ -226,6 +237,8 @@ Playwright의 `CompositionEvent`는 앱의 이벤트 순서 처리를 검증할 
 ## 빌드와 실행
 
 - `npm run build` = `tsc -b`(프로젝트 참조 타입 검사) + `vite build`
+- `npm run desktop:dev`는 Vite 개발 서버를 Tauri 창에 연결합니다. `npm run desktop:build`는 번들된 `dist/`로 macOS DMG를 만듭니다. A31의 macOS 수동 완료 검증은 통과했으며, 이 저장소에는 빌드 산출물 대신 재현 가능한 빌드 명령을 기록합니다.
+- Tauri 설정은 식별자 `com.saehwanpark.tagak`, macOS 14+용 WebKit 저장소 ID, `tauri://localhost`의 고정 조합을 사용합니다. 이 값은 업데이트로 바꾸지 않습니다. 단일 인스턴스 플러그인은 두 번째 실행에서 기존 창을 활성화합니다. 파일 시스템 플러그인은 네이티브 대화상자에서 사용자가 고른 파일의 읽기·쓰기만 허용합니다.
 - `serve.mjs`는 `127.0.0.1:41793`에만 바인딩하고 `dist/` 안의 파일만 제공합니다. `Host` 헤더 검사, 경로 탈출 방지(`realpath` 기준), 허용 MIME 목록, `X-Content-Type-Options: nosniff`를 적용합니다. 포트가 사용 중이면 원인을 안내하고 종료합니다.
 - 포트를 Vite 개발·미리보기 기본 포트와 분리해 다른 앱의 Service Worker나 저장소가 겹치지 않게 합니다.
 - `serve.mjs`는 npm 패키지에 의존하지 않습니다. Node.js 내장 모듈만 씁니다.

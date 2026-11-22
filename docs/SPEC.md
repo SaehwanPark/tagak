@@ -1,19 +1,27 @@
 # SPEC
 
-현재 버전은 `v0.1.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.2.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
 - 체크된 항목은 구현을 마치고 완료 조건을 확인한 작업이다.
 - 현재 구현 중인 사용자 기능 슬라이스에 [지금 구현중]을 붙인다. 완료 후 체크하고 레이블을 뗀다.
 - 선행 작업과 완료 조건이 정해진 다음 한 항목에 [바로 다음에 구현해야 함]을 붙인다.
-- 플랫폼 검증의 미확인 항목은 별도의 비차단 후속으로 관리한다. Windows 11 + Chrome의 기본 흐름을 막는 치명적 문제가 재현된 경우에만 현재 개발을 멈춘다.
+- 플랫폼 검증의 미확인 항목은 별도의 비차단 후속으로 관리한다. macOS 14+ Tauri 앱의 설치·실행 또는 기본 한글 연습을 막는 치명적 문제가 재현된 경우에만 현재 개발을 멈춘다.
 
 ## 진행 중
 
-현재 진행 중인 사용자 기능 슬라이스는 없습니다.
+현재 진행 중인 사용자 기능 슬라이스는 없다.
 
 ## 완료
+
+- [x] **A31 · macOS Tauri 2 데스크톱 앱과 데이터 이전** · `v0.2.0` · 이슈 [#55](https://github.com/SaehwanPark/tagak/issues/55)
+  - Tauri 2 호스트에서 정적 `dist/`를 제공하고 macOS 14+ 최소 버전, 앱 ID `com.saehwanpark.tagak`, WebKit 저장소 ID, `tauri://localhost`, 단일 인스턴스를 고정했다. 기존 브라우저 개발·대체 실행·E2E 경로를 유지한다.
+  - Apple Silicon macOS에서 `cargo check`와 `.app`/DMG 빌드를 통과했다. DMG 앱을 실행해 `tauri://localhost` 화면을 확인했고, 네이티브 파일 권한은 대화상자에서 선택한 경로로 제한했다.
+  - 앱의 `⌘S`가 네이티브 저장 대화상자를 열고 PNG가 선택 경로에 저장된다. 브라우저는 다운로드 경로를 유지한다.
+  - 로컬 `tagak-data-backup` v1 JSON 내보내기/가져오기에서 설정·최근 100회 연습 기록·베네치아 최근 30회와 Top 10을 검증·정규화한다. 기존 데이터가 있으면 병합·전체 교체·취소를 고르고, 쓰기 실패는 기존 데이터를 보존한다. 입력 중인 원문은 포함하지 않는다.
+  - 2026-11-22 사용자 수동 확인으로 macOS 14+ 패키지의 오프라인 첫 실행, 실제 한국어 두벌식 IME 조합·확정 Enter/제출 Enter·Backspace·Space, `⌘S`, 키보드 초점과 창 복귀, 두 번째 실행, 설정·연습·베네치아 기록의 재실행 지속성이 정상임을 확인했다.
+  - `npm ci && npm run verify` 통과: Vitest 15개 파일 89개 테스트, 프로덕션 빌드, Playwright 58개. 기본 앱 JS 청크 494.90KB. `cargo check`와 `.app`/DMG 빌드도 통과했다.
 
 - [x] **A30 · 베네치아 타자 게임** · `v0.1.0`
   - 이슈 [#52](https://github.com/SaehwanPark/tagak/issues/52): DOS풍 탑 방어 게임을 타각판 규칙으로 재구성한다. 시작 레벨 1~14, 지수 목표 100~1000 CPM, 레벨별 득점, 일반 낙하 단어와 12블록 탑, 노란 특수 단어 효과를 제공한다.
@@ -45,9 +53,9 @@
   - 여러 탭의 동시 완료, 중복 제거, 최대 건수, 손상된 저장값 보존, 쓰기 실패 및 초기화를 확인했다.
 - [x] **A05 · 로컬 표시 설정** · v0.0.5
   - 연습 중에 글자 크기를 세 단계로 선택하고 기본값으로 되돌릴 수 있다. 입력 보존, 즉시 반영, 새로고침 이후 유지와 초기화를 확인했다.
-- [x] **A06 · Windows 11 + Chrome 기준 환경 확인**
-  - 로컬 설치·빌드·실행과 Chrome의 기본 한글 연습 흐름을 기준 환경으로 둔다. 2026-11-18 사용자 수동 감사로 실제 Microsoft 한국어 IME 조합, Backspace 수정, 조합 확정용·제출용 Enter 구분, 새 프로필 오프라인 연습, 200% 확대, A10 테마와 A11 글꼴을 정상 확인했다.
-  - Windows Edge와 macOS Safari의 호환성 검증은 후속 범위다. 환경별 기록은 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 있다.
+- [x] **A06 · Windows 11 + Chrome 이전 기준 환경 확인**
+  - 당시 기준으로 로컬 설치·빌드·실행과 Chrome의 기본 한글 연습 흐름을 확인했다. 2026-11-18 사용자 수동 감사로 실제 Microsoft 한국어 IME 조합, Backspace 수정, 조합 확정용·제출용 Enter 구분, 새 프로필 오프라인 연습, 200% 확대, A10 테마와 A11 글꼴을 정상 확인했다. 현재 기준은 A31의 macOS 14+ Tauri 앱이다.
+  - Windows Edge와 macOS Safari는 별도 호환성 범위다. 환경별 기록은 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 있다.
 - [x] **A07 · 시간 제한 타자 도전** · v0.0.6
   - 30초 동안 한글 낱말을 맞히고 해결한 수를 확인할 수 있다. 시작, 오타 수정, 중단, 만료, 재시도와 메뉴 초점 복원을 확인했다.
 - [x] **A08 · 자유 입력 연습장** · v0.0.7
@@ -105,7 +113,7 @@
 - [x] **A17 · macOS IME 공백 중복과 연습 화면 컨트롤 정렬** · `v0.0.16`
   - 이슈 [#23](https://github.com/SaehwanPark/tagak/issues/23): macOS Tahoe · Chrome 157에서 기본 2-Set Korean 입력기로 조합 중 Space를 눌렀을 때 공백이 두 칸 남던 문제를 수정했다. 2026-11-18 사용자 실제 입력기 재확인에서 `한글을` 뒤 Space 한 번이 공백 하나만 남기고, 제시문 완료 뒤 Space 한 번이 한 단계만 이동하는 것을 확인했다.
   - 이슈 [#24](https://github.com/SaehwanPark/tagak/issues/24): 연습 화면 상단의 환경설정과 화면 저장 버튼 위쪽을 Chrome 화면에서 각각 95.3 CSS px로 맞췄다.
-  - 프로덕션 빌드가 통과했다. 이 변경 뒤 Windows 11 + Chrome의 수동 IME 회귀 확인은 하지 않았다. 기존 Windows 기준 환경 검증과 이번 macOS 사용자 확인은 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 구분해 기록했다.
+  - 프로덕션 빌드가 통과했다. 이 변경 뒤 Windows 11 + Chrome의 수동 IME 회귀 확인은 하지 않았다. 이전 Windows 기준 환경 검증과 이번 macOS 사용자 확인은 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 구분해 기록했다.
 
 - [x] **A18 · 키보드 설정 조작과 창 복귀 포커스 복구** · `v0.0.17`
   - 이슈 [#26](https://github.com/SaehwanPark/tagak/issues/26): 설정을 한 줄씩 강조하는 메뉴로 바꾸고, ↑/↓로 항목을 이동하며 ←/→ 또는 Enter/Space로 값을 바꾸도록 했다. 초기화도 같은 목록에서 실행하고, roving tabindex로 탭 정지점을 하나로 제한한다.
@@ -179,4 +187,4 @@
   - `npm run verify` 통과: Vitest 10개 파일 38개 테스트, 프로덕션 빌드, Playwright E2E 41개. 초점 복구·환경설정 왕복·기록 흐름 회귀와 가상 시계 기반 WPM 검증을 확인했다. Windows 11 + Chrome 수동 확인은 이 변경에서 수행하지 않았다.
 
 ## 호환성 후속 (개발 비차단)
-- Windows Edge와 macOS Safari는 현재 수용 기준에 포함하지 않는다. A17에서 검증한 macOS Tahoe · Chrome 157의 한국어 IME 동작은 해당 이슈의 범위이며, 전체 macOS 호환성 확인을 뜻하지 않는다. 필요가 생기면 별도 호환성 슬라이스로 검증한다.
+- Windows 11 + Chrome과 Linux는 A31의 현재 수용 기준이 아니다. macOS Tahoe · Chrome 157의 A17 IME 확인은 브라우저 대체 경로에 한정되며, Tauri/WebKit 앱의 검증을 대신하지 않는다. 필요가 생기면 Windows 패키징이나 다른 브라우저를 별도 호환성 슬라이스로 검증한다.

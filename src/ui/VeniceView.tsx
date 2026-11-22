@@ -16,6 +16,7 @@ import {
 } from "../domain/venice";
 import type { VeniceAction, VeniceRun, VeniceState } from "../domain/venice";
 import { readVeniceRecords, saveVeniceRun, veniceStorageKey } from "../storage/veniceStorage";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 import type { VeniceRecords, VeniceStorageRead } from "../storage/veniceStorage";
 import { useFocus } from "./useFocus";
 import { playVeniceSound } from "./veniceSound";
@@ -81,11 +82,14 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
     window.addEventListener("focus", handleFocus);
     document.addEventListener("visibilitychange", handleVisibility);
     window.addEventListener("storage", handleStorage);
+    const syncRestored = () => setStorageRead(readVeniceRecords());
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       window.removeEventListener("blur", handleBlur);
       window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("storage", handleStorage);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 

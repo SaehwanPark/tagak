@@ -7,6 +7,7 @@ import {
   saveColorTheme,
 } from "../storage/settingsStorage";
 import type { ColorTheme } from "../storage/settingsStorage";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 
 export function useColorTheme() {
   const [stored, setStored] = useState(readColorTheme);
@@ -28,9 +29,12 @@ export function useColorTheme() {
       if (event.key === colorThemeKey || event.key === null) setStored(readColorTheme());
     }
     window.addEventListener("storage", sync);
+    const syncRestored = () => { setStored(readColorTheme()); setTemporary(null); setNotice(""); };
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       active = false;
       window.removeEventListener("storage", sync);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 

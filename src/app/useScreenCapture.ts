@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { RefObject } from "react";
 import { downloadScreenCapture } from "../ui/screenCapture";
+import { isMacKeyboard } from "../platform/fileAccess";
 
 type CaptureStatus = "idle" | "saving" | "saved" | "failed";
 
@@ -19,8 +20,8 @@ export function useScreenCapture(target: RefObject<HTMLElement | null>) {
     saving.current = true;
     setStatus("saving");
     try {
-      await downloadScreenCapture(root);
-      setStatus("saved");
+      const result = await downloadScreenCapture(root);
+      setStatus(result === "saved" ? "saved" : "idle");
     } catch {
       setStatus("failed");
     } finally {
@@ -33,10 +34,11 @@ export function useScreenCapture(target: RefObject<HTMLElement | null>) {
     const onCompositionStart = () => { composing = true; };
     const onCompositionEnd = () => { composing = false; };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (
-        !event.ctrlKey || event.altKey || event.metaKey || event.shiftKey ||
-        event.code !== "KeyS"
-      ) return;
+      const mac = isMacKeyboard();
+      const shortcutPressed = mac
+        ? event.metaKey && !event.ctrlKey
+        : event.ctrlKey && !event.metaKey;
+      if (!shortcutPressed || event.altKey || event.shiftKey || event.code !== "KeyS") return;
       if (composing || event.isComposing || event.keyCode === 229) return;
 
       event.preventDefault();
@@ -56,6 +58,7 @@ export function useScreenCapture(target: RefObject<HTMLElement | null>) {
   return {
     isSaving: status === "saving",
     status,
+    shortcutLabel: isMacKeyboard() ? "⌘S" : "Ctrl+S",
     save,
   };
 }

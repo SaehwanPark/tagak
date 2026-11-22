@@ -8,6 +8,12 @@ export const storageKeys = {
 
 export type StorageEntry = keyof typeof storageKeys;
 
+export type StorageEntryKeys = Readonly<{
+  current: string;
+  legacy: string;
+  marker: string;
+}>;
+
 type StorageEntryDefinition = Readonly<{
   currentKey: string;
   legacyKey: string;
@@ -48,6 +54,15 @@ export type StorageLike = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 
 export function legacyStorageKey(entry: StorageEntry): string {
   return entries[entry].legacyKey;
+}
+
+export function storageEntryKeys(entry: StorageEntry): StorageEntryKeys {
+  const definition = entries[entry];
+  return {
+    current: definition.currentKey,
+    legacy: definition.legacyKey,
+    marker: definition.markerKey,
+  };
 }
 
 /** Reads new data first; the legacy value is a read-only fallback until it is migrated. */
@@ -119,6 +134,25 @@ export function withStorageEntryLock<Result>(
 ): Promise<Result> {
   return navigator.locks.request(storageKeys[entry], () =>
     navigator.locks.request(entries[entry].legacyKey, operation));
+}
+
+/** Acquires every current key before every legacy key, matching single-entry writers. */
+export function withStorageEntriesLock<Result>(
+  selected: readonly StorageEntry[],
+  operation: () => Result | Promise<Result>,
+): Promise<Result> {
+  const definitions = Array.from(new Set(selected), storageEntryKeys);
+  const keys = [
+    ...definitions.map(({ current }) => current).sort(),
+    ...definitions.map(({ legacy }) => legacy).sort(),
+  ];
+  const withLock = (index: number): Promise<Result> => {
+    const key = keys[index];
+    return key === undefined
+      ? Promise.resolve(operation())
+      : navigator.locks.request(key, () => withLock(index + 1));
+  };
+  return withLock(0);
 }
 
 /** Explicit reset also tombstones legacy data so an older open tab cannot restore it. */

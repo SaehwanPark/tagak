@@ -8,7 +8,7 @@ import {
 import type { VeniceLevelStats, VeniceRun } from "../domain/venice";
 
 export const veniceStorageKey = "tagak:venice:records";
-const schemaVersion = 1;
+export const veniceStorageVersion = 1;
 
 export type VeniceRecords = Readonly<{
   recentRuns: readonly VeniceRun[];
@@ -68,7 +68,7 @@ export function decodeVeniceRecords(raw: string | null): VeniceStorageRead {
   if (raw === null) return { ok: true, records: emptyRecords };
   try {
     const value: unknown = JSON.parse(raw);
-    if (!isObject(value) || value.version !== schemaVersion || value.rulesVersion !== veniceRulesVersion
+    if (!isObject(value) || value.version !== veniceStorageVersion || value.rulesVersion !== veniceRulesVersion
       || !Array.isArray(value.recentRuns) || !Array.isArray(value.topScores)
       || value.recentRuns.length > veniceRecentRunLimit || value.topScores.length > veniceTopScoreLimit
       || !value.recentRuns.every(isVeniceRun) || !value.topScores.every(isVeniceRun)) {
@@ -116,7 +116,7 @@ export function saveVeniceRun(run: VeniceRun): Promise<VeniceStorageRead> {
 
     const recentRuns = [...previous.records.recentRuns, run].slice(-veniceRecentRunLimit);
     const topScores = rankVeniceTopScores([...previous.records.topScores, run]);
-    const serialized = JSON.stringify({ version: schemaVersion, rulesVersion: veniceRulesVersion, recentRuns, topScores });
+    const serialized = JSON.stringify({ version: veniceStorageVersion, rulesVersion: veniceRulesVersion, recentRuns, topScores });
     try {
       localStorage.setItem(veniceStorageKey, serialized);
       const saved = localStorage.getItem(veniceStorageKey);

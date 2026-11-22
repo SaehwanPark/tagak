@@ -1,6 +1,7 @@
 import { toBlob } from "html-to-image";
+import { saveBytes } from "../platform/fileAccess";
 
-export async function downloadScreenCapture(root: HTMLElement, capturedAt = new Date()): Promise<void> {
+export async function downloadScreenCapture(root: HTMLElement, capturedAt = new Date()): Promise<"saved" | "cancelled"> {
   const image = await toBlob(root, {
     pixelRatio: 2,
     backgroundColor: getComputedStyle(root).backgroundColor,
@@ -9,17 +10,12 @@ export async function downloadScreenCapture(root: HTMLElement, capturedAt = new 
   });
   if (!image) throw new Error("Could not render the application screen.");
 
-  const url = URL.createObjectURL(image);
-  const download = document.createElement("a");
-  download.href = url;
-  download.download = captureFilename(capturedAt);
-  document.body.append(download);
-  try {
-    download.click();
-  } finally {
-    download.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
-  }
+  return saveBytes(
+    captureFilename(capturedAt),
+    new Uint8Array(await image.arrayBuffer()),
+    "image/png",
+    { name: "PNG image", extensions: ["png"] },
+  );
 }
 
 function captureFilename(date: Date): string {

@@ -9,6 +9,7 @@ import {
 } from "../storage/settingsStorage";
 import type { PracticeFont, PracticeFonts } from "../storage/settingsStorage";
 import type { Language } from "../content/lessons";
+import { storedDataChangedEvent } from "../storage/storageEvents";
 
 export function usePracticeFont(language: Language) {
   const [stored, setStored] = useState<PracticeFonts | null>(readPracticeFonts);
@@ -30,9 +31,12 @@ export function usePracticeFont(language: Language) {
       if (event.key === practiceFontKey || event.key === null) setStored(readPracticeFonts());
     }
     window.addEventListener("storage", sync);
+    const syncRestored = () => { setStored(readPracticeFonts()); setTemporary(null); setNotice(""); };
+    window.addEventListener(storedDataChangedEvent, syncRestored);
     return () => {
       active = false;
       window.removeEventListener("storage", sync);
+      window.removeEventListener(storedDataChangedEvent, syncRestored);
     };
   }, []);
 

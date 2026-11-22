@@ -159,6 +159,23 @@ export type InterfaceText = Readonly<{
   screenCaptureError: string;
   screenCaptureSuccess: string;
   screenCaptureUnsupported: string;
+  dataTransferTitle: string;
+  dataTransferDescription: string;
+  backupExport: string;
+  backupImport: string;
+  backupContents: string;
+  backupChooseFile: string;
+  backupFormatError: string;
+  backupReadError: string;
+  backupExportSuccess: string;
+  backupExportError: string;
+  backupConflict: string;
+  backupMerge: string;
+  backupReplace: string;
+  backupImportSuccess: string;
+  backupReplaceSuccess: string;
+  backupRestoreError: string;
+  backupCurrentDataError: string;
   activityLabel: (id: string, fallback: string) => string;
   menuTag: (category: MenuCategory) => string;
   modeLabel: (mode: string) => string;
@@ -338,6 +355,23 @@ const ko: InterfaceText = {
   screenCaptureError: "화면을 저장하지 못했습니다. 다시 시도하세요.",
   screenCaptureSuccess: "화면을 PNG로 저장했습니다.",
   screenCaptureUnsupported: "이 브라우저에서는 화면 저장을 지원하지 않습니다.",
+  dataTransferTitle: "데이터 백업·가져오기",
+  dataTransferDescription: "환경설정, 최근 연습 기록, 베네치아 기록을 로컬 JSON 파일로 옮깁니다. 입력 중인 내용은 포함하지 않습니다.",
+  backupExport: "백업 내보내기",
+  backupImport: "백업 가져오기",
+  backupContents: "JSON 백업에는 환경설정과 저장된 기록만 포함됩니다.",
+  backupChooseFile: "백업 JSON 파일",
+  backupFormatError: "이 백업 파일은 손상되었거나 지원하지 않는 형식입니다. 기존 데이터는 바꾸지 않았습니다.",
+  backupReadError: "백업 파일을 읽지 못했습니다. 파일을 확인하고 다시 시도하세요.",
+  backupExportSuccess: "백업 파일을 저장했습니다.",
+  backupExportError: "백업 파일을 만들거나 저장하지 못했습니다.",
+  backupConflict: "저장된 데이터가 있습니다. 가져오는 기록을 병합하거나 전체 데이터를 교체할 수 있습니다.",
+  backupMerge: "병합",
+  backupReplace: "전체 교체",
+  backupImportSuccess: "백업 데이터를 병합했습니다.",
+  backupReplaceSuccess: "저장된 데이터를 백업으로 교체했습니다.",
+  backupRestoreError: "데이터를 저장하지 못했습니다. 기존 값은 복원했습니다.",
+  backupCurrentDataError: "현재 저장 데이터가 손상되어 병합할 수 없습니다. 전체 교체하거나 취소하세요.",
   activityLabel: (id, fallback) => ({
     // The practice language is already chosen, so menu labels omit it.
     "ko-line": "한 줄",
@@ -352,6 +386,7 @@ const ko: InterfaceText = {
     "free-practice": "연습장",
     history: "최근 연습 기록",
     settings: "환경설정",
+    "data-transfer": "데이터 백업·가져오기",
   }[id] ?? fallback),
   menuTag: (category) => ({ practice: "연습", game: "게임", other: "기타" }[category]),
   modeLabel: (mode) => ({ word: "낱말", line: "한 줄", short: "짧은 글", long: "긴 글", position: "자리" }[mode] ?? mode),
@@ -531,6 +566,23 @@ const en: InterfaceText = {
   screenCaptureError: "Could not save the screen. Try again.",
   screenCaptureSuccess: "Saved the screen as a PNG.",
   screenCaptureUnsupported: "Screen capture is not supported in this browser.",
+  dataTransferTitle: "Back up and restore data",
+  dataTransferDescription: "Move settings, recent practice records, and Venice records in a local JSON file. Text currently being typed is never included.",
+  backupExport: "Export backup",
+  backupImport: "Import backup",
+  backupContents: "The JSON backup includes saved settings and records only.",
+  backupChooseFile: "Backup JSON file",
+  backupFormatError: "This backup is damaged or uses an unsupported format. Existing data was not changed.",
+  backupReadError: "Could not read the backup file. Check the file and try again.",
+  backupExportSuccess: "Saved the backup file.",
+  backupExportError: "Could not create or save the backup file.",
+  backupConflict: "Saved data already exists. You can merge the imported records or replace all saved data.",
+  backupMerge: "Merge",
+  backupReplace: "Replace all",
+  backupImportSuccess: "Merged the backup data.",
+  backupReplaceSuccess: "Replaced saved data with the backup.",
+  backupRestoreError: "Could not save the data. The previous values were restored.",
+  backupCurrentDataError: "Current saved data is damaged and cannot be merged. Replace all data or cancel.",
   activityLabel: (id, fallback) => ({
     // The practice language is already chosen, so menu labels omit it.
     "ko-line": "One-line drills",
@@ -545,6 +597,7 @@ const en: InterfaceText = {
     "free-practice": "Free typing",
     history: "Recent practice",
     settings: "Settings",
+    "data-transfer": "Back up and restore data",
   }[id] ?? fallback),
   menuTag: (category) => ({ practice: "Practice", game: "Game", other: "Other" }[category]),
   modeLabel: (mode) => ({ word: "Words", line: "One line", short: "Short passages", long: "Long passages", position: "Positions" }[mode] ?? mode),

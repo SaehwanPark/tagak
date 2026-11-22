@@ -54,19 +54,20 @@ test("the downloaded PNG uses the active color theme background", async ({ page 
   expect(pixel).toEqual([...expectedPixel!, 255]);
 });
 
-test("Ctrl+S downloads the current screen while free practice text remains in the editor", async ({ page }) => {
+test("the platform save shortcut downloads the current screen while free practice text remains in the editor", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "[기타] 연습장" }).click();
   const editor = page.getByRole("textbox", { name: "원하는 내용을 자유롭게 입력하세요" });
   const text = "화면에 보이는 연습장 입력\n둘째 줄";
   await editor.fill(text);
 
-  await expectPngDownload(page, () => page.keyboard.press("Control+s"));
+  const shortcut = await page.evaluate(() => navigator.platform.startsWith("Mac") ? "Meta+s" : "Control+s");
+  await expectPngDownload(page, () => page.keyboard.press(shortcut));
   await expect(editor).toHaveValue(text);
   await expect(page.locator(".capture-status")).toHaveText("화면을 PNG로 저장했습니다.");
 });
 
-test("Ctrl+S does not intercept a shortcut during IME composition", async ({ page }) => {
+test("the platform save shortcut does not intercept a shortcut during IME composition", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "[기타] 연습장" }).click();
   const editor = page.getByRole("textbox", { name: "원하는 내용을 자유롭게 입력하세요" });
@@ -75,7 +76,8 @@ test("Ctrl+S does not intercept a shortcut during IME composition", async ({ pag
     const shortcut = new KeyboardEvent("keydown", {
       key: "s",
       code: "KeyS",
-      ctrlKey: true,
+      metaKey: navigator.platform.startsWith("Mac"),
+      ctrlKey: !navigator.platform.startsWith("Mac"),
       bubbles: true,
       cancelable: true,
     });
