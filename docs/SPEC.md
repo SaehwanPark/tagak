@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.1.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.2.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,18 +11,17 @@
 
 ## 진행 중
 
-- [ ] **A31 · macOS Tauri 2 데스크톱 앱과 데이터 이전** · `v0.2.0` 예정 · 이슈 [#55](https://github.com/SaehwanPark/tagak/issues/55)
-  - [x] Tauri 2 호스트에서 정적 `dist/`를 제공하고 macOS 14+ 최소 버전, 앱 ID `com.saehwanpark.tagak`, WebKit 저장소 ID, `tauri://localhost`, 단일 인스턴스를 고정했다. 기존 브라우저 개발·대체 실행·E2E 경로를 유지한다.
-  - [x] Apple Silicon macOS에서 `cargo check`와 `.app`/DMG 빌드를 완료했다. DMG 앱을 실행해 `tauri://localhost` 화면을 확인했다. 네이티브 파일 권한은 대화상자에서 선택한 경로로 제한한다.
-  - [x] 앱의 `⌘S`가 네이티브 저장 대화상자를 열고, PNG가 선택 경로에 저장되는 것을 확인했다. 브라우저는 다운로드 경로를 유지한다. Playwright에서도 IME 조합 중 단축키 보존을 확인한다.
-  - [x] 로컬 `tagak-data-backup` v1 JSON 내보내기/가져오기를 추가했다. 유효성·저장 경로 왕복을 앱에서 확인했고, 환경설정·최근 100회 연습 기록·베네치아 최근 30회와 Top 10 정규화, 병합·전체 교체·취소, 손상·쓰기 실패 보호는 자동 검증했다. 입력 중인 원문은 포함하지 않는다.
-  - [x] 자리 연습 결과 1개가 앱 종료·재실행 뒤 보존되는 것을 확인했다. 확인 후 처음에 비어 있던 테스트 저장소를 백업으로 되돌렸다.
-  - [x] `npm ci && npm run verify` 통과: Vitest 15개 파일 89개 테스트, 프로덕션 빌드, Playwright 58개. 기본 앱 JS 청크는 494.90KB다. `cargo check`와 `.app`/DMG 빌드도 통과했다.
-  - [ ] macOS 14 자체, 인터넷 차단 상태의 첫 실행, 두 번째 실행의 기존 창 복귀, 설정·베네치아 기록의 재실행 보존을 직접 확인한다.
-  - [ ] 실제 macOS 한글 IME 조합·확정 Enter와 제출 Enter·Backspace·Space, 초점 복귀, 창 최소화/복귀를 확인한다. 입력기 목록에 2-Set Korean이 있지만 자동화 키 입력은 영문으로 들어와 수동 IME 검증을 대신하지 못했다. Playwright 합성 이벤트도 실제 IME 확인을 대체하지 않는다.
-  - 완료 조건: macOS 14+에서 DMG를 설치하고 아이콘으로 앱을 열어 오프라인 연습 → 기록 저장 → 종료/재실행 → 기록 확인을 수행한다. 실제 IME·`⌘S`·PNG와 백업 왕복 및 실패 복구를 확인한 뒤 문서·버전을 맞춘다.
+현재 진행 중인 사용자 기능 슬라이스는 없다.
 
 ## 완료
+
+- [x] **A31 · macOS Tauri 2 데스크톱 앱과 데이터 이전** · `v0.2.0` · 이슈 [#55](https://github.com/SaehwanPark/tagak/issues/55)
+  - Tauri 2 호스트에서 정적 `dist/`를 제공하고 macOS 14+ 최소 버전, 앱 ID `com.saehwanpark.tagak`, WebKit 저장소 ID, `tauri://localhost`, 단일 인스턴스를 고정했다. 기존 브라우저 개발·대체 실행·E2E 경로를 유지한다.
+  - Apple Silicon macOS에서 `cargo check`와 `.app`/DMG 빌드를 통과했다. DMG 앱을 실행해 `tauri://localhost` 화면을 확인했고, 네이티브 파일 권한은 대화상자에서 선택한 경로로 제한했다.
+  - 앱의 `⌘S`가 네이티브 저장 대화상자를 열고 PNG가 선택 경로에 저장된다. 브라우저는 다운로드 경로를 유지한다.
+  - 로컬 `tagak-data-backup` v1 JSON 내보내기/가져오기에서 설정·최근 100회 연습 기록·베네치아 최근 30회와 Top 10을 검증·정규화한다. 기존 데이터가 있으면 병합·전체 교체·취소를 고르고, 쓰기 실패는 기존 데이터를 보존한다. 입력 중인 원문은 포함하지 않는다.
+  - 2026-11-22 사용자 수동 확인으로 macOS 14+ 패키지의 오프라인 첫 실행, 실제 한국어 두벌식 IME 조합·확정 Enter/제출 Enter·Backspace·Space, `⌘S`, 키보드 초점과 창 복귀, 두 번째 실행, 설정·연습·베네치아 기록의 재실행 지속성이 정상임을 확인했다.
+  - `npm ci && npm run verify` 통과: Vitest 15개 파일 89개 테스트, 프로덕션 빌드, Playwright 58개. 기본 앱 JS 청크 494.90KB. `cargo check`와 `.app`/DMG 빌드도 통과했다.
 
 - [x] **A30 · 베네치아 타자 게임** · `v0.1.0`
   - 이슈 [#52](https://github.com/SaehwanPark/tagak/issues/52): DOS풍 탑 방어 게임을 타각판 규칙으로 재구성한다. 시작 레벨 1~14, 지수 목표 100~1000 CPM, 레벨별 득점, 일반 낙하 단어와 12블록 탑, 노란 특수 단어 효과를 제공한다.

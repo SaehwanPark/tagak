@@ -237,7 +237,7 @@ Playwright의 `CompositionEvent`는 앱의 이벤트 순서 처리를 검증할 
 ## 빌드와 실행
 
 - `npm run build` = `tsc -b`(프로젝트 참조 타입 검사) + `vite build`
-- `npm run desktop:dev`는 Vite 개발 서버를 Tauri 창에 연결합니다. `npm run desktop:build`는 번들된 `dist/`로 macOS DMG를 만듭니다. 이슈 A31의 완료 검증 전에는 일반 사용자용 패키지로 배포하지 않습니다.
+- `npm run desktop:dev`는 Vite 개발 서버를 Tauri 창에 연결합니다. `npm run desktop:build`는 번들된 `dist/`로 macOS DMG를 만듭니다. A31의 macOS 수동 완료 검증은 통과했으며, 이 저장소에는 빌드 산출물 대신 재현 가능한 빌드 명령을 기록합니다.
 - Tauri 설정은 식별자 `com.saehwanpark.tagak`, macOS 14+용 WebKit 저장소 ID, `tauri://localhost`의 고정 조합을 사용합니다. 이 값은 업데이트로 바꾸지 않습니다. 단일 인스턴스 플러그인은 두 번째 실행에서 기존 창을 활성화합니다. 파일 시스템 플러그인은 네이티브 대화상자에서 사용자가 고른 파일의 읽기·쓰기만 허용합니다.
 - `serve.mjs`는 `127.0.0.1:41793`에만 바인딩하고 `dist/` 안의 파일만 제공합니다. `Host` 헤더 검사, 경로 탈출 방지(`realpath` 기준), 허용 MIME 목록, `X-Content-Type-Options: nosniff`를 적용합니다. 포트가 사용 중이면 원인을 안내하고 종료합니다.
 - 포트를 Vite 개발·미리보기 기본 포트와 분리해 다른 앱의 Service Worker나 저장소가 겹치지 않게 합니다.
