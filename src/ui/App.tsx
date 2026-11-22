@@ -36,11 +36,11 @@ import { PositionView } from "./PositionView";
 import { PracticeView } from "./PracticeView";
 import { ResultView } from "./ResultView";
 import { ScreenCaptureControl } from "./ScreenCaptureControl";
-import { DataTransferView } from "./DataTransferView";
 import { playCompletionTone } from "./completionSound";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
+const DataTransferView = lazy(() => import("./DataTransferView").then(({ DataTransferView: view }) => ({ default: view })));
 
 function shouldPlayForCurrentSubmission(state: ReturnType<typeof usePracticeState>["state"], input?: string): boolean {
   if (state.screen === "practice") return hasReachedEnd(state.lesson.text, input ?? state.session.input);
@@ -213,7 +213,9 @@ export function App() {
       )}
 
       {currentScreen.screen === "data-transfer" && (
-        <DataTransferView onBack={back} copy={copy} />
+        <Suspense fallback={<section className="screen" aria-busy="true" />}>
+          <DataTransferView onBack={back} copy={copy} />
+        </Suspense>
       )}
 
       {currentScreen.screen === "library" && (
