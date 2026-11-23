@@ -10,13 +10,14 @@ type ActivityMenuProps<Entry extends MenuEntry> = {
   activities: readonly Entry[];
   title: string;
   selected: string | null;
+  home?: boolean;
   onStart: (activity: Entry) => void;
   onBack?: () => void;
   copy: InterfaceText;
 };
 
 export function ActivityMenu<Entry extends MenuEntry>({
-  activities, title, selected, onStart, onBack, copy,
+  activities, title, selected, home = false, onStart, onBack, copy,
 }: ActivityMenuProps<Entry>) {
   const list = useRef<HTMLDivElement>(null);
 
@@ -44,7 +45,7 @@ export function ActivityMenu<Entry extends MenuEntry>({
   }
 
   return (
-    <section className="screen" onKeyDown={(event) => {
+    <section className={home ? "screen home-menu-screen" : "screen"} onKeyDown={(event) => {
       if (event.key === "Escape" && !event.nativeEvent.isComposing) onBack?.();
     }}>
       {onBack && <button className="back" type="button" onClick={onBack}>{copy.backToMenu}</button>}

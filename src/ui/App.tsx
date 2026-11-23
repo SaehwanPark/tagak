@@ -172,6 +172,7 @@ export function App() {
           title={copy.typingPractice}
           activities={mainActivities}
           selected={currentScreen.selected}
+          home
           copy={copy}
           onStart={(activity) => {
             if (activity.kind === "short-library") dispatch({ type: "open-library", length: "short" });

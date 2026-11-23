@@ -6,6 +6,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 이슈 [#58](https://github.com/SaehwanPark/tagak/issues/58): 홈 메뉴 전체가 보이도록 기본 데스크톱 창 높이를 늘리고 홈 화면 행 간격을 조정했습니다. Tauri CLI 설치 안내를 보강하고 Linux Tauri 데스크톱이 지원 대상이 아님을 명확히 했습니다.
+
 ## [0.3.0] - 2026-11-22
 
 ### Added

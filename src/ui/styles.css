@@ -156,6 +156,10 @@ h1 { margin: 0; font-size: clamp(1.55rem, 4vw, 2.55rem); line-height: 1.25; }
 .lesson-button:hover .menu-tag, .lesson-button:focus-visible .menu-tag { color: var(--accent); }
 .lesson-button > span:last-child { color: var(--accent); font-family: var(--mono); }
 .activity-menu { display: grid; gap: .55rem; margin-top: 1.45rem; }
+.home-menu-screen { padding-block: 1.5rem; }
+.home-menu-screen .activity-menu { gap: .4rem; margin-top: 1.2rem; }
+.home-menu-screen .lesson-button { padding-block: .65rem; }
+.home-menu-screen .keys { margin-block: .8rem 0; }
 
 .back {
   color: var(--accent);
