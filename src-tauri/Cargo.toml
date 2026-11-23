@@ -1,6 +1,6 @@
 [package]
 name = "tagak"
-version = "0.5.0"
+version = "0.6.0"
 description = "Tagak desktop typing practice"
 authors = ["SaehwanPark"]
 edition = "2021"

@@ -33,6 +33,7 @@ src/
 ├── domain/                 # 순수 규칙
 │   ├── typing.ts           # 세션·채점·한글 타수·문자소 분할·실시간 정확도
 │   ├── typingSpeed.ts      # cpm/wpm 단위 변환
+│   ├── typingStatistics.ts # 세션 속도 분포 통계
 │   ├── textLayout.ts       # 5줄 묶음, 폭 기준 줄바꿈
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
 │   ├── positions.ts        # 두벌식 자리 연습 세션
@@ -132,7 +133,7 @@ src/
 
 `storage/veniceStorage.ts`는 `tagak:venice:records`에 버전 1의 최근 30회와 Top 10을 일반 연습 기록과 분리해 저장한다. 날짜·레벨 통계·규칙 버전·목록 길이를 경계에서 검증한다. Web Locks가 있는 브라우저에서는 ID 기반 중복 방지와 병합 저장을 직렬화하며, 손상된 값은 덮어쓰지 않는다. 저장 실패는 결과를 감추지 않고 메모리 기록과 안내를 유지한다.
 
-`VeniceView`는 IME 입력과 게임 제출을 분리하며 조합 중 Enter/Space/Escape를 제출·종료로 재사용하지 않는다. 붙여넣기와 드롭은 막는다. 게임 효과음은 기존 완료 효과음 설정을 따르므로 기본 무음이다. 브라우저 오디오 API가 실패해도 게임은 계속된다.
+`VeniceView`는 IME 입력과 게임 제출을 분리하며 조합 중 Enter/Space/Escape를 제출·종료로 재사용하지 않는다. 붙여넣기와 드롭은 막는다. 맞지 않는 낱말 제출은 도메인에서 입력을 비우고 오답 메시지를 남기며, 화면 경계가 비제어 입력 DOM을 비우고 초점을 유지한다. 게임 효과음은 기존 완료 효과음 설정을 따르므로 기본 무음이다. 브라우저 오디오 API가 실패해도 게임은 계속된다.
 
 ## 연습 순서 무작위화 (A34)
 
@@ -160,7 +161,7 @@ src/
 - 이벤트: `start`, `input-changed`, `submit`, `position-key`, `retry`, `back`, 설정 열기/닫기 등
 - 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
-`reduceTextPractice`는 낱말이면 결과 화면으로 넘기되 진행 위치(`wordProgress`)를 함께 남겨, 결과의 `continue`가 다음 낱말로 이어가고 `retry`는 방금 끝낸 낱말을 반복합니다. 한 줄이면 결과 없이 다음 문장으로 넘어갑니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
+`reduceTextPractice`는 낱말이면 결과 화면으로 넘기되 진행 위치(`wordProgress`)를 함께 남겨, 결과의 `continue`가 다음 낱말로 이어가고 `retry`는 방금 끝낸 낱말을 반복합니다. 한 줄이면 완료 점수를 세션 메모리에 모아 기본 20문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 기존 저장 큐에서 각각 처리합니다. `ResultView`는 저장하지 않은 세션 점수를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 평균·모집단 표준편차·중간값·사분위범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
 
 ## 저장 계층
 
