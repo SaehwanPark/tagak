@@ -568,7 +568,7 @@ export function reduceVeniceState(
       return { phase: "playing", runtime: { ...state.runtime, input: normalizeInput(action.input).slice(0, 32), message: null } };
     case "submit": {
       const matched = matchingWord(state.runtime);
-      if (!matched) return { phase: "playing", runtime: { ...state.runtime, message: "mismatch" } };
+      if (!matched) return { phase: "playing", runtime: { ...state.runtime, input: "", message: "mismatch" } };
       const runtime = resolveWord(state.runtime, matched, pool);
       return { phase: "playing", runtime };
     }

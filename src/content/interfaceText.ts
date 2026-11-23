@@ -78,6 +78,15 @@ export type InterfaceText = Readonly<{
   practiceAgain: string;
   nextWord: string;
   wordProgress: (index: number, total: number) => string;
+  lineSessionProgress: (current: number, total: number) => string;
+  lineSessionCompleted: (count: number) => string;
+  lineSessionResult: string;
+  lineSessionStatistics: string;
+  lineSessionSampleCount: (count: number) => string;
+  mean: string;
+  standardDeviation: string;
+  median: string;
+  interquartileRange: string;
   returnTo: (destination: string) => string;
   openPractice: string;
   blockedPracticeInput: string;
@@ -258,6 +267,15 @@ const ko: InterfaceText = {
   practiceAgain: "다시 연습",
   nextWord: "다음 낱말",
   wordProgress: (index, total) => `${index} / ${total}번째 낱말`,
+  lineSessionProgress: (current, total) => `문장 ${current} / ${total}`,
+  lineSessionCompleted: (count) => `${count}문장 완료`,
+  lineSessionResult: "한 줄 연습 세션",
+  lineSessionStatistics: "세션 속도 통계",
+  lineSessionSampleCount: (count) => `통계에 포함된 속도 ${count}개`,
+  mean: "평균",
+  standardDeviation: "표준편차",
+  median: "중간값",
+  interquartileRange: "IQR",
   returnTo: (destination) => destination === "메뉴" ? "메뉴로 돌아가기" : `${destination}으로 돌아가기`,
   openPractice: "연습으로 돌아가기",
   blockedPracticeInput: "연습 문장은 키보드로 직접 입력하세요.",
@@ -472,6 +490,15 @@ const en: InterfaceText = {
   practiceAgain: "Practice again",
   nextWord: "Next word",
   wordProgress: (index, total) => `Word ${index} of ${total}`,
+  lineSessionProgress: (current, total) => `Sentence ${current} of ${total}`,
+  lineSessionCompleted: (count) => `${count} sentences completed`,
+  lineSessionResult: "One-line practice session",
+  lineSessionStatistics: "Session speed statistics",
+  lineSessionSampleCount: (count) => `${count} speed samples included`,
+  mean: "Mean",
+  standardDeviation: "Standard deviation",
+  median: "Median",
+  interquartileRange: "IQR",
   returnTo: (destination) => `Return to ${destination}`,
   openPractice: "Return to practice",
   blockedPracticeInput: "Type the prompt with your keyboard.",

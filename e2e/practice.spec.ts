@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { activities } from "../src/content/library";
+import { linePracticeSessionLength } from "../src/app/usePractice";
+import { shuffleWithSeed } from "../src/domain/random";
 import { countKoreanKeystrokes } from "../src/domain/typing";
 
 test("a new profile can practice from the build with only loopback access", async ({ page, baseURL }) => {
@@ -50,6 +52,20 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
   const koreanLines = activities.find((activity) => activity.id === "ko-line");
   if (koreanLines?.kind !== "line") throw new Error("Korean one-line content is unavailable");
 
+  const quoteSeed = Array.from({ length: 1_000 }, (_, index) => index + 1).find((seed) =>
+    shuffleWithSeed(koreanLines.lessons, seed).slice(0, linePracticeSessionLength)
+      .some((lesson) => lesson.source === "quote"));
+  if (quoteSeed === undefined) throw new Error("Could not find a seed with a quote in the first 20 lessons");
+  await page.addInitScript((seed) => {
+    Object.defineProperty(window.crypto, "getRandomValues", {
+      configurable: true,
+      value: (values: Uint32Array) => {
+        values[0] = seed;
+        return values;
+      },
+    });
+  }, quoteSeed);
+
   await page.goto("/");
   await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
@@ -60,7 +76,7 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
     .map((lesson) => lesson.credit?.url));
   const sourceLink = credit.locator("a");
 
-  for (let attempt = 0; attempt < koreanLines.lessons.length; attempt += 1) {
+  for (let attempt = 0; attempt < linePracticeSessionLength; attempt += 1) {
     if (await sourceLink.count() > 0) {
       const href = await sourceLink.getAttribute("href");
       if (href && quoteUrls.has(href)) break;
@@ -79,6 +95,30 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
   expect(displayedQuote).toBeDefined();
   await expect(sourceLink).toHaveAttribute("target", "_blank");
   await expect(credit).toHaveCSS("font-size", "12.8px");
+});
+
+test("one-line practice completes its 20-sentence session with speed statistics", async ({ page }) => {
+  await page.clock.install();
+  await page.goto("/");
+  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  const target = page.locator("#typing-target");
+  for (let completed = 0; completed < linePracticeSessionLength; completed += 1) {
+    await expect(page.getByText(`문장 ${completed + 1} / ${linePracticeSessionLength}`)).toBeVisible();
+    const prompt = await target.getAttribute("aria-label");
+    expect(prompt).not.toBeNull();
+    await input.fill(prompt!);
+    await page.clock.fastForward(2_000);
+    await input.press("Enter");
+  }
+
+  await expect(page.getByRole("heading", { name: "연습 완료" })).toBeFocused();
+  await expect(page.getByText("한 줄 연습 세션")).toBeVisible();
+  await expect(page.getByText("20문장 완료")).toBeVisible();
+  await expect(page.getByText("통계에 포함된 속도 20개")).toBeVisible();
+  const statistics = page.locator(".line-session-statistics .scores");
+  await expect(statistics.locator("dt")).toHaveText(["평균", "표준편차", "중간값", "IQR"]);
 });
 
 test("IME composition and its Enter are processed separately from submission", async ({ page }) => {

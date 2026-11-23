@@ -150,6 +150,26 @@ test("Venice separates IME composition from submission and pauses for settings",
   await expect(input).toBeFocused();
 });
 
+test("Venice clears an unmatched submission and keeps the mismatch notice", async ({ page }) => {
+  await page.clock.install();
+  await openVenice(page);
+  await page.getByRole("button", { name: "게임 시작" }).click();
+  await page.clock.runFor(3_500);
+
+  const input = page.getByRole("textbox", { name: "보이는 낱말을 입력하세요" });
+  const word = (await page.locator(".venice-falling-word").first().textContent())?.trim();
+  expect(word).toBeTruthy();
+  await input.fill("화면에 없는 입력");
+  await input.press("Enter");
+
+  await expect(input).toHaveValue("");
+  await expect(page.getByRole("status")).toContainText("보이는 낱말과 일치하는 입력이 없습니다");
+  await expect(page.locator(".venice-falling-word")).toContainText(word!);
+  await input.fill(word!);
+  await input.press("Enter");
+  await expect(page.locator(".venice-hud dd").nth(2)).not.toHaveText("0");
+});
+
 test("Venice plays typing, hit, and finish feedback when sound is enabled", async ({ page }) => {
   await page.clock.install();
   const toneStarts = await stubCompletionTone(page);

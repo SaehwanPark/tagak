@@ -143,11 +143,13 @@ describe("Venice word and stage rules", () => {
     });
   });
 
-  it("keeps the game unchanged for a mismatched submission", () => {
+  it("clears a mismatched submission and keeps the game and notice", () => {
     const state = playing({ words: [word()], input: "바다" });
     const result = reduceVeniceState(state, { type: "submit" }, pool);
-    expect(result).toMatchObject({ phase: "playing", runtime: { score: 0, typedWords: 0, message: "mismatch" } });
-    if (result.phase === "playing") expect(result.runtime.words).toHaveLength(1);
+    expect(result).toMatchObject({
+      phase: "playing",
+      runtime: { input: "", score: 0, typedWords: 0, message: "mismatch", words: [word()] },
+    });
   });
 
   it("damages one tower block when a regular word reaches the collision line", () => {

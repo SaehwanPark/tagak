@@ -150,13 +150,16 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
   }, [state]);
 
   useEffect(() => {
-    if (!runtime || state.phase !== "playing" || runtime.typedWords === inputResetVersion.current) return;
+    if (!runtime || state.phase !== "playing") return;
+    const completedWord = runtime.typedWords !== inputResetVersion.current;
+    const mismatchedSubmission = runtime.message === "mismatch";
+    if (!completedWord && !mismatchedSubmission) return;
     inputResetVersion.current = runtime.typedWords;
     if (inputField.current) {
       inputField.current.value = runtime.input;
       inputField.current.focus();
     }
-  }, [runtime?.typedWords, runtime?.input, state.phase]);
+  }, [runtime?.typedWords, runtime?.input, runtime?.message, state.phase]);
 
   const stored = visibleRecords(storageRead);
   const currentRun = state.phase === "finished" && shouldRecordVeniceRun(state.run) ? state.run : null;
