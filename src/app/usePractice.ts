@@ -2,6 +2,7 @@ import { useCallback, useReducer } from "react";
 import type { Activity, PositionActivity, TextActivity, TextLesson } from "../content/lessons";
 import { longPassageEntry, shortPassageEntry } from "../content/passages";
 import type { PassageActivity, PassageLength } from "../content/passages";
+import { shuffleWithSeed } from "../domain/random";
 import {
   createPassageSession,
   submitPassageLine,
@@ -58,7 +59,8 @@ export type PracticeState =
 
 type CompletionTime = { id: string; completedAt: number; at: number };
 export type AppAction =
-  | { type: "start"; activity: Activity | PassageActivity }
+  | { type: "start"; activity: Activity; seed: number }
+  | { type: "start-passage"; activity: PassageActivity }
   | { type: "open-library"; length: PassageLength }
   | { type: "open-history" }
   | { type: "open-data-transfer" }
@@ -73,7 +75,8 @@ export type AppAction =
   | { type: "finish" }
   | { type: "return-to-menu" }
   | { type: "continue" }
-  | { type: "retry" };
+  | { type: "retry" }
+  | { type: "retry-randomized"; seed: number };
 
 function startLesson(activity: TextActivity, index: number, round: number): PracticeState {
   return {
@@ -87,14 +90,19 @@ function startLesson(activity: TextActivity, index: number, round: number): Prac
   };
 }
 
-function startActivity(activity: Activity | PassageActivity): PracticeState {
-  if (activity.kind === "passage") {
-    return { screen: "passage", activity, session: createPassageSession() };
-  }
+function startActivity(activity: Activity, seed: number): PracticeState {
   if (activity.kind === "position") {
-    return { screen: "positions", activity, session: createPositionSession() };
+    return {
+      screen: "positions",
+      activity: { ...activity, keys: shuffleWithSeed(activity.keys, seed) },
+      session: createPositionSession(),
+    };
   }
-  return startLesson(activity, 0, 0);
+  return startLesson({ ...activity, lessons: shuffleWithSeed(activity.lessons, seed) }, 0, 0);
+}
+
+function startPassage(activity: PassageActivity): PracticeState {
+  return { screen: "passage", activity, session: createPassageSession() };
 }
 
 function reduceTextPractice(
@@ -163,7 +171,8 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
   if (action.type === "open-challenge") return { screen: "challenge" };
   if (action.type === "open-venice") return { screen: "venice" };
   if (action.type === "open-free-practice") return { screen: "free-practice" };
-  if (action.type === "start") return startActivity(action.activity);
+  if (action.type === "start") return startActivity(action.activity, action.seed);
+  if (action.type === "start-passage") return startPassage(action.activity);
   if (state.screen === "menu") return state;
   if (state.screen === "library") {
     return action.type === "return-to-menu"
@@ -198,12 +207,14 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
     return { screen: "menu", selected: state.activity.id };
   }
   if (state.screen === "result") {
+    if (action.type === "retry-randomized") {
+      return state.activity.kind === "position" || state.activity.kind === "word" || state.activity.kind === "line"
+        ? startActivity(state.activity, action.seed)
+        : state;
+    }
     if (action.type === "retry") {
-      // Retrying a word repeats the word just finished; retrying anything else starts from the beginning.
-      if (state.wordProgress && state.activity.kind === "word") {
-        return startLesson(state.activity, state.wordProgress.index, 0);
-      }
-      return startActivity(state.activity);
+      if (state.activity.kind === "passage") return startPassage(state.activity);
+      return state;
     }
     if (action.type === "continue" && state.wordProgress && state.activity.kind === "word") {
       const next = (state.wordProgress.index + 1) % state.wordProgress.total;

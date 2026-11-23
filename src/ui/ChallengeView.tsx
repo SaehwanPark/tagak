@@ -4,6 +4,7 @@ import { advanceChallenge, challengeDurationMs, targetWord } from "../domain/cha
 import type { ChallengeAction, ChallengeState } from "../domain/challenge";
 import { TypingInput } from "./TypingInput";
 import { useFocus } from "./useFocus";
+import { createRunSeed } from "./randomSeed";
 import type { InterfaceText } from "../content/interfaceText";
 
 type ChallengeViewProps = { onBack: () => void; copy: InterfaceText; onWordComplete: () => void };
@@ -20,13 +21,13 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
   const running = state.phase === "running";
   const start = () => {
     setBlocked(false);
-    dispatch({ type: "start", at: performance.now() });
+    dispatch({ type: "start", at: performance.now(), seed: createRunSeed() });
   };
   const stop = () => dispatch({ type: "stop", at: performance.now() });
   const submit = (input?: string, at = performance.now()) => {
     setBlocked(false);
     const inputToSubmit = input ?? (state.phase === "running" ? state.input : "");
-    if (state.phase === "running" && inputToSubmit === targetWord(challengeWords, state.solved) &&
+    if (state.phase === "running" && inputToSubmit === targetWord(state.words, state.solved) &&
         at - state.startedAt < challengeDurationMs) onWordComplete();
     if (input !== undefined) dispatch({ type: "input", input, at });
     dispatch({ type: "submit", at });
@@ -83,14 +84,14 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
           <span>{copy.solvedWords}: {copy.solvedWordCount(state.solved)}</span>
         </div>
         <progress aria-label={copy.remainingTime(Math.ceil(remaining / 1_000))} max={challengeDurationMs} value={remaining} />
-        <p id="typing-target" lang="ko">{targetWord(challengeWords, state.solved)}</p>
+        <p id="typing-target" lang="ko">{targetWord(state.words, state.solved)}</p>
       </div>
       <div className="entry">
         <label htmlFor="typing-input">{copy.followAlong}</label>
         <TypingInput
           key={state.solved}
           language="ko"
-          target={targetWord(challengeWords, state.solved)}
+          target={targetWord(state.words, state.solved)}
           onInput={(input, at) => {
             setBlocked(false);
             dispatch({ type: "input", input, at });

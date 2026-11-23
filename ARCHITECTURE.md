@@ -36,6 +36,7 @@ src/
 │   ├── textLayout.ts       # 5줄 묶음, 폭 기준 줄바꿈
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
 │   ├── positions.ts        # 두벌식 자리 연습 세션
+│   ├── random.ts           # 시드 정규화, xorshift32, Fisher–Yates 셔플
 │   ├── challenge.ts        # 30초 도전 상태 기계
 │   ├── venice.ts           # 베네치아 게임 상태 전이·레벨·효과·추천·득점
 │   └── history.ts          # 기록 모드·정렬·중복 제거·직전 기록 비교
@@ -64,6 +65,7 @@ src/
 │   └── useScreenCapture.ts # ⌘S 경계, IME 조합 중 차단
 └── ui/
     ├── App.tsx             # 화면 조립, 효과음 트리거
+    ├── randomSeed.ts       # 실행 시드 생성 (Web Crypto, 시계 fallback)
     ├── useScreenFocus.ts   # 탭 복귀·환경설정 왕복 초점 복구
     ├── TypingInput.tsx     # IME 이벤트 어댑터 (가장 민감한 경계)
     ├── PracticeView.tsx    # 낱말·한 줄·글 한 줄 공통 화면
@@ -116,7 +118,7 @@ src/
 
 ## 베네치아 게임 (A30)
 
-`domain/venice.ts`는 `ready | playing | paused | finished` 상태와 액션으로 게임 규칙을 전이한다. RNG seed, 시각, 실행 ID와 한글 낱말 풀을 인자로 주입해 같은 상태와 액션에서 같은 결과가 나온다. 화면은 준비·게임·결과를 표시하고, `requestAnimationFrame`을 약 50ms 간격으로 도메인에 전달한다. 도메인은 큰 프레임 지연을 100ms로 제한한다. 탭·창 이탈, 설정 진입, 사용자 일시 정지에서는 시간을 멈추고 다시 시작할 때 시뮬레이션 기준 시각을 재설정한다.
+`domain/venice.ts`는 `ready | playing | paused | finished` 상태와 액션으로 게임 규칙을 전이한다. 공용 `domain/random.ts`의 xorshift32 난수를 받아 RNG seed, 시각, 실행 ID와 한글 낱말 풀을 인자로 주입해 같은 상태와 액션에서 같은 결과가 나온다. 화면은 준비·게임·결과를 표시하고, `requestAnimationFrame`을 약 50ms 간격으로 도메인에 전달한다. 도메인은 큰 프레임 지연을 100ms로 제한한다. 탭·창 이탈, 설정 진입, 사용자 일시 정지에서는 시간을 멈추고 다시 시작할 때 시뮬레이션 기준 시각을 재설정한다.
 
 목표 CPM과 점수 배율은 `round(100 * 10 ** ((level - 1) / 13))`으로 100~1000 범위를 만든다. `stageDesign` 표는 레벨별 생성 간격(3,000ms → 512ms; 13레벨 599ms), 낙하 시간(9,000ms → 2,015ms), 동시 낱말 상한(4 → 10), 단어 길이와 특수 낱말 확률(7% → 14%)을 보관한다. 이는 원판 실측값이 아니라 타각판의 초기 밸런스 가정이다. 일반 단어 20개를 생성하고 화면의 낱말이 정리되면 다음 단계로 가며 14단계는 계속 생성한다. 12블록 탑이 모두 손상되면 종료한다.
 
@@ -131,6 +133,10 @@ src/
 `storage/veniceStorage.ts`는 `tagak:venice:records`에 버전 1의 최근 30회와 Top 10을 일반 연습 기록과 분리해 저장한다. 날짜·레벨 통계·규칙 버전·목록 길이를 경계에서 검증한다. Web Locks가 있는 브라우저에서는 ID 기반 중복 방지와 병합 저장을 직렬화하며, 손상된 값은 덮어쓰지 않는다. 저장 실패는 결과를 감추지 않고 메모리 기록과 안내를 유지한다.
 
 `VeniceView`는 IME 입력과 게임 제출을 분리하며 조합 중 Enter/Space/Escape를 제출·종료로 재사용하지 않는다. 붙여넣기와 드롭은 막는다. 게임 효과음은 기존 완료 효과음 설정을 따르므로 기본 무음이다. 브라우저 오디오 API가 실패해도 게임은 계속된다.
+
+## 연습 순서 무작위화 (A34)
+
+`ui/randomSeed.ts`가 새 실행마다 `crypto.getRandomValues()`로 시드를 만든다. Web Crypto를 쓸 수 없는 내장 브라우저에서는 벽시계·단조 시계와 증가 카운터를 섞어 fallback 시드를 만든다. 도메인의 `shuffleWithSeed`는 Fisher–Yates를 xorshift32에 연결하며 입력 자료를 바꾸지 않는다. 자리·낱말·한 줄·30초 도전은 실행마다 독립된 순열을 받고, 자리·낱말·한 줄·도전 재시작도 새 시드를 사용한다. 짧은 글·긴 글은 기존 본문 순서를 유지한다. 순수한 시드 입력 덕분에 단위 테스트에서 순열을 재현할 수 있다.
 
 ## IME 입력 경계 (`ui/TypingInput.tsx`)
 
