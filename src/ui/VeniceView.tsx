@@ -20,6 +20,7 @@ import { storedDataChangedEvent } from "../storage/storageEvents";
 import type { VeniceRecords, VeniceStorageRead } from "../storage/veniceStorage";
 import { useFocus } from "./useFocus";
 import { playVeniceSound } from "./veniceSound";
+import { createRunSeed } from "./randomSeed";
 
 type VeniceViewProps = {
   onBack: () => void;
@@ -35,10 +36,6 @@ function reduce(state: VeniceState, action: VeniceAction): VeniceState {
 
 function newRunId(): string {
   return crypto.randomUUID();
-}
-
-function newSeed(): number {
-  return crypto.getRandomValues(new Uint32Array(1))[0] ?? Date.now();
 }
 
 function visibleRecords(read: VeniceStorageRead): VeniceRecords {
@@ -178,7 +175,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
       type: "start",
       at: performance.now(),
       startedAt: Date.now(),
-      seed: newSeed(),
+      seed: createRunSeed(),
       id: newRunId(),
     });
   }
@@ -268,7 +265,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
         type: "start",
         at: performance.now(),
         startedAt: Date.now(),
-        seed: newSeed(),
+        seed: createRunSeed(),
         id: newRunId(),
       });
     }

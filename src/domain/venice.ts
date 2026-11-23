@@ -1,4 +1,5 @@
 import { countKoreanKeystrokes, normalizeInput } from "./typing";
+import { nextRandom, normalizeSeed } from "./random";
 
 export const veniceLevelCount = 14;
 export const veniceTowerBlockCount = 12;
@@ -225,27 +226,13 @@ export function rankVeniceTopScores(runs: readonly VeniceRun[]): VeniceRun[] {
     .slice(0, veniceTopScoreLimit);
 }
 
-function normalizeSeed(seed: number): number {
-  const unsigned = Math.trunc(seed) >>> 0;
-  return unsigned || 0x9e3779b9;
-}
-
-function nextRandom(runtime: VeniceRuntime): { value: number; randomState: number } {
-  let state = runtime.randomState >>> 0;
-  state ^= state << 13;
-  state ^= state >>> 17;
-  state ^= state << 5;
-  const randomState = state >>> 0 || 0x9e3779b9;
-  return { value: randomState / 0x1_0000_0000, randomState };
-}
-
 function randomIndex(runtime: VeniceRuntime, length: number): { index: number; randomState: number } {
-  const random = nextRandom(runtime);
+  const random = nextRandom(runtime.randomState);
   return { index: Math.floor(random.value * length), randomState: random.randomState };
 }
 
 function weightedEffect(runtime: VeniceRuntime): { effect: VeniceEffect; randomState: number } {
-  const random = nextRandom(runtime);
+  const random = nextRandom(runtime.randomState);
   const totalWeight = Object.values(effectWeights).reduce((total, weight) => total + weight, 0);
   let threshold = random.value * totalWeight;
   for (const [effect, weight] of Object.entries(effectWeights) as [VeniceEffect, number][]) {
@@ -450,7 +437,7 @@ function spawnScheduledWord(runtime: VeniceRuntime, pool: readonly VeniceWord[])
     || runtime.words.length >= veniceStageConfig(runtime.level).maxActive) {
     return runtime;
   }
-  const choice = nextRandom(runtime);
+  const choice = nextRandom(runtime.randomState);
   let next = { ...runtime, randomState: choice.randomState };
   if (choice.value < veniceStageConfig(runtime.level).specialChance) {
     const effect = weightedEffect(next);

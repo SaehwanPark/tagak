@@ -6,9 +6,20 @@
 
 ## [Unreleased]
 
-### Fixed
+## [0.5.0] - 2026-11-23
 
-- 이슈 [#58](https://github.com/SaehwanPark/tagak/issues/58): 홈 메뉴 전체가 보이도록 기본 데스크톱 창 높이를 늘리고 홈 화면 행 간격을 조정했습니다. Tauri CLI 설치 안내를 보강하고 Linux Tauri 데스크톱이 지원 대상이 아님을 명확히 했습니다.
+### Added
+
+- 자리 키, 낱말, 한 줄 문장, 30초 도전 낱말을 새 실행과 재시작마다 다른 순서로 연습합니다. 낱말 결과의 ‘다시 연습’도 새 순열을 시작합니다.
+
+### Changed
+
+- xorshift32·Fisher–Yates 난수 로직을 도메인 모듈로 공유하고, 실행 시드는 Web Crypto에서 생성합니다. Web Crypto를 사용할 수 없는 환경에는 시계 기반 fallback을 둡니다. 짧은 글·긴 글의 순서는 그대로 유지합니다.
+- 이슈 [#58](https://github.com/SaehwanPark/tagak/issues/58): 홈 메뉴 전체가 보이도록 기본 데스크톱 창 높이를 늘리고 행 간격을 조정했습니다. Tauri CLI 설치 안내를 보강하고 Linux Tauri 데스크톱이 지원 대상이 아님을 명확히 했습니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 17개 파일 100개 테스트, 프로덕션 빌드, Playwright E2E 59개. 앱 JS 청크는 526.94KB로 500KB 경고 기준을 넘습니다.
 
 ## [0.4.0] - 2026-11-22
 

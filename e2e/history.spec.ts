@@ -2,11 +2,13 @@ import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 import { historyKey } from "../src/storage/historyStorage";
 
-async function finishWord(page: Page, mode: string, word: string) {
+async function finishWord(page: Page, mode: string) {
   await page.goto("/");
   await page.getByRole("button", { name: `[연습] ${mode}`, exact: true }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
-  await input.fill(word);
+  const word = await page.locator("#typing-target").getAttribute("aria-label");
+  expect(word).not.toBeNull();
+  await input.fill(word!);
   await input.press("Enter");
   await expect(page.getByRole("heading", { name: "연습 완료" })).toBeVisible();
 }
@@ -18,14 +20,14 @@ test("simultaneous completions persist across tabs and can be compared and clear
   await page.getByRole("button", { name: "← 메뉴" }).click();
   const other = await context.newPage();
   await Promise.all([
-    finishWord(page, "낱말", "orchard"),
-    finishWord(other, "낱말", "orchard"),
+    finishWord(page, "낱말"),
+    finishWord(other, "낱말"),
   ]);
   await expect.poll(async () => await page.evaluate((key) => {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw).records.length : 0;
   }, historyKey)).toBe(2);
-  await finishWord(page, "낱말", "orchard");
+  await finishWord(page, "낱말");
   await expect(page.getByRole("heading", { name: "같은 모드의 이전 기록" })).toBeVisible();
   await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
   await page.getByRole("button", { name: "[기타] 최근 연습 기록" }).click();
@@ -44,7 +46,7 @@ test("history clear confirmation starts on Cancel and restores the clear button"
   await page.goto("/");
   await page.getByRole("button", { name: "[연습] 낱말", exact: true }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
-  await input.fill("연필");
+  await input.fill((await page.locator("#typing-target").getAttribute("aria-label")) ?? "");
   await input.press("Enter");
   await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
   await page.getByRole("button", { name: "[기타] 최근 연습 기록" }).click();
@@ -70,7 +72,7 @@ test("history clear confirmation starts on Cancel and restores the clear button"
 test("unreadable data is preserved and a session still completes", async ({ page }) => {
   await page.goto("/");
   await page.evaluate((key) => localStorage.setItem(key, "unreadable"), historyKey);
-  await finishWord(page, "낱말", "연필");
+  await finishWord(page, "낱말");
   await expect(page.getByRole("status")).toContainText("이번 기록은 저장하지 못했습니다");
   await expect(page.getByText("100%")).toBeVisible();
   expect(await page.evaluate((key) => localStorage.getItem(key), historyKey)).toBe("unreadable");
@@ -80,7 +82,7 @@ test("a failed write leaves the score available in the current page", async ({ p
   await page.addInitScript(() => {
     Storage.prototype.setItem = () => { throw new DOMException("Storage is full", "QuotaExceededError"); };
   });
-  await finishWord(page, "낱말", "연필");
+  await finishWord(page, "낱말");
   await expect(page.getByRole("status")).toContainText("이번 기록은 저장하지 못했습니다");
   await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
   await page.getByRole("button", { name: "[기타] 최근 연습 기록" }).click();

@@ -37,6 +37,7 @@ import { PracticeView } from "./PracticeView";
 import { ResultView } from "./ResultView";
 import { ScreenCaptureControl } from "./ScreenCaptureControl";
 import { playCompletionTone } from "./completionSound";
+import { createRunSeed } from "./randomSeed";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
@@ -183,7 +184,7 @@ export function App() {
             else if (activity.kind === "history") dispatch({ type: "open-history" });
             else if (activity.kind === "data-transfer") dispatch({ type: "open-data-transfer" });
             else if (activity.kind === "settings") openSettings();
-            else dispatch({ type: "start", activity });
+            else dispatch({ type: "start", activity, seed: createRunSeed() });
           }}
         />
       )}
@@ -225,7 +226,7 @@ export function App() {
           activities={passageList}
           selected={currentScreen.selected}
           copy={copy}
-          onStart={(activity) => dispatch({ type: "start", activity })}
+          onStart={(activity) => dispatch({ type: "start-passage", activity })}
           onBack={back}
         />
       )}
@@ -296,7 +297,13 @@ export function App() {
             continueLabel: copy.nextWord,
             onContinue: () => dispatch({ type: "continue" }),
           } : {})}
-          onRetry={() => dispatch({ type: "retry" })}
+          onRetry={() => {
+            if (currentScreen.activity.kind !== "passage") {
+              dispatch({ type: "retry-randomized", seed: createRunSeed() });
+            } else {
+              dispatch({ type: "retry" });
+            }
+          }}
           onBack={back}
           copy={copy}
         />
