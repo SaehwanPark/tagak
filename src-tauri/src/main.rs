@@ -21,7 +21,7 @@ fn main() {
             let window =
                 WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
                     .title("타각 — Tagak")
-                    .inner_size(1120.0, 820.0)
+                    .inner_size(1120.0, 960.0)
                     .min_inner_size(760.0, 560.0);
 
             #[cfg(target_os = "macos")]

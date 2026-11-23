@@ -65,14 +65,14 @@
 
 ### macOS 데스크톱 앱
 
-A31에서 Tauri 앱과 DMG 패키징을 구현하고 macOS 14+에서 수동 검증했습니다. 로컬 개발 실행에는 Node.js LTS **22.12.0 이상**, Rust stable, macOS Command Line Tools가 필요합니다. 일반 사용자는 미리 빌드된 패키지를 실행하는 데 이 개발 도구를 설치할 필요가 없습니다.
+A31에서 Tauri 앱과 DMG 패키징을 구현하고 macOS 14+에서 수동 검증했습니다. 로컬 개발 실행에는 Node.js LTS **22.12.0 이상**, Rust stable, macOS Command Line Tools가 필요합니다. 데스크톱 개발 명령은 로컬 개발 의존성 `@tauri-apps/cli`를 사용합니다. 일반 사용자는 미리 빌드된 패키지를 실행하는 데 이 개발 도구를 설치할 필요가 없습니다.
 
 ```sh
-npm ci
+npm ci --include=dev
 npm run desktop:dev
 ```
 
-검증된 DMG를 만들 때는 macOS에서 `npm run desktop:build`를 실행합니다. 출력은 `src-tauri/target/release/bundle/dmg/`에 생성됩니다. 아직 사용자용으로 배포한 DMG는 없습니다.
+`NODE_ENV=production` 또는 `npm ci --omit=dev`로 개발 의존성을 제외해 설치했다면 `npm ci --include=dev`를 실행해야 Tauri CLI를 사용할 수 있습니다. 검증된 DMG를 만들 때는 macOS에서 `npm run desktop:build`를 실행합니다. 출력은 `src-tauri/target/release/bundle/dmg/`에 생성됩니다. 아직 사용자용으로 배포한 DMG는 없습니다.
 
 ### Windows 11 데스크톱 앱
 
@@ -81,12 +81,16 @@ A32에서 Tauri 2/WebView2 앱과 per-user NSIS 설치 파일을 추가하고 Wi
 Windows PowerShell에서 저장소를 연 뒤 실행합니다.
 
 ```powershell
-npm ci
+npm ci --include=dev
 npm run desktop:dev
 npm run desktop:build:windows
 ```
 
 설치 파일은 `src-tauri/target/release/bundle/nsis/`에 생성됩니다. WSL2 Fedora 43에서도 Windows 호스트의 Node, Rust/MSVC, Visual Studio Build Tools를 호출해 Windows 파일 시스템에 준비한 소스 스냅샷으로 같은 패키지를 만들었습니다. 앱 설치 파일은 저장소에 포함하거나 게시하지 않습니다.
+
+### Linux · WSL2 Fedora
+
+Linux Tauri 데스크톱 앱은 현재 지원 대상이 아닙니다. Fedora/WSL2에서 `npm run desktop:dev`를 실행하지 말고, 브라우저 경로를 사용하려면 아래의 [브라우저 대체 실행](#브라우저-대체-실행)을 따르세요. Windows 데스크톱 앱은 Windows PowerShell에서 위 명령을 실행합니다. WSL2에서 Windows용 패키지를 만드는 경우에도 Windows 호스트의 도구 체인을 사용합니다.
 
 ### 브라우저 대체 실행
 
@@ -106,6 +110,7 @@ node serve.mjs
 | --- | --- |
 | macOS 14+ · Tauri 2/WebKit | **기준 환경·검증 완료.** 사용자가 오프라인 첫 실행, 실제 한글 IME·키보드 동작, `⌘S`·선택 경로 PNG, 두 번째 실행과 설정·연습·베네치아 기록의 재실행 보존을 확인했습니다. DMG 빌드와 앱 실행 기록은 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 있습니다. |
 | Windows 11 · Tauri 2/WebView2 | **데스크톱 지원·검증 완료.** NSIS 설치, 오프라인 실행, Type 3 Microsoft 한국어 IME(Shift+Space), 조합 확정/제출 Enter, `Ctrl+S` 선택 경로 PNG, 백업 내보내기·가져오기, 단일 인스턴스와 재실행 후 설정·연습·베네치아 기록 보존을 확인했습니다. |
+| Linux · Tauri 데스크톱 앱 | 지원 대상이 아닙니다. Linux에서는 브라우저 대체 경로를 사용합니다. |
 | macOS Tahoe · Chrome 157 | 브라우저 대체 경로에서 이슈 범위의 한국어 IME `Space` 동작(공백 1칸, 단일 단계 이동)과 베네치아를 확인했습니다. 전체 macOS 지원 선언과는 별도입니다. |
 | Windows 11 · Chrome | 보조 환경. 실제 Microsoft 한국어 IME 조합, 제출, 오프라인 프로필, 200% 확대와 베네치아 동작을 확인했습니다. |
 | Ubuntu · Firefox · IBus 한글 두벌식 | 보조 환경으로 확인했습니다. |

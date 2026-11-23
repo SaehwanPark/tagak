@@ -15,6 +15,10 @@
 
 ## 완료
 
+- [x] **이슈 #58 · Tauri 개발 실행 안내와 기본 창 크기**
+  - 데스크톱 개발에 필요한 `@tauri-apps/cli` 개발 의존성을 README에 안내하고, 생략 설치에서는 `npm ci --include=dev`를 사용하도록 적었다. Linux Tauri 데스크톱은 지원 범위가 아니며 브라우저 대체 경로를 사용한다고 밝혔다.
+  - 기본 Tauri 창을 1120×960 논리 픽셀로 키우고 홈 메뉴에만 작은 행 간격과 세로 여백을 적용했다. 현재 Linux 작업 환경에서는 macOS·Windows 앱 창의 실제 화면 확인을 할 수 없어 미확인 항목으로 남겼다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+
 - [x] **A32 · Windows 11 Tauri 2 데스크톱 앱** · `v0.3.0`
   - A31의 정적 앱, 네이티브 파일 대화상자, 단일 인스턴스와 백업 흐름을 Windows 11 + WebView2로 확장했다. macOS 전용 WebKit 저장소 설정은 macOS 빌드에만 적용하고 앱 ID와 브라우저 경로를 유지했다.
   - WebView2가 자체 가속키로 처리하는 `Ctrl+S`를 Tauri 호스트에서 화면 저장 동작으로 전달한다. IME 조합 종료 직후 확인용 Enter와 다음 제출 Enter를 분리한다.
