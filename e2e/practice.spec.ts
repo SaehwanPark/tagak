@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { firstKoreanLesson } from "../src/content/library";
+import { activities, firstKoreanLesson } from "../src/content/library";
 import { countKoreanKeystrokes } from "../src/domain/typing";
 
 test("a new profile can practice from the build with only loopback access", async ({ page, baseURL }) => {
@@ -42,6 +42,30 @@ test("a new profile can practice from the build with only loopback access", asyn
   await expect(menu).toBeFocused();
 });
 
+test("one-line practice shows compact source attribution", async ({ page }) => {
+  const koreanLines = activities.find((activity) => activity.id === "ko-line");
+  if (koreanLines?.kind !== "line") throw new Error("Korean one-line content is unavailable");
+  const firstQuoteIndex = koreanLines.lessons.findIndex((lesson) => lesson.source === "quote");
+  const firstQuote = koreanLines.lessons[firstQuoteIndex];
+  if (!firstQuote) throw new Error("Korean quote content is unavailable");
+
+  await page.goto("/");
+  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  await expect(page.locator(".practice-credit")).toHaveText("출처: 타각 직접 작성");
+
+  for (const lesson of koreanLines.lessons.slice(0, firstQuoteIndex)) {
+    await input.fill(lesson.text);
+    await input.press("Enter");
+  }
+
+  const credit = page.locator(".practice-credit");
+  await expect(credit).toContainText(firstQuote.credit?.source ?? "");
+  await expect(credit).toContainText(firstQuote.credit?.author ?? "");
+  await expect(credit.locator("a")).toHaveAttribute("href", firstQuote.credit?.url ?? "");
+  await expect(credit).toHaveCSS("font-size", "12.8px");
+});
+
 test("IME composition and its Enter are processed separately from submission", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
@@ -60,6 +84,7 @@ test("IME composition and its Enter are processed separately from submission", a
 
   await input.dispatchEvent("compositionend", { bubbles: true });
   await expect(page.getByText("100%")).toBeVisible();
+  await input.dispatchEvent("keyup", { key: "Enter", code: "Enter", bubbles: true });
   await input.dispatchEvent("keydown", { key: "Enter", code: "Enter", bubbles: true });
   await expect(page.getByRole("heading", { name: firstKoreanLesson.title })).toBeVisible();
   await input.dispatchEvent("keyup", { key: "Enter", code: "Enter", bubbles: true });

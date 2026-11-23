@@ -7,7 +7,7 @@ type PracticeScreen = Extract<PracticeState, { screen: "practice" }>;
 type ResultScreen = Extract<PracticeState, { screen: "result" }>;
 
 function lesson(id: string, text: string): TextLesson {
-  return { id, title: text, mode: "word", language: "ko", source: "original", text };
+  return { id, title: text, mode: "word", language: "ko", source: "original", credit: null, text };
 }
 
 const words: TextActivity = {

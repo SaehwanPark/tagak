@@ -44,6 +44,29 @@ it("bundles line, short passage, and long passage assets for both languages", ()
   }
 });
 
+it("loads attributed animation, game, film, and traditional lines", () => {
+  const koreanLines = activities.find((activity) => activity.id === "ko-line");
+  const englishLines = activities.find((activity) => activity.id === "en-line");
+  const koreanLessons = koreanLines?.kind === "line" ? koreanLines.lessons : [];
+  const englishLessons = englishLines?.kind === "line" ? englishLines.lessons : [];
+
+  expect(koreanLessons.filter((lesson) => lesson.source === "quote")).toHaveLength(20);
+  expect(koreanLessons.filter((lesson) => lesson.source === "traditional").length).toBeGreaterThanOrEqual(35);
+  expect(englishLessons.filter((lesson) => lesson.source === "quote")).toHaveLength(13);
+  expect(englishLessons.filter((lesson) => lesson.source === "traditional").length).toBeGreaterThanOrEqual(35);
+
+  for (const lesson of [...koreanLessons, ...englishLessons]) {
+    if (lesson.source === "original") {
+      expect(lesson.credit).toBeNull();
+      continue;
+    }
+    expect(lesson.credit?.author.trim()).not.toBe("");
+    expect(lesson.credit?.source.trim()).not.toBe("");
+    expect(lesson.credit?.url).toMatch(/^https:\/\//);
+    expect(lesson.text).not.toMatch(/[\r\n]/);
+  }
+});
+
 it("credits every copied passage and keeps extraction artifacts out of the text", () => {
   const copied = passageActivities.filter((passage) => passage.license !== "original");
   expect(copied.length).toBeGreaterThanOrEqual(38);

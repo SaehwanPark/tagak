@@ -213,7 +213,7 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 
 연습 자료는 코드가 아니라 JSON에 있습니다. 경계에서 검증하고, 잘못된 항목은 조용히 버립니다.
 
-- `one-line.{ko,en}.json`, `words.{ko,en}.json`, `challenge-words.json` — `lessons.ts`, `library.ts`가 읽습니다. 빈 문자열과 줄바꿈 포함 항목은 제외합니다.
+- `one-line.{ko,en}.json`, `words.{ko,en}.json`, `challenge-words.json` — `lessons.ts`, `library.ts`가 읽습니다. 빈 문자열과 줄바꿈 포함 항목을 제외하고, 한 줄 원문 이외 항목은 `source`와 작성자·발화자·출처·HTTPS URL을 검증합니다. 한 줄 화면은 제시문 아래에 출처를 작게 표시합니다.
 - `passages.{ko,en}.json` — `passages.ts`가 읽습니다. `license`가 `original`이 아니면 `credit`(저자·출처·HTTPS URL)이 반드시 있어야 하고, 없으면 그 글을 싣지 않습니다. 이는 CC BY-SA·공공누리 출처 표기 의무를 지키기 위한 코드 수준의 가드입니다.
 - 줄바꿈은 언어별 고정 폭(한국어 24자, 영어 44자)으로 미리 계산해 5줄 묶음 경계가 새로고침·화면 너비에 흔들리지 않게 합니다(`textLayout.ts`).
 - `TEXT-LICENSES.md`는 `textLicenseInventory.ts`가 `activities`·`challengeWords`·`passageActivities`에서 생성합니다. 앱이 실제로 읽는 자료와 출처 표기가 같으므로, 새 자료를 추가하면 `npm run text-licenses:update`로 문서를 갱신합니다. `textLicenseInventory.test.ts`가 문서와 애셋 메타데이터의 일치를 검사합니다.

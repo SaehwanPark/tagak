@@ -58,6 +58,9 @@ export type InterfaceText = Readonly<{
   select: string;
   firstLast: string;
   currentPrompt: string;
+  sourceLabel: string;
+  openSource: (source: string) => string;
+  originalLineSource: string;
   followAlong: string;
   submit: string;
   spaceSubmitHint: string;
@@ -235,6 +238,9 @@ const ko: InterfaceText = {
   select: "선택",
   firstLast: "처음/끝",
   currentPrompt: "제시문",
+  sourceLabel: "출처",
+  openSource: (source) => `출처 확인: ${source} (새 탭에서 열림)`,
+  originalLineSource: "타각 직접 작성",
   followAlong: "따라 입력하기",
   submit: "제출",
   spaceSubmitHint: "제시문을 모두 입력한 뒤 제출",
@@ -446,6 +452,9 @@ const en: InterfaceText = {
   select: "Select",
   firstLast: "First/Last",
   currentPrompt: "Prompt",
+  sourceLabel: "Source",
+  openSource: (source) => `Open source: ${source} (opens in a new tab)`,
+  originalLineSource: "Written for Tagak",
   followAlong: "Type the prompt",
   submit: "Submit",
   spaceSubmitHint: "Submit after completing the prompt",
