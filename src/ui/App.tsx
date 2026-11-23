@@ -5,6 +5,7 @@ import {
   dataTransferEntry,
   freePracticeEntry,
   historyEntry,
+  linePracticeSessionLength,
   settingsEntry,
   veniceEntry,
   usePracticeState,
@@ -246,6 +247,9 @@ export function App() {
             currentScreen.lesson.language,
           )}
           previous={currentScreen.previous}
+          {...(currentScreen.activity.kind === "line" ? {
+            sessionProgress: copy.lineSessionProgress(currentScreen.completedLineScores.length + 1, linePracticeSessionLength),
+          } : {})}
           speedUnit={typingSpeedUnits[currentScreen.lesson.language]}
           copy={copy}
           onInput={onInput}
@@ -279,12 +283,16 @@ export function App() {
 
       {currentScreen.screen === "result" && (
         <ResultView
-          title={currentScreen.activity.kind === "line" ? copy.previousSentence
+          title={currentScreen.lineSessionScores ? copy.lineSessionResult
+            : currentScreen.activity.kind === "line" ? copy.previousSentence
             : currentScreen.wordProgress ? currentScreen.wordProgress.title
               : copy.activityLabel(currentScreen.activity.id, currentScreen.activity.label)}
           progress={currentScreen.wordProgress
             ? copy.wordProgress(currentScreen.wordProgress.index + 1, currentScreen.wordProgress.total)
-            : undefined}
+            : currentScreen.lineSessionScores
+              ? copy.lineSessionCompleted(currentScreen.lineSessionScores.length)
+              : undefined}
+          {...(currentScreen.lineSessionScores ? { lineSessionScores: currentScreen.lineSessionScores } : {})}
           score={currentScreen.score}
           showSpeed={currentScreen.activity.kind !== "position"}
           language={activityLanguage(currentScreen.activity)}

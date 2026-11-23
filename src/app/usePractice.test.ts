@@ -3,7 +3,7 @@ import { activities } from "../content/library";
 import type { PositionActivity, TextActivity, TextLesson } from "../content/lessons";
 import { passagesFor } from "../content/passages";
 import { shuffleWithSeed } from "../domain/random";
-import { completionTime, reducePracticeState } from "./usePractice";
+import { completionTime, linePracticeSessionLength, reducePracticeState } from "./usePractice";
 import type { PracticeState } from "./usePractice";
 
 type PracticeScreen = Extract<PracticeState, { screen: "practice" }>;
@@ -161,6 +161,37 @@ describe("word drill progression", () => {
 
     expect(restarted.activity.lessons).toEqual(shuffleWithSeed(afterSubmit.activity.lessons, 2));
     expect(restarted.activity.lessons).not.toEqual(started.activity.lessons);
+  });
+
+  it("ends a one-line session after 20 completed lessons and clears progress on retry", () => {
+    let state = reducePracticeState(
+      { screen: "menu", selected: null },
+      { type: "start", activity: lines, seed: 0x12345678 },
+    );
+    if (state.screen !== "practice") throw new Error("expected one-line practice");
+
+    for (let index = 0; index < linePracticeSessionLength; index += 1) {
+      if (state.screen !== "practice") throw new Error("session ended before 20 lessons");
+      const next = reducePracticeState(state, {
+        type: "submit",
+        input: state.lesson.text,
+        ...completionTime(2_000 + index * 2_000),
+      });
+      if (index < linePracticeSessionLength - 1) {
+        expect(next.screen).toBe("practice");
+        if (next.screen !== "practice") throw new Error("expected the next one-line prompt");
+      }
+      state = next;
+    }
+
+    expect(state.screen).toBe("result");
+    if (state.screen !== "result") return;
+    expect(state.lineSessionScores).toHaveLength(linePracticeSessionLength);
+
+    const restarted = reducePracticeState(state, { type: "retry-randomized", seed: 2 });
+    if (restarted.screen !== "practice") throw new Error("expected a restarted one-line practice");
+    expect(restarted.completedLineScores).toEqual([]);
+    expect(restarted.round).toBe(0);
   });
 
   it("keeps short and long passage order unchanged", () => {

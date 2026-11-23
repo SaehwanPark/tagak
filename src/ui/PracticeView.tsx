@@ -23,6 +23,7 @@ type PracticeViewProps = {
   liveScore: () => TypingScore;
   previous?: TypingScore | null;
   previousLabel?: string;
+  sessionProgress?: string;
   context?: ReactNode;
   speedUnit: TypingSpeedUnit;
   backLabel?: string;
@@ -35,7 +36,7 @@ type PracticeViewProps = {
 
 export function PracticeView({
   title, language, prompt, lineCredit = null, showLineSource = false,
-  session, liveScore, previous, previousLabel, context, speedUnit,
+  session, liveScore, previous, previousLabel, sessionProgress, context, speedUnit,
   backLabel, onInput, onSubmit, onFinish, onBack, copy,
 }: PracticeViewProps) {
   const [notice, setNotice] = useState("");
@@ -57,6 +58,7 @@ export function PracticeView({
     <section className="screen">
       <button className="back" type="button" onClick={onBack}>← {backLabel ?? copy.menu}</button>
       <h1 lang={language}>{title}</h1>
+      {sessionProgress && <p className="result-progress" aria-live="polite">{sessionProgress}</p>}
       {context}
       <div className="target">
         <div className="target-label"><strong>{copy.currentPrompt}</strong><span>{typed.length} / {target.length}</span></div>

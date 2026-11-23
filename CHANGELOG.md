@@ -6,6 +6,20 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-23
+
+### Added
+
+- 이슈 [#62](https://github.com/SaehwanPark/tagak/issues/62): 한 줄 연습을 20문장 세션으로 마치고 진행 수를 표시합니다. 세션 종료 시 각 문장의 속도를 기준으로 평균·모집단 표준편차·중간값·IQR과 유효 표본 수를 보여줍니다. ‘연습 마치기’로 먼저 끝낸 경우도 완료한 문장만 요약합니다.
+
+### Fixed
+
+- 이슈 [#62](https://github.com/SaehwanPark/tagak/issues/62): 베네치아에서 화면에 없는 낱말을 제출하면 입력란을 비우고 오답 안내를 유지합니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 18개 파일 105개 테스트, 프로덕션 빌드, Playwright E2E 61개. 앱 JS 청크는 529.96KB로 500KB 경고 기준을 넘습니다.
+
 ## [0.5.0] - 2026-11-23
 
 ### Added

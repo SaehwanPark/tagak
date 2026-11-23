@@ -22,6 +22,7 @@ export const freePracticeEntry = { id: "free-practice", label: "연습장", kind
 export const settingsEntry = { id: "settings", label: "환경설정", kind: "settings" } as const;
 export const dataTransferEntry = { id: "data-transfer", label: "데이터 백업·가져오기", kind: "data-transfer" } as const;
 export const passageEntries = [shortPassageEntry, longPassageEntry] as const;
+export const linePracticeSessionLength = 20;
 
 /** Position of a word drill inside its word list, kept so the result can offer the next word. */
 export type WordProgress = { index: number; total: number; title: string };
@@ -42,6 +43,7 @@ export type PracticeContentState =
       round: number;
       session: PracticeSession;
       previous: TypingScore | null;
+      completedLineScores: readonly TypingScore[];
     }
   | { screen: "positions"; activity: PositionActivity; session: PositionSession }
   | { screen: "passage"; activity: PassageActivity; session: PassageSession }
@@ -51,6 +53,7 @@ export type PracticeContentState =
       score: TypingScore;
       // Word drills review one word at a time; other modes finish the whole activity.
       wordProgress: WordProgress | null;
+      lineSessionScores?: readonly TypingScore[];
     };
 
 export type PracticeState =
@@ -87,6 +90,7 @@ function startLesson(activity: TextActivity, index: number, round: number): Prac
     round,
     session: createPracticeSession(),
     previous: null,
+    completedLineScores: [],
   };
 }
 
@@ -113,7 +117,13 @@ function reduceTextPractice(
     return { ...state, session: reducePracticeSession(state.session, action) };
   }
   if (action.type === "finish" && state.previous) {
-    return { screen: "result", activity: state.activity, score: state.previous, wordProgress: null };
+    return {
+      screen: "result",
+      activity: state.activity,
+      score: state.previous,
+      wordProgress: null,
+      ...(state.activity.kind === "line" ? { lineSessionScores: state.completedLineScores } : {}),
+    };
   }
   if (action.type !== "submit") return state;
   const session = action.input === undefined
@@ -132,6 +142,16 @@ function reduceTextPractice(
       wordProgress: { index: state.index, total: state.activity.lessons.length, title: state.lesson.title },
     };
   }
+  const completedLineScores = [...state.completedLineScores, score];
+  if (completedLineScores.length >= linePracticeSessionLength) {
+    return {
+      screen: "result",
+      activity: state.activity,
+      score,
+      wordProgress: null,
+      lineSessionScores: completedLineScores,
+    };
+  }
   const index = (state.index + 1) % state.activity.lessons.length;
   return {
     ...state,
@@ -140,6 +160,7 @@ function reduceTextPractice(
     round: state.round + 1,
     session: createPracticeSession(),
     previous: score,
+    completedLineScores,
   };
 }
 
