@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import type { Language } from "../content/lessons";
+import type { Language, TextCredit } from "../content/lessons";
 import type { InterfaceText } from "../content/interfaceText";
 import { splitCharacters } from "../domain/typing";
 import type { PracticeSession, TypingScore } from "../domain/typing";
@@ -12,6 +12,8 @@ type PracticeViewProps = {
   title: string;
   language: Language;
   prompt: string;
+  lineCredit?: TextCredit | null;
+  showLineSource?: boolean;
   session: PracticeSession;
   /**
    * Speed for the current item is held back until the item is submitted. The
@@ -32,7 +34,8 @@ type PracticeViewProps = {
 };
 
 export function PracticeView({
-  title, language, prompt, session, liveScore, previous, previousLabel, context, speedUnit,
+  title, language, prompt, lineCredit = null, showLineSource = false,
+  session, liveScore, previous, previousLabel, context, speedUnit,
   backLabel, onInput, onSubmit, onFinish, onBack, copy,
 }: PracticeViewProps) {
   const [notice, setNotice] = useState("");
@@ -68,6 +71,24 @@ export function PracticeView({
           )}
         </p>
       </div>
+      {showLineSource && (
+        <p className="practice-credit">
+          <span>{copy.sourceLabel}:</span>{" "}
+          {lineCredit ? (
+            <>
+              <a
+                href={lineCredit.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={copy.openSource(lineCredit.source)}
+              >
+                {lineCredit.source}
+              </a>
+              <span> · {lineCredit.author}</span>
+            </>
+          ) : copy.originalLineSource}
+        </p>
+      )}
       <div className="entry">
         <label htmlFor="typing-input">{copy.followAlong}</label>
         <TypingInput

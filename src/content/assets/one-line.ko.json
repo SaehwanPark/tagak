@@ -1,14 +1,689 @@
 [
-  { "id": "first-steps", "title": "손끝에 다시 익숙해지기", "text": "한글을 한 줄씩 입력하면 손끝에 작은 리듬이 돌아옵니다" },
-  { "id": "ko-window", "title": "창가의 아침", "text": "창가에 앉아 비가 그치는 소리를 들었습니다." },
-  { "id": "ko-tea", "title": "따뜻한 차 한 잔", "text": "찻잔 위로 피어오르는 김이 창문에 비친 얼굴을 가렸습니다." },
-  { "id": "ko-lamp", "title": "늦은 귀가", "text": "골목 끝 가로등이 젖은 길 위에 노란 원을 그렸습니다." },
-  { "id": "ko-letter", "title": "오래된 편지", "text": "서랍 깊은 곳에서 십 년 전에 받은 편지 한 장을 꺼냈습니다." },
-  { "id": "ko-morning", "title": "아침 시장", "text": "이른 아침 시장 골목에는 갓 지은 밥 냄새가 가득했습니다." },
-  { "id": "ko-stars", "title": "별을 세는 시간", "text": "도시의 불빛이 잦아든 자리에서 작은 별 하나가 반짝였습니다." },
-  { "id": "ko-rain", "title": "비 오는 오후", "text": "창밖의 빗소리에 맞춰 책장을 한 장씩 넘겼습니다." },
-  { "id": "ko-bicycle", "title": "자전거 길", "text": "강변 자전거 길을 따라 천천히 달리자 바람이 등을 밀었습니다." },
-  { "id": "ko-cat", "title": "창가의 고양이", "text": "햇살이 드는 창가에서 고양이가 꼬리를 느리게 흔들었습니다." },
-  { "id": "ko-library", "title": "도서관의 오후", "text": "오래된 책 냄새가 가득한 서가 사이를 조용히 걸었습니다." },
-  { "id": "ko-night-train", "title": "밤기차", "text": "밤기차 창밖으로 멀리 마을의 불빛이 하나둘 흘러갔습니다." }
+  {
+    "id": "first-steps",
+    "title": "손끝에 다시 익숙해지기",
+    "text": "한글을 한 줄씩 입력하면 손끝에 작은 리듬이 돌아옵니다"
+  },
+  {
+    "id": "ko-window",
+    "title": "창가의 아침",
+    "text": "창가에 앉아 비가 그치는 소리를 들었습니다."
+  },
+  {
+    "id": "ko-tea",
+    "title": "따뜻한 차 한 잔",
+    "text": "찻잔 위로 피어오르는 김이 창문에 비친 얼굴을 가렸습니다."
+  },
+  {
+    "id": "ko-lamp",
+    "title": "늦은 귀가",
+    "text": "골목 끝 가로등이 젖은 길 위에 노란 원을 그렸습니다."
+  },
+  {
+    "id": "ko-letter",
+    "title": "오래된 편지",
+    "text": "서랍 깊은 곳에서 십 년 전에 받은 편지 한 장을 꺼냈습니다."
+  },
+  {
+    "id": "ko-morning",
+    "title": "아침 시장",
+    "text": "이른 아침 시장 골목에는 갓 지은 밥 냄새가 가득했습니다."
+  },
+  {
+    "id": "ko-stars",
+    "title": "별을 세는 시간",
+    "text": "도시의 불빛이 잦아든 자리에서 작은 별 하나가 반짝였습니다."
+  },
+  {
+    "id": "ko-rain",
+    "title": "비 오는 오후",
+    "text": "창밖의 빗소리에 맞춰 책장을 한 장씩 넘겼습니다."
+  },
+  {
+    "id": "ko-bicycle",
+    "title": "자전거 길",
+    "text": "강변 자전거 길을 따라 천천히 달리자 바람이 등을 밀었습니다."
+  },
+  {
+    "id": "ko-cat",
+    "title": "창가의 고양이",
+    "text": "햇살이 드는 창가에서 고양이가 꼬리를 느리게 흔들었습니다."
+  },
+  {
+    "id": "ko-library",
+    "title": "도서관의 오후",
+    "text": "오래된 책 냄새가 가득한 서가 사이를 조용히 걸었습니다."
+  },
+  {
+    "id": "ko-night-train",
+    "title": "밤기차",
+    "text": "밤기차 창밖으로 멀리 마을의 불빛이 하나둘 흘러갔습니다."
+  },
+  {
+    "id": "ko-quote-slamdunk-left",
+    "title": "애니메이션 명대사",
+    "text": "왼손은 거들 뿐.",
+    "source": "quote",
+    "credit": {
+      "author": "강백호",
+      "source": "《슬램덩크》",
+      "url": "https://www.youtube.com/watch?v=rD-mTNjXaZI"
+    }
+  },
+  {
+    "id": "ko-quote-slamdunk-give-up",
+    "title": "애니메이션 명대사",
+    "text": "포기하면 거기서 시합 종료야.",
+    "source": "quote",
+    "credit": {
+      "author": "안 선생님",
+      "source": "《슬램덩크》",
+      "url": "https://sekihi.net/ko-kr/stones/6942"
+    }
+  },
+  {
+    "id": "ko-quote-one-piece",
+    "title": "애니메이션 명대사",
+    "text": "나는 루피, 해적왕이 될 거야!",
+    "source": "quote",
+    "credit": {
+      "author": "몽키 D. 루피",
+      "source": "《원피스》 1화",
+      "url": "https://tv.apple.com/kr/episode/%E1%84%82%E1%85%A1%E1%84%82%E1%85%B3%E1%86%AB%E1%84%8B%E1%85%A3-%E1%84%85%E1%85%AE%E1%84%91%E1%85%B5-%E1%84%92%E1%85%A2%E1%84%8C%E1%85%A5%E1%86%A8%E1%84%8B%E1%85%AA%E1%86%BC%E1%84%8B%E1%85%B5-%E1%84%83%E1%85%AC%E1%86%AF-%E1%84%80%E1%85%A5%E1%84%8B%E1%85%A3/umc.cmc.3i6gftpoqek3o947i6nlnjzg6?showId=umc.cmc.2jf3h5bibsseewr9bh0rg5kcl"
+    }
+  },
+  {
+    "id": "ko-quote-pokemon",
+    "title": "애니메이션 명대사",
+    "text": "피카츄, 넌 내가 싫어? 난 네가 좋아!",
+    "source": "quote",
+    "credit": {
+      "author": "한지우",
+      "source": "《극장판 포켓몬스터: 너로 정했다!》",
+      "url": "https://new.pokemonkorea.co.kr/animation/34"
+    }
+  },
+  {
+    "id": "ko-quote-conan",
+    "title": "애니메이션 명대사",
+    "text": "진실은 언제나 하나!",
+    "source": "quote",
+    "credit": {
+      "author": "에도가와 코난",
+      "source": "《명탐정 코난》",
+      "url": "https://artplex.co.kr/campaigns/detective-conan_2026jan.html"
+    }
+  },
+  {
+    "id": "ko-quote-demon-slayer",
+    "title": "애니메이션 명대사",
+    "text": "마음을 불태워라!",
+    "source": "quote",
+    "credit": {
+      "author": "렌고쿠 쿄쥬로",
+      "source": "《귀멸의 칼날: 무한열차편》",
+      "url": "https://tv.apple.com/kr/episode/%E1%84%86%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B3%E1%86%AF-%E1%84%87%E1%85%AE%E1%86%AF%E1%84%90%E1%85%A2%E1%84%8B%E1%85%AF%E1%84%85%E1%85%A1/umc.cmc.3k1fhmt282os5xbxiaqmbksv2?showId=umc.cmc.1lfa5s90fe9hsizlhvvkcpxiq"
+    }
+  },
+  {
+    "id": "ko-quote-naruto",
+    "title": "애니메이션 명대사",
+    "text": "난 절대 포기하지 않아!",
+    "source": "quote",
+    "credit": {
+      "author": "우즈마키 나루토",
+      "source": "《나루토》",
+      "url": "https://jyucom.tistory.com/entry/%EB%82%98%EB%A3%A8%ED%86%A0-%EC%95%A0%EB%8B%88-%ED%8C%AC%EC%9D%B4%EB%9D%BC%EB%A9%B4-%EA%BC%AD-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%EB%AA%A8%EB%93%A0-%EA%B2%83"
+    }
+  },
+  {
+    "id": "ko-quote-my-hero",
+    "title": "애니메이션 명대사",
+    "text": "내가 왔다!",
+    "source": "quote",
+    "credit": {
+      "author": "올마이트",
+      "source": "《나의 히어로 아카데미아》",
+      "url": "https://note.com/hazumu_rhythm/n/n59bbdbde6e8f?hl=ko"
+    }
+  },
+  {
+    "id": "ko-quote-fullmetal",
+    "title": "애니메이션 명대사",
+    "text": "등가교환의 법칙.",
+    "source": "quote",
+    "credit": {
+      "author": "에드워드 엘릭",
+      "source": "《강철의 연금술사》",
+      "url": "https://en.wikiquote.org/wiki/Fullmetal_Alchemist"
+    }
+  },
+  {
+    "id": "ko-quote-toy-story",
+    "title": "애니메이션 명대사",
+    "text": "무한한 공간 저 너머로!",
+    "source": "quote",
+    "credit": {
+      "author": "버즈 라이트이어",
+      "source": "《토이 스토리》",
+      "url": "https://news.disney.com/ultimate-list-toy-story-quotes"
+    }
+  },
+  {
+    "id": "ko-quote-zelda",
+    "title": "게임 명대사",
+    "text": "혼자 가면 위험해! 이걸 가져가!",
+    "source": "quote",
+    "credit": {
+      "author": "노인 · 한국어 번역",
+      "source": "《젤다의 전설》",
+      "url": "https://zelda.nintendo.com/breath-of-the-wild/assets/pdfs/ExplorersGuide.pdf"
+    }
+  },
+  {
+    "id": "ko-quote-portal",
+    "title": "게임 명대사",
+    "text": "케이크는 거짓말이다.",
+    "source": "quote",
+    "credit": {
+      "author": "벽의 낙서 · 한국어 번역",
+      "source": "《포털》",
+      "url": "https://en.wikipedia.org/wiki/The_cake_is_a_lie"
+    }
+  },
+  {
+    "id": "ko-quote-skyrim",
+    "title": "게임 명대사",
+    "text": "그러다 무릎에 화살을 맞았지.",
+    "source": "quote",
+    "credit": {
+      "author": "경비병",
+      "source": "《엘더스크롤 V: 스카이림》",
+      "url": "https://elderscrolls.bethesda.net/ko-KR/news/6KNyeH7wG4FOFIEev8VaX1/how-an-arrow-in-the-knee-made-its-way-to-skyrim"
+    }
+  },
+  {
+    "id": "ko-quote-overwatch",
+    "title": "게임 명대사",
+    "text": "영웅은 죽지 않아요!",
+    "source": "quote",
+    "credit": {
+      "author": "메르시",
+      "source": "《오버워치》",
+      "url": "https://overwatch.blizzard.com/ko-kr/news/23223599/take-flight-in-mercy-s-recall-challenge/"
+    }
+  },
+  {
+    "id": "ko-quote-diablo",
+    "title": "게임 명대사",
+    "text": "잠시 머물다 이야기를 듣게.",
+    "source": "quote",
+    "credit": {
+      "author": "데커드 케인 · 한국어 번역",
+      "source": "《디아블로》",
+      "url": "https://en.wikiquote.org/wiki/Diablo"
+    }
+  },
+  {
+    "id": "ko-quote-starcraft",
+    "title": "게임 명대사",
+    "text": "수정탑이 더 필요합니다.",
+    "source": "quote",
+    "credit": {
+      "author": "프로토스 사령관",
+      "source": "《스타크래프트》",
+      "url": "https://starcraft.fandom.com/wiki/Pylon"
+    }
+  },
+  {
+    "id": "ko-quote-metal-gear",
+    "title": "게임 명대사",
+    "text": "오래 기다렸지?",
+    "source": "quote",
+    "credit": {
+      "author": "솔리드 스네이크 · 한국어 번역",
+      "source": "《메탈 기어 솔리드 2》",
+      "url": "https://quotegeek.com/games/metal-gear-solid-2-sons-of-liberty/kept-you-waiting-huh/"
+    }
+  },
+  {
+    "id": "ko-quote-bioshock",
+    "title": "게임 명대사",
+    "text": "부탁 하나 들어주시겠습니까?",
+    "source": "quote",
+    "credit": {
+      "author": "아틀라스 · 한국어 번역",
+      "source": "《바이오쇼크》",
+      "url": "https://en.wikiquote.org/wiki/BioShock"
+    }
+  },
+  {
+    "id": "ko-quote-ace-attorney",
+    "title": "게임 명대사",
+    "text": "이의 있습니다!",
+    "source": "quote",
+    "credit": {
+      "author": "나루호도 류이치",
+      "source": "《역전재판》",
+      "url": "https://news.capcomusa.com/lets/browse/ace-attorney-101-with-phoenix-wright-and-maya-fey"
+    }
+  },
+  {
+    "id": "ko-quote-street-fighter",
+    "title": "게임 명대사",
+    "text": "파동권!",
+    "source": "quote",
+    "credit": {
+      "author": "류",
+      "source": "《스트리트 파이터》",
+      "url": "https://www.streetfighter.com/6/character/ryu"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-01",
+    "title": "한국 격언·속담",
+    "text": "가는 말이 고와야 오는 말이 곱다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-02",
+    "title": "한국 격언·속담",
+    "text": "낮말은 새가 듣고 밤말은 쥐가 듣는다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-03",
+    "title": "한국 격언·속담",
+    "text": "호랑이도 제 말 하면 온다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-04",
+    "title": "한국 격언·속담",
+    "text": "세 살 버릇 여든까지 간다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-05",
+    "title": "한국 격언·속담",
+    "text": "티끌 모아 태산",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-06",
+    "title": "한국 격언·속담",
+    "text": "천 리 길도 한 걸음부터",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-07",
+    "title": "한국 격언·속담",
+    "text": "백지장도 맞들면 낫다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-08",
+    "title": "한국 격언·속담",
+    "text": "원숭이도 나무에서 떨어진다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-09",
+    "title": "한국 격언·속담",
+    "text": "돌다리도 두들겨 보고 건너라",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-10",
+    "title": "한국 격언·속담",
+    "text": "소 잃고 외양간 고친다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-11",
+    "title": "한국 격언·속담",
+    "text": "등잔 밑이 어둡다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-12",
+    "title": "한국 격언·속담",
+    "text": "고래 싸움에 새우 등 터진다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-13",
+    "title": "한국 격언·속담",
+    "text": "가는 날이 장날이다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-14",
+    "title": "한국 격언·속담",
+    "text": "말 한마디에 천 냥 빚 갚는다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-15",
+    "title": "한국 격언·속담",
+    "text": "급할수록 돌아가라",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-16",
+    "title": "한국 격언·속담",
+    "text": "개구리 올챙이 적 생각 못 한다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-17",
+    "title": "한국 격언·속담",
+    "text": "하늘이 무너져도 솟아날 구멍이 있다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-18",
+    "title": "한국 격언·속담",
+    "text": "바늘 도둑이 소 도둑 된다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-19",
+    "title": "한국 격언·속담",
+    "text": "콩 심은 데 콩 나고 팥 심은 데 팥 난다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-20",
+    "title": "한국 격언·속담",
+    "text": "꿩 대신 닭",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-21",
+    "title": "한국 격언·속담",
+    "text": "공든 탑이 무너지랴",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-22",
+    "title": "한국 격언·속담",
+    "text": "백문이 불여일견",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-23",
+    "title": "한국 격언·속담",
+    "text": "서당 개 삼 년이면 풍월을 읊는다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-24",
+    "title": "한국 격언·속담",
+    "text": "시작이 반이다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-25",
+    "title": "한국 격언·속담",
+    "text": "웃는 얼굴에 침 못 뱉는다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-26",
+    "title": "한국 격언·속담",
+    "text": "열 번 찍어 안 넘어가는 나무 없다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-27",
+    "title": "한국 격언·속담",
+    "text": "원수는 외나무다리에서 만난다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-28",
+    "title": "한국 격언·속담",
+    "text": "가는 정이 있어야 오는 정이 있다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-29",
+    "title": "한국 격언·속담",
+    "text": "구슬이 서 말이라도 꿰어야 보배",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-30",
+    "title": "한국 격언·속담",
+    "text": "작은 고추가 맵다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-31",
+    "title": "한국 격언·속담",
+    "text": "낫 놓고 기역 자도 모른다",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-proverb-32",
+    "title": "한국 격언·속담",
+    "text": "우물 안 개구리",
+    "source": "traditional",
+    "credit": {
+      "author": "구전",
+      "source": "위키낱말사전 · 한국어 속담",
+      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
+    }
+  },
+  {
+    "id": "ko-saying-bacon",
+    "title": "한국 격언·속담",
+    "text": "아는 것이 힘이다",
+    "source": "traditional",
+    "credit": {
+      "author": "프랜시스 베이컨",
+      "source": "격언 · 지식은 힘이다",
+      "url": "https://en.wikipedia.org/wiki/Knowledge_is_power"
+    }
+  },
+  {
+    "id": "ko-saying-franklin",
+    "title": "한국 격언·속담",
+    "text": "시간은 금이다",
+    "source": "traditional",
+    "credit": {
+      "author": "벤저민 프랭클린",
+      "source": "《젊은 상인에게 주는 조언》",
+      "url": "https://en.wikipedia.org/wiki/Benjamin_Franklin"
+    }
+  },
+  {
+    "id": "ko-saying-delphi",
+    "title": "한국 격언·속담",
+    "text": "너 자신을 알라",
+    "source": "traditional",
+    "credit": {
+      "author": "델포이 격언",
+      "source": "고대 그리스 격언",
+      "url": "https://en.wikipedia.org/wiki/Know_thyself"
+    }
+  },
+  {
+    "id": "ko-saying-descartes",
+    "title": "한국 격언·속담",
+    "text": "나는 생각한다, 고로 존재한다",
+    "source": "traditional",
+    "credit": {
+      "author": "르네 데카르트",
+      "source": "《방법서설》",
+      "url": "https://en.wikipedia.org/wiki/Cogito,_ergo_sum"
+    }
+  },
+  {
+    "id": "ko-saying-hippocrates",
+    "title": "한국 격언·속담",
+    "text": "인생은 짧고 예술은 길다",
+    "source": "traditional",
+    "credit": {
+      "author": "히포크라테스",
+      "source": "《아포리즘》",
+      "url": "https://en.wikipedia.org/wiki/Hippocrates"
+    }
+  }
 ]

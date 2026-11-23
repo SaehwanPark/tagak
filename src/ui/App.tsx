@@ -235,6 +235,8 @@ export function App() {
           key={currentScreen.round}
           title={currentScreen.lesson.title}
           prompt={currentScreen.lesson.text}
+          lineCredit={currentScreen.lesson.credit}
+          showLineSource={currentScreen.lesson.mode === "line"}
           language={currentScreen.lesson.language}
           session={currentScreen.session}
           liveScore={() => calculateLiveAccuracy(

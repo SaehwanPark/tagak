@@ -4,7 +4,13 @@ export type Language = "ko" | "en";
 export type TextMode = "word" | "line";
 export type NonEmpty<T> = readonly [T, ...T[]];
 
-export type TextSource = "original" | "public-domain";
+export type TextSource = "original" | "quote" | "traditional";
+
+export type TextCredit = {
+  author: string;
+  source: string;
+  url: string;
+};
 
 export type TextLesson = {
   id: string;
@@ -12,6 +18,7 @@ export type TextLesson = {
   mode: TextMode;
   language: Language;
   source: TextSource;
+  credit: TextCredit | null;
   text: string;
 };
 

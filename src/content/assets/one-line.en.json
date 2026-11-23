@@ -1,8 +1,571 @@
 [
-  { "id": "en-window", "title": "Morning at the window", "text": "The rain drew thin lines across the window." },
-  { "id": "en-tea", "title": "A quiet morning", "text": "I made a pot of tea and opened my notebook." },
-  { "id": "en-lamp", "title": "The last lamp", "text": "A single lamp kept the small street awake." },
-  { "id": "en-letter", "title": "An old letter", "text": "I found a letter I had forgotten in the drawer." },
-  { "id": "en-train", "title": "The night train", "text": "The night train carried the smell of rain and coffee." },
-  { "id": "en-stars", "title": "Counting stars", "text": "We counted stars until the city lights faded behind us." }
+  {
+    "id": "en-window",
+    "title": "Morning at the window",
+    "text": "The rain drew thin lines across the window."
+  },
+  {
+    "id": "en-tea",
+    "title": "A quiet morning",
+    "text": "I made a pot of tea and opened my notebook."
+  },
+  {
+    "id": "en-lamp",
+    "title": "The last lamp",
+    "text": "A single lamp kept the small street awake."
+  },
+  {
+    "id": "en-letter",
+    "title": "An old letter",
+    "text": "I found a letter I had forgotten in the drawer."
+  },
+  {
+    "id": "en-train",
+    "title": "The night train",
+    "text": "The night train carried the smell of rain and coffee."
+  },
+  {
+    "id": "en-stars",
+    "title": "Counting stars",
+    "text": "We counted stars until the city lights faded behind us."
+  },
+  {
+    "id": "en-quote-gone-with-the-wind",
+    "title": "Movie quotes",
+    "text": "Frankly, my dear, I don't give a damn.",
+    "source": "quote",
+    "credit": {
+      "author": "Rhett Butler",
+      "source": "Gone with the Wind",
+      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
+    }
+  },
+  {
+    "id": "en-quote-casablanca",
+    "title": "Movie quotes",
+    "text": "Here's looking at you, kid.",
+    "source": "quote",
+    "credit": {
+      "author": "Rick Blaine",
+      "source": "Casablanca",
+      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
+    }
+  },
+  {
+    "id": "en-quote-star-wars",
+    "title": "Movie quotes",
+    "text": "May the Force be with you.",
+    "source": "quote",
+    "credit": {
+      "author": "A farewell",
+      "source": "Star Wars",
+      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
+    }
+  },
+  {
+    "id": "en-quote-terminator",
+    "title": "Movie quotes",
+    "text": "I'll be back.",
+    "source": "quote",
+    "credit": {
+      "author": "The Terminator",
+      "source": "The Terminator",
+      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
+    }
+  },
+  {
+    "id": "en-quote-et",
+    "title": "Movie quotes",
+    "text": "E.T. phone home.",
+    "source": "quote",
+    "credit": {
+      "author": "E.T.",
+      "source": "E.T. the Extra-Terrestrial",
+      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
+    }
+  },
+  {
+    "id": "en-quote-a-few-good-men",
+    "title": "Movie quotes",
+    "text": "You can't handle the truth!",
+    "source": "quote",
+    "credit": {
+      "author": "Nathan R. Jessep",
+      "source": "A Few Good Men",
+      "url": "https://quotations.pro/people/nathan-jessup/quote/you-cant-handle-the-truth"
+    }
+  },
+  {
+    "id": "en-quote-dark-knight",
+    "title": "Movie quotes",
+    "text": "Why so serious?",
+    "source": "quote",
+    "credit": {
+      "author": "The Joker",
+      "source": "The Dark Knight",
+      "url": "https://www.acmi.net.au/stories-and-ideas/the-dark-knight-why-so-serious/"
+    }
+  },
+  {
+    "id": "en-quote-sixth-sense",
+    "title": "Movie quotes",
+    "text": "I see dead people.",
+    "source": "quote",
+    "credit": {
+      "author": "Cole Sear",
+      "source": "The Sixth Sense",
+      "url": "https://catalog.afi.com/Film/55204-THE-SIXTH-SENSE"
+    }
+  },
+  {
+    "id": "en-quote-jerry-maguire",
+    "title": "Movie quotes",
+    "text": "You had me at hello.",
+    "source": "quote",
+    "credit": {
+      "author": "Dorothy Boyd",
+      "source": "Jerry Maguire",
+      "url": "https://en.wikiquote.org/wiki/Jerry_Maguire"
+    }
+  },
+  {
+    "id": "en-quote-dirty-dancing",
+    "title": "Movie quotes",
+    "text": "Nobody puts Baby in a corner.",
+    "source": "quote",
+    "credit": {
+      "author": "Johnny Castle",
+      "source": "Dirty Dancing",
+      "url": "https://en.wikiquote.org/wiki/Dirty_Dancing"
+    }
+  },
+  {
+    "id": "en-quote-jaws",
+    "title": "Movie quotes",
+    "text": "You're gonna need a bigger boat.",
+    "source": "quote",
+    "credit": {
+      "author": "Martin Brody",
+      "source": "Jaws",
+      "url": "https://www.tcm.com/articles/615785/trivia-jaws-trivia-and-fun-facts-about-jaws"
+    }
+  },
+  {
+    "id": "en-quote-toy-story",
+    "title": "Movie quotes",
+    "text": "To infinity and beyond!",
+    "source": "quote",
+    "credit": {
+      "author": "Buzz Lightyear",
+      "source": "Toy Story",
+      "url": "https://news.disney.com/ultimate-list-toy-story-quotes"
+    }
+  },
+  {
+    "id": "en-quote-wizard-of-oz",
+    "title": "Movie quotes",
+    "text": "There's no place like home.",
+    "source": "quote",
+    "credit": {
+      "author": "Dorothy Gale",
+      "source": "The Wizard of Oz",
+      "url": "https://www.youtube.com/watch?v=NFWMBE-mQEc"
+    }
+  },
+  {
+    "id": "en-saying-proverb-01",
+    "title": "English proverbs & sayings",
+    "text": "Actions speak louder than words.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-02",
+    "title": "English proverbs & sayings",
+    "text": "Better late than never.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-03",
+    "title": "English proverbs & sayings",
+    "text": "Practice makes perfect.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-04",
+    "title": "English proverbs & sayings",
+    "text": "Where there's a will, there's a way.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-05",
+    "title": "English proverbs & sayings",
+    "text": "Two heads are better than one.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-06",
+    "title": "English proverbs & sayings",
+    "text": "Look before you leap.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-07",
+    "title": "English proverbs & sayings",
+    "text": "The early bird catches the worm.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-08",
+    "title": "English proverbs & sayings",
+    "text": "Don't count your chickens before they hatch.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-09",
+    "title": "English proverbs & sayings",
+    "text": "Every cloud has a silver lining.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-10",
+    "title": "English proverbs & sayings",
+    "text": "Honesty is the best policy.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-11",
+    "title": "English proverbs & sayings",
+    "text": "Fortune favors the bold.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-12",
+    "title": "English proverbs & sayings",
+    "text": "Rome wasn't built in a day.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-13",
+    "title": "English proverbs & sayings",
+    "text": "All that glitters is not gold.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-14",
+    "title": "English proverbs & sayings",
+    "text": "Birds of a feather flock together.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-15",
+    "title": "English proverbs & sayings",
+    "text": "Necessity is the mother of invention.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-16",
+    "title": "English proverbs & sayings",
+    "text": "Slow and steady wins the race.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-17",
+    "title": "English proverbs & sayings",
+    "text": "Every dog has its day.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-18",
+    "title": "English proverbs & sayings",
+    "text": "Time and tide wait for no man.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-19",
+    "title": "English proverbs & sayings",
+    "text": "Absence makes the heart grow fonder.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-20",
+    "title": "English proverbs & sayings",
+    "text": "When in Rome, do as the Romans do.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-21",
+    "title": "English proverbs & sayings",
+    "text": "One good turn deserves another.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-22",
+    "title": "English proverbs & sayings",
+    "text": "Prevention is better than cure.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-23",
+    "title": "English proverbs & sayings",
+    "text": "Easy come, easy go.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-24",
+    "title": "English proverbs & sayings",
+    "text": "Don't put all your eggs in one basket.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-25",
+    "title": "English proverbs & sayings",
+    "text": "Still waters run deep.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-26",
+    "title": "English proverbs & sayings",
+    "text": "Out of sight, out of mind.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-27",
+    "title": "English proverbs & sayings",
+    "text": "Make hay while the sun shines.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-28",
+    "title": "English proverbs & sayings",
+    "text": "A stitch in time saves nine.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-29",
+    "title": "English proverbs & sayings",
+    "text": "Many hands make light work.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-proverb-30",
+    "title": "English proverbs & sayings",
+    "text": "Two wrongs don't make a right.",
+    "source": "traditional",
+    "credit": {
+      "author": "Traditional",
+      "source": "English proverb",
+      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
+    }
+  },
+  {
+    "id": "en-saying-lao-tzu",
+    "title": "English proverbs & sayings",
+    "text": "A journey of a thousand miles begins with a single step.",
+    "source": "traditional",
+    "credit": {
+      "author": "Lao Tzu",
+      "source": "Tao Te Ching",
+      "url": "https://en.wikipedia.org/wiki/Tao_Te_Ching"
+    }
+  },
+  {
+    "id": "en-saying-bacon",
+    "title": "English proverbs & sayings",
+    "text": "Knowledge is power.",
+    "source": "traditional",
+    "credit": {
+      "author": "Francis Bacon",
+      "source": "Meditationes Sacrae",
+      "url": "https://en.wikipedia.org/wiki/Knowledge_is_power"
+    }
+  },
+  {
+    "id": "en-saying-franklin",
+    "title": "English proverbs & sayings",
+    "text": "Time is money.",
+    "source": "traditional",
+    "credit": {
+      "author": "Benjamin Franklin",
+      "source": "Advice to a Young Tradesman",
+      "url": "https://en.wikipedia.org/wiki/Benjamin_Franklin"
+    }
+  },
+  {
+    "id": "en-saying-delphi",
+    "title": "English proverbs & sayings",
+    "text": "Know thyself.",
+    "source": "traditional",
+    "credit": {
+      "author": "Delphic maxim",
+      "source": "Ancient Greek aphorism",
+      "url": "https://en.wikipedia.org/wiki/Know_thyself"
+    }
+  },
+  {
+    "id": "en-saying-descartes",
+    "title": "English proverbs & sayings",
+    "text": "I think, therefore I am.",
+    "source": "traditional",
+    "credit": {
+      "author": "René Descartes",
+      "source": "Discourse on the Method",
+      "url": "https://en.wikipedia.org/wiki/Cogito,_ergo_sum"
+    }
+  },
+  {
+    "id": "en-saying-hippocrates",
+    "title": "English proverbs & sayings",
+    "text": "Life is short, art is long.",
+    "source": "traditional",
+    "credit": {
+      "author": "Hippocrates",
+      "source": "Aphorisms",
+      "url": "https://en.wikipedia.org/wiki/Hippocrates"
+    }
+  }
 ]

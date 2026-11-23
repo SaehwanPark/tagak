@@ -1,4 +1,4 @@
-import type { Activity, Language, NonEmpty, TextLesson, TextMode } from "./lessons";
+import type { Activity, Language, NonEmpty, TextCredit, TextLesson, TextMode, TextSource } from "./lessons";
 import { textActivities } from "./lessons";
 import rawKoreanLines from "./assets/one-line.ko.json" with { type: "json" };
 import rawEnglishLines from "./assets/one-line.en.json" with { type: "json" };
@@ -10,6 +10,25 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
+function readCredit(value: unknown): TextCredit | null | undefined {
+  if (value === undefined || value === null) return null;
+  if (!isObject(value)) return undefined;
+  const { author, source, url } = value;
+  if (typeof author !== "string" || !author.trim()) return undefined;
+  if (typeof source !== "string" || !source.trim()) return undefined;
+  if (typeof url !== "string" || !url.trim()) return undefined;
+  try {
+    if (new URL(url).protocol !== "https:") return undefined;
+  } catch {
+    return undefined;
+  }
+  return { author, source, url };
+}
+
+function isTextSource(value: unknown): value is TextSource {
+  return value === "original" || value === "quote" || value === "traditional";
+}
+
 function readLessons(value: unknown, language: Language, mode: TextMode): TextLesson[] {
   if (!Array.isArray(value)) return [];
   return value.flatMap((entry) => {
@@ -18,7 +37,11 @@ function readLessons(value: unknown, language: Language, mode: TextMode): TextLe
     if (typeof id !== "string" || !id.trim()) return [];
     if (typeof title !== "string" || !title.trim()) return [];
     if (typeof text !== "string" || !text.trim() || /[\r\n]/.test(text)) return [];
-    return [{ id, title, text, language, mode, source: "original" as const }];
+    const source = entry.source === undefined ? "original" : entry.source;
+    if (!isTextSource(source)) return [];
+    const credit = readCredit(entry.credit);
+    if (credit === undefined || (source !== "original" && !credit) || (source === "original" && credit)) return [];
+    return [{ id, title, text, language, mode, source, credit }];
   });
 }
 
@@ -35,6 +58,7 @@ export const firstKoreanLesson: TextLesson = sourceLessons[0] ?? {
   mode: "line",
   language: "ko",
   source: "original",
+  credit: null,
   text: "한글을 한 줄씩 입력하면 손끝에 작은 리듬이 돌아옵니다",
 };
 
