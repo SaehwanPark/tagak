@@ -36,23 +36,22 @@ src/
 │   ├── typingStatistics.ts # 세션 속도 분포 통계
 │   ├── textLayout.ts       # 5줄 묶음, 폭 기준 줄바꿈
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
-│   ├── positions.ts        # 두벌식 자리 연습 세션
 │   ├── random.ts           # 시드 정규화, xorshift32, Fisher–Yates 셔플
 │   ├── challenge.ts        # 30초 도전 상태 기계
 │   ├── venice.ts           # 베네치아 게임 상태 전이·레벨·효과·추천·득점
 │   └── history.ts          # 기록 모드·정렬·중복 제거·직전 기록 비교
 ├── content/
 │   ├── interfaceText.ts    # 한국어/영어 UI 문구 (InterfaceText 타입)
-│   ├── lessons.ts          # 낱말·한 줄 자료 타입과 검증, 한글 문장부호 정리
+│   ├── lessons.ts          # 한 줄 자료 타입과 검증, 한글 문장부호 정리
 │   ├── library.ts          # 애셋 JSON → 활동 목록, 도전 낱말
 │   ├── veniceWords.ts      # 베네치아 한글 낱말 애셋 검증·타수 계산
 │   ├── passages.ts         # 글 애셋 검증(라이선스·출처)과 줄바꿈
 │   ├── textLicenseInventory.ts # 연습문 출처·라이선스 문서 생성
-│   └── assets/*.json       # 연습 자료 원본 (venice-words.ko.json 별도 풀)
+│   └── assets/*.json       # 한 줄·글·게임 연습 자료 원본
 ├── storage/
 │   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위 (v2)
 │   ├── settingsStorage.ts  # 글자 크기 / 테마 / 언어별 글꼴
-│   ├── historyStorage.ts   # 최근 기록 (v3, 구버전 마이그레이션)
+│   ├── historyStorage.ts   # 최근 기록 (v3, 구버전·제거 모드 읽기 호환)
 │   ├── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
 │   ├── dataBackup.ts       # JSON 검증, 충돌 병합, 제한·복구를 갖춘 가져오기/내보내기
 │   └── storageEvents.ts    # 현재 창의 설정·기록 상태 갱신 알림
@@ -69,9 +68,9 @@ src/
     ├── randomSeed.ts       # 실행 시드 생성 (Web Crypto, 시계 fallback)
     ├── useScreenFocus.ts   # 탭 복귀·환경설정 왕복 초점 복구
     ├── TypingInput.tsx     # IME 이벤트 어댑터 (가장 민감한 경계)
-    ├── PracticeView.tsx    # 낱말·한 줄·글 한 줄 공통 화면
+    ├── PracticeView.tsx    # 한 줄 연습 화면
     ├── PassageView.tsx     # 5줄 묶음 문맥
-    ├── ChallengeView.tsx / VeniceView.tsx / PositionView.tsx / FreePracticeView.tsx
+    ├── ChallengeView.tsx / VeniceView.tsx
     ├── ResultView.tsx / HistoryView.tsx / DisplaySettings.tsx / DataTransferView.tsx
     ├── Scoreboard.tsx / ActivityMenu.tsx / ScreenCaptureControl.tsx
     ├── useFocus.ts         # 마운트 시 초점
@@ -86,7 +85,7 @@ src/
 
 ### 세션과 점수
 
-`PracticeSession`(낱말·한 줄·글의 한 줄)은 `input`, `startedAt`, `completedAt`만 가집니다. 시간은 항상 인자로 전달되어 같은 입력에서 같은 결과를 냅니다.
+`PracticeSession`(한 줄 또는 글의 현재 줄)은 `input`, `startedAt`, `completedAt`만 가집니다. 시간은 항상 인자로 전달되어 같은 입력에서 같은 결과를 냅니다.
 
 `TypingScore`는 정확도·글자 수·경과 시간과 언어별 속도 값을 담습니다.
 
@@ -137,7 +136,7 @@ src/
 
 ## 연습 순서 무작위화 (A34)
 
-`ui/randomSeed.ts`가 새 실행마다 `crypto.getRandomValues()`로 시드를 만든다. Web Crypto를 쓸 수 없는 내장 브라우저에서는 벽시계·단조 시계와 증가 카운터를 섞어 fallback 시드를 만든다. 도메인의 `shuffleWithSeed`는 Fisher–Yates를 xorshift32에 연결하며 입력 자료를 바꾸지 않는다. 자리·낱말·한 줄·30초 도전은 실행마다 독립된 순열을 받고, 자리·낱말·한 줄·도전 재시작도 새 시드를 사용한다. 짧은 글·긴 글은 기존 본문 순서를 유지한다. 순수한 시드 입력 덕분에 단위 테스트에서 순열을 재현할 수 있다.
+`ui/randomSeed.ts`가 새 실행마다 `crypto.getRandomValues()`로 시드를 만든다. Web Crypto를 쓸 수 없는 내장 브라우저에서는 벽시계·단조 시계와 증가 카운터를 섞어 fallback 시드를 만든다. 도메인의 `shuffleWithSeed`는 Fisher–Yates를 xorshift32에 연결하며 입력 자료를 바꾸지 않는다. 한 줄과 30초 도전은 실행마다 독립된 순열을 받고, 다시 연습과 도전 재시작도 새 시드를 사용한다. 짧은 글·긴 글은 기존 본문 순서를 유지한다. 순수한 시드 입력 덕분에 단위 테스트에서 순열을 재현할 수 있다.
 
 ## IME 입력 경계 (`ui/TypingInput.tsx`)
 
@@ -157,11 +156,11 @@ src/
 
 `usePracticeState`는 `useReducer` 하나로 화면을 전환합니다.
 
-- 화면 상태: `menu` · `library` · `history` · `data-transfer` · `challenge` · `venice` · `free-practice` · `practice` · `positions` · `passage` · `result` (+ `settings`는 `returnState`를 감싼 래퍼)
-- 이벤트: `start`, `input-changed`, `submit`, `position-key`, `retry`, `back`, 설정 열기/닫기 등
+- 화면 상태: `menu` · `games` · `library` · `challenge` · `venice` · `practice` · `passage` · `result` (+ `settings`가 메뉴·기록·데이터 이전 하위 화면을 감쌈)
+- 이벤트: `start`, `open-games`, `open-settings-history`, `open-settings-data-transfer`, `input-changed`, `submit`, `retry`, `return-to-menu` 등
 - 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
-`reduceTextPractice`는 낱말이면 결과 화면으로 넘기되 진행 위치(`wordProgress`)를 함께 남겨, 결과의 `continue`가 다음 낱말로 이어가고 `retry`는 방금 끝낸 낱말을 반복합니다. 한 줄이면 완료 점수를 세션 메모리에 모아 기본 20문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 기존 저장 큐에서 각각 처리합니다. `ResultView`는 저장하지 않은 세션 점수를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 평균·모집단 표준편차·중간값·사분위범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
+`reduceTextPractice`는 한 줄 문장 완료 점수를 세션 메모리에 모아 기본 20문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 저장 큐에서 각각 처리합니다. `ResultView`는 세션 속도를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 평균·모집단 표준편차·중간값·사분위범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
 
 ## 저장 계층
 
@@ -177,6 +176,8 @@ src/
 | `tagak:practice-font` | 한국어/영어별 글꼴 | v2, v1(공통 글꼴)을 두 언어에 복사 |
 | `tagak:history` | 최근 기록(최대 100) | v3, v1·v2 읽기 지원, `sentence`→`line`, `article`→`long` 변환 |
 | `tagak:venice:records` | 베네치아 최근 플레이(최대 30), 하이스코어 Top 10 | 별도 규칙 버전 1; 손상·호환 불가 데이터는 보존 |
+
+`RecordedMode`와 기록 화면의 레이블은 예전 저장·백업과 호환되도록 `position`·`word`도 읽습니다. 현재 시작 가능한 연습 모드는 `line`, `short`, `long`입니다.
 
 각 항목의 `tagak:migration:*` 표식은 이미 처리했거나 초기화한 이전 키를 다시 가져오지 않게 합니다. 표식은 연습 데이터와 분리되어 있으며 사용자 기록으로 노출되지 않습니다.
 
@@ -199,7 +200,7 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 ```
 
 - 초기값은 `main.tsx`가 첫 렌더 전에 설정해 깜빡임을 막습니다.
-- `--practice-font`는 제시문·입력창·글 문맥·연습장·도전 낱말에만 적용하고, 메뉴·자판 도식·점수는 기본 글꼴을 유지합니다.
+- `--practice-font`는 제시문·입력창·글 문맥·도전 낱말에만 적용하고, 메뉴·점수는 기본 글꼴을 유지합니다.
 - 외부 글꼴·CDN을 쓰지 않습니다(오프라인 유지).
 
 ## 초점 관리 (`ui/useScreenFocus.ts`, `ui/useFocus.ts`)
@@ -214,16 +215,16 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 ## 화면 저장과 효과음
 
 - **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 macOS `⌘S`와 브라우저의 `Ctrl+S`를 앱 화면 안에서 처리하고 IME 조합 중에는 가로채지 않습니다. WebView2는 `Ctrl+S`를 브라우저 가속키 이벤트로 분리하므로 Windows Tauri 호스트가 해당 키만 앱 이벤트로 전달합니다. Tauri 앱은 네이티브 대화상자에서 선택한 경로에 쓰고 브라우저 경로는 다운로드를 사용합니다.
-- **완료 효과음**: `completionSound.ts`가 Web Audio로 짧은 톤을 1회 재생합니다. 트리거는 `App.tsx`에서 `submissionEndsBundle`(글)과 `hasReachedEnd`(낱말·한 줄·자리)로 판단하며, 오디오 실패는 연습을 막지 않습니다.
+- **완료 효과음**: `completionSound.ts`가 Web Audio로 짧은 톤을 1회 재생합니다. 트리거는 `App.tsx`에서 `submissionEndsBundle`(글)과 `hasReachedEnd`(한 줄)로 판단하며, 오디오 실패는 연습을 막지 않습니다.
 
 ## 콘텐츠 애셋
 
 연습 자료는 코드가 아니라 JSON에 있습니다. 경계에서 검증하고, 잘못된 항목은 조용히 버립니다.
 
-- `one-line.{ko,en}.json`, `words.{ko,en}.json`, `challenge-words.json` — `lessons.ts`, `library.ts`가 읽습니다. 빈 문자열과 줄바꿈 포함 항목을 제외하고, 한 줄 원문 이외 항목은 `source`와 작성자·발화자·출처·HTTPS URL을 검증합니다. 한 줄 화면은 제시문 아래에 출처를 작게 표시합니다.
+- `one-line.{ko,en}.json`, `challenge-words.json` — `lessons.ts`, `library.ts`가 읽습니다. 빈 문자열과 줄바꿈 포함 항목을 제외하고, 직접 작성이 아닌 한 줄 원문은 `source`와 작성자·발화자·출처·HTTPS URL을 검증합니다. 한 줄 화면은 제시문 아래에 출처를 작게 표시합니다.
 - `passages.{ko,en}.json` — `passages.ts`가 읽습니다. `license`가 `original`이 아니면 `credit`(저자·출처·HTTPS URL)이 반드시 있어야 하고, 없으면 그 글을 싣지 않습니다. 이는 CC BY-SA·공공누리 출처 표기 의무를 지키기 위한 코드 수준의 가드입니다.
 - 줄바꿈은 언어별 고정 폭(한국어 24자, 영어 44자)으로 미리 계산해 5줄 묶음 경계가 새로고침·화면 너비에 흔들리지 않게 합니다(`textLayout.ts`).
-- `TEXT-LICENSES.md`는 `textLicenseInventory.ts`가 `activities`·`challengeWords`·`passageActivities`에서 생성합니다. 앱이 실제로 읽는 자료와 출처 표기가 같으므로, 새 자료를 추가하면 `npm run text-licenses:update`로 문서를 갱신합니다. `textLicenseInventory.test.ts`가 문서와 애셋 메타데이터의 일치를 검사합니다.
+- `TEXT-LICENSES.md`는 `textLicenseInventory.ts`가 한 줄·게임 도전·글 자료에서 생성합니다. 앱이 실제로 읽는 자료와 출처 표기가 같으므로, 새 자료를 추가하면 `npm run text-licenses:update`로 문서를 갱신합니다. `textLicenseInventory.test.ts`가 문서와 애셋 메타데이터의 일치를 검사합니다.
 
 새 연습 자료를 추가할 때는 애셋만 늘리면 메뉴·기록·글자 수 표시가 따라옵니다. 테스트(`lessons.test.ts` 등)가 길이 기준과 출처 규칙을 검사하고, 라이선스 문서 테스트가 출처 표기 누락과 문서 지연을 막습니다.
 

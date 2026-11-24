@@ -6,7 +6,8 @@ import { seedPreferences } from "./helpers/preferences";
 
 async function openVenice(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "[게임] 베네치아" }).click();
+  await page.getByRole("button", { name: "게임", exact: true }).click();
+  await page.getByRole("button", { name: "베네치아", exact: true }).click();
   await expect(page.getByRole("heading", { name: "베네치아" }).first()).toBeVisible();
 }
 

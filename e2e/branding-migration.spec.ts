@@ -85,7 +85,7 @@ test("current values win conflicts and corrupt current data never falls back", a
 
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-color-theme", "terminal");
-  await page.getByRole("button", { name: "[기타] 환경설정" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
   await expect(page.getByRole("status")).toHaveText("저장된 환경설정을 읽지 못했습니다. 기본값을 사용하며 기존 값은 보존했습니다.");
   await expect.poll(() => page.evaluate(({ currentKey, legacyKey }) => [
     localStorage.getItem(currentKey), localStorage.getItem(legacyKey),
@@ -113,7 +113,7 @@ test("invalid legacy data remains intact and is reported", async ({ page }) => {
   await page.addInitScript((key) => localStorage.setItem(key, "{invalid"), legacyKeys.colorTheme);
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-color-theme", "terminal");
-  await page.getByRole("button", { name: "[기타] 환경설정" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
   await expect(page.getByRole("status")).toHaveText("저장된 환경설정을 읽지 못했습니다. 기본값을 사용하며 기존 값은 보존했습니다.");
   await expect.poll(() => page.evaluate(({ currentKey, legacyKey }) => [
     localStorage.getItem(currentKey), localStorage.getItem(legacyKey),
@@ -145,7 +145,7 @@ test("reset prevents a value written later by an older tab from returning", asyn
   }, legacyKeys.display);
   await page.goto("/");
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), settingsKey)).not.toBeNull();
-  await page.getByRole("button", { name: "[기타] 환경설정" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
   await page.getByRole("button", { name: "기본 크기로 되돌리기" }).click();
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), settingsKey)).toBeNull();
 

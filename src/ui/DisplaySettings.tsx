@@ -26,10 +26,13 @@ type DisplaySettingsProps = {
   onFontChange: (font: PracticeFont, reset?: boolean) => Promise<void>;
   completionSound: AppPreferences["completionSound"];
   onCompletionSoundChange: (enabled: boolean) => void;
+  onOpenHistory: () => void;
+  onOpenDataTransfer: () => void;
   onReset: () => void;
   onBack: () => void;
   backLabel: string;
   practiceLanguageLocked: boolean;
+  initialFocusRow: string;
   notice: string;
   copy: InterfaceText;
 };
@@ -128,10 +131,13 @@ export function DisplaySettings({
   onFontChange,
   completionSound,
   onCompletionSoundChange,
+  onOpenHistory,
+  onOpenDataTransfer,
   onReset,
   onBack,
   backLabel,
   practiceLanguageLocked,
+  initialFocusRow,
   notice,
   copy,
 }: DisplaySettingsProps) {
@@ -142,12 +148,13 @@ export function DisplaySettings({
   ).filter(Boolean);
 
   useEffect(() => {
-    const firstRow = menu.current?.querySelector<HTMLButtonElement>("[data-setting-row]:not(:disabled)");
-    if (firstRow) {
-      setFocusedRow(firstRow.dataset.settingRow ?? "interface-language");
-      firstRow.focus({ preventScroll: true });
+    const rows = Array.from(menu.current?.querySelectorAll<HTMLButtonElement>("[data-setting-row]:not(:disabled)") ?? []);
+    const target = rows.find((row) => row.dataset.settingRow === initialFocusRow) ?? rows[0];
+    if (target) {
+      setFocusedRow(target.dataset.settingRow ?? "interface-language");
+      target.focus({ preventScroll: true });
     }
-  }, []);
+  }, [initialFocusRow]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.key === "Escape" && !event.nativeEvent.isComposing) {
@@ -301,6 +308,20 @@ export function DisplaySettings({
           onChange={(value) => onCompletionSoundChange(value === "on")}
           onFocus={() => setFocusedRow("completion-sound")}
           help={copy.completionSoundHelp}
+        />
+        <ActionRow
+          id="open-history"
+          label={copy.activityLabel("history", "Recent practice")}
+          active={focusedRow === "open-history"}
+          onFocus={() => setFocusedRow("open-history")}
+          onClick={onOpenHistory}
+        />
+        <ActionRow
+          id="open-data-transfer"
+          label={copy.activityLabel("data-transfer", "Back up and restore data")}
+          active={focusedRow === "open-data-transfer"}
+          onFocus={() => setFocusedRow("open-data-transfer")}
+          onClick={onOpenDataTransfer}
         />
         <ActionRow
           id="reset-settings"

@@ -16,9 +16,8 @@ type PracticeViewProps = {
   showLineSource?: boolean;
   session: PracticeSession;
   /**
-   * Speed for the current item is held back until the item is submitted. The
-   * live score therefore only carries accuracy; the speed appears once a line,
-   * word, or bundle is complete.
+   * Speed for the current line is held back until it is submitted. The live
+   * score therefore only carries accuracy; passage speed appears at a bundle boundary.
    */
   liveScore: () => TypingScore;
   previous?: TypingScore | null;

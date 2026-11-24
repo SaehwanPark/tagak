@@ -1,7 +1,5 @@
-import type { PositionKey } from "../domain/positions";
-
 export type Language = "ko" | "en";
-export type TextMode = "word" | "line";
+export type TextMode = "line";
 export type NonEmpty<T> = readonly [T, ...T[]];
 
 export type TextSource = "original" | "quote" | "traditional";
@@ -29,14 +27,7 @@ export type TextActivity = {
   lessons: NonEmpty<TextLesson>;
 };
 
-export type PositionActivity = {
-  id: string;
-  kind: "position";
-  label: string;
-  keys: NonEmpty<PositionKey>;
-};
-
-export type Activity = TextActivity | PositionActivity;
+export type Activity = TextActivity;
 
 export function trimKoreanLineEnding(lesson: TextLesson): TextLesson {
   if (lesson.language !== "ko" || lesson.mode !== "line") return lesson;
@@ -49,16 +40,14 @@ export function textActivities(lessons: readonly TextLesson[]): TextActivity[] {
     lesson.id.trim() && lesson.title.trim() && lesson.text.trim() && !/[\r\n]/.test(lesson.text)
   );
   const languages = ["ko", "en"] as const;
-  // Word drills come before one-line drills in the menu because they are the smaller step.
-  const modes = ["word", "line"] as const;
 
-  return languages.flatMap((language) => modes.flatMap<TextActivity>((mode) => {
-    const [first, ...rest] = valid.filter((lesson) => lesson.language === language && lesson.mode === mode);
+  return languages.flatMap<TextActivity>((language) => {
+    const [first, ...rest] = valid.filter((lesson) => lesson.language === language && lesson.mode === "line");
     return first ? [{
-      id: `${language}-${mode}`,
-      kind: mode,
-      label: `${language === "ko" ? "한글" : "영문"} ${mode === "word" ? "낱말" : "한 줄"}`,
+      id: `${language}-line`,
+      kind: "line",
+      label: "한 줄",
       lessons: [first, ...rest],
     }] : [];
-  }));
+  });
 }

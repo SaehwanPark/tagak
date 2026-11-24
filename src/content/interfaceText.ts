@@ -1,12 +1,10 @@
 import type { Language } from "./lessons";
 import type { TypingSpeedUnit } from "../domain/typingSpeed";
 
-/** Home-menu groups keep practice, game, and utility entries visually distinct. */
-export type MenuCategory = "practice" | "game" | "other";
-
 export type InterfaceText = Readonly<{
   brand: string;
   typingPractice: string;
+  games: string;
   menu: string;
   back: string;
   settings: string;
@@ -54,7 +52,6 @@ export type InterfaceText = Readonly<{
   chooseLongPassage: string;
   shortPassage: string;
   longPassage: string;
-  choosePractice: string;
   select: string;
   firstLast: string;
   currentPrompt: string;
@@ -76,8 +73,6 @@ export type InterfaceText = Readonly<{
   sameModePrevious: string;
   previousResult: string;
   practiceAgain: string;
-  nextWord: string;
-  wordProgress: (index: number, total: number) => string;
   lineSessionProgress: (current: number, total: number) => string;
   lineSessionCompleted: (count: number) => string;
   lineSessionResult: string;
@@ -117,7 +112,6 @@ export type InterfaceText = Readonly<{
   enterWord: string;
   stopChallenge: string;
   blockedWordInput: string;
-  retryWord: string;
   veniceTitle: string;
   veniceInstruction: string;
   veniceCollisionLine: string;
@@ -152,14 +146,6 @@ export type InterfaceText = Readonly<{
   veniceNoScores: string;
   veniceSaveFailed: string;
   veniceReadFailed: string;
-  freePractice: string;
-  freePracticeLabel: string;
-  freePracticeHint: string;
-  newline: string;
-  positionPractice: string;
-  positionInstruction: string;
-  tryAgain: string;
-  nextKey: string;
   passagePage: (page: number, total: number) => string;
   charactersSuffix: string;
   passageCurrentLine: string;
@@ -189,13 +175,13 @@ export type InterfaceText = Readonly<{
   backupRestoreError: string;
   backupCurrentDataError: string;
   activityLabel: (id: string, fallback: string) => string;
-  menuTag: (category: MenuCategory) => string;
   modeLabel: (mode: string) => string;
 }>;
 
 const ko: InterfaceText = {
   brand: "타각",
   typingPractice: "타자 연습",
+  games: "게임",
   menu: "메뉴",
   back: "← 뒤로",
   settings: "환경설정",
@@ -243,7 +229,6 @@ const ko: InterfaceText = {
   chooseLongPassage: "긴 글 고르기",
   shortPassage: "짧은 글",
   longPassage: "긴 글",
-  choosePractice: "연습 종류 고르기",
   select: "선택",
   firstLast: "처음/끝",
   currentPrompt: "제시문",
@@ -265,8 +250,6 @@ const ko: InterfaceText = {
   sameModePrevious: "같은 모드의 이전 기록",
   previousResult: "이전 결과",
   practiceAgain: "다시 연습",
-  nextWord: "다음 낱말",
-  wordProgress: (index, total) => `${index} / ${total}번째 낱말`,
   lineSessionProgress: (current, total) => `문장 ${current} / ${total}`,
   lineSessionCompleted: (count) => `${count}문장 완료`,
   lineSessionResult: "한 줄 연습 세션",
@@ -306,7 +289,6 @@ const ko: InterfaceText = {
   enterWord: "낱말은 키보드로 직접 입력하세요.",
   stopChallenge: "중단",
   blockedWordInput: "제시된 낱말과 같은지 확인하세요.",
-  retryWord: "낱말 연습",
   veniceTitle: "베네치아",
   veniceInstruction: "낱말을 입력해 탑을 지키세요. 일반 낱말 상단이 빨간 충돌선에 닿으면 탑 블록 1개가 손상됩니다. 노란 특수 낱말을 맞히면 효과가 발동하며, 감염된 레벨에서는 놓친 특수 낱말도 탑에 피해를 줍니다.",
   veniceCollisionLine: "충돌선 · 일반 낱말이 닿으면 탑 -1",
@@ -351,14 +333,6 @@ const ko: InterfaceText = {
   veniceNoScores: "아직 저장된 점수가 없습니다.",
   veniceSaveFailed: "결과를 저장하지 못했습니다. 이번 결과는 화면에서 확인할 수 있습니다.",
   veniceReadFailed: "저장된 베네치아 기록을 읽지 못했습니다. 기존 값은 보존했습니다.",
-  freePractice: "연습장",
-  freePracticeLabel: "원하는 내용을 자유롭게 입력하세요",
-  freePracticeHint: "Enter 줄바꿈 · Esc 메뉴",
-  newline: "줄바꿈",
-  positionPractice: "물리 키 위치 연습",
-  positionInstruction: "강조된 위치의 키를 누르세요.",
-  tryAgain: "다시 시도하세요.",
-  nextKey: "다음 키",
   passagePage: (page, total) => `${page} / ${total} 묶음`,
   charactersSuffix: "자",
   passageCurrentLine: "현재 줄",
@@ -399,26 +373,23 @@ const ko: InterfaceText = {
   activityLabel: (id, fallback) => ({
     // The practice language is already chosen, so menu labels omit it.
     "ko-line": "한 줄",
-    "ko-word": "낱말",
     "en-line": "한 줄",
-    "en-word": "낱말",
-    "ko-positions": "두벌식 자리 연습",
     "short-library": "짧은 글",
     "long-library": "긴 글",
+    games: "게임",
     challenge: "30초 낱말 도전",
     venice: "베네치아",
-    "free-practice": "연습장",
     history: "최근 연습 기록",
     settings: "환경설정",
     "data-transfer": "데이터 백업·가져오기",
   }[id] ?? fallback),
-  menuTag: (category) => ({ practice: "연습", game: "게임", other: "기타" }[category]),
   modeLabel: (mode) => ({ word: "낱말", line: "한 줄", short: "짧은 글", long: "긴 글", position: "자리" }[mode] ?? mode),
 };
 
 const en: InterfaceText = {
   brand: "Tagak",
   typingPractice: "Typing practice",
+  games: "Games",
   menu: "Menu",
   back: "← Back",
   settings: "Settings",
@@ -466,7 +437,6 @@ const en: InterfaceText = {
   chooseLongPassage: "Choose a long passage",
   shortPassage: "Short passages",
   longPassage: "Long passages",
-  choosePractice: "Choose practice",
   select: "Select",
   firstLast: "First/Last",
   currentPrompt: "Prompt",
@@ -488,8 +458,6 @@ const en: InterfaceText = {
   sameModePrevious: "Previous result in this mode",
   previousResult: "Previous result",
   practiceAgain: "Practice again",
-  nextWord: "Next word",
-  wordProgress: (index, total) => `Word ${index} of ${total}`,
   lineSessionProgress: (current, total) => `Sentence ${current} of ${total}`,
   lineSessionCompleted: (count) => `${count} sentences completed`,
   lineSessionResult: "One-line practice session",
@@ -529,7 +497,6 @@ const en: InterfaceText = {
   enterWord: "Type the word with your keyboard.",
   stopChallenge: "Stop",
   blockedWordInput: "Check that the prompt and your input match.",
-  retryWord: "Word practice",
   veniceTitle: "Venice",
   veniceInstruction: "Type words to defend the tower. When the top of a regular word reaches the red line, one tower block is damaged. Hitting a yellow special word triggers its effect; while infected, missed special words also damage the tower.",
   veniceCollisionLine: "Impact line · missed regular word: −1 block",
@@ -574,14 +541,6 @@ const en: InterfaceText = {
   veniceNoScores: "There are no saved scores yet.",
   veniceSaveFailed: "The result could not be saved. It remains visible here.",
   veniceReadFailed: "Saved Venice records could not be read. The existing value was preserved.",
-  freePractice: "Free typing",
-  freePracticeLabel: "Type anything you like",
-  freePracticeHint: "Enter for a new line · Esc for menu",
-  newline: "New line",
-  positionPractice: "Physical key position practice",
-  positionInstruction: "Press the highlighted key.",
-  tryAgain: "Try again.",
-  nextKey: "Next key",
   passagePage: (page, total) => `Page ${page} / ${total}`,
   charactersSuffix: " characters",
   passageCurrentLine: "Current line",
@@ -622,20 +581,16 @@ const en: InterfaceText = {
   activityLabel: (id, fallback) => ({
     // The practice language is already chosen, so menu labels omit it.
     "ko-line": "One-line drills",
-    "ko-word": "Words",
     "en-line": "One-line drills",
-    "en-word": "Words",
-    "ko-positions": "Two-set keyboard positions",
     "short-library": "Short passages",
     "long-library": "Long passages",
+    games: "Games",
     challenge: "30-second word challenge",
     venice: "Venice",
-    "free-practice": "Free typing",
     history: "Recent practice",
     settings: "Settings",
     "data-transfer": "Back up and restore data",
   }[id] ?? fallback),
-  menuTag: (category) => ({ practice: "Practice", game: "Game", other: "Other" }[category]),
   modeLabel: (mode) => ({ word: "Words", line: "One line", short: "Short passages", long: "Long passages", position: "Positions" }[mode] ?? mode),
 };
 
