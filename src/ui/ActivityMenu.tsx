@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 import type { InterfaceText } from "../content/interfaceText";
-type MenuEntry = { id: string; label: string; tag?: string; detail?: string; creditLabel?: string };
+type MenuEntry = { id: string; label: string; detail?: string; creditLabel?: string };
 
 // PageUp/PageDown move about one screenful of menu rows, matching the visible list height.
 const pageSize = 5;
@@ -61,7 +61,6 @@ export function ActivityMenu<Entry extends MenuEntry>({
           >
             <span>
               <strong>
-                {activity.tag && <span className="menu-tag">{activity.tag} </span>}
                 {activity.label}
               </strong>
               {activity.detail && <small>{activity.detail}</small>}

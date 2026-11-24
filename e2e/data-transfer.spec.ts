@@ -46,10 +46,10 @@ function makeBackup(records: ReturnType<typeof makeRecord>[]) {
 
 test("backup export contains saved records but excludes active typing", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "[기타] 연습장" }).click();
-  await page.getByRole("textbox", { name: "원하는 내용을 자유롭게 입력하세요" }).fill("이 문장은 백업에 포함되면 안 됩니다.");
-  await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "[기타] 데이터 백업·가져오기" }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
+  await page.getByRole("textbox", { name: "따라 입력하기" }).fill("이 문장은 백업에 포함되면 안 됩니다.");
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await page.getByRole("button", { name: "데이터 백업·가져오기" }).click();
 
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "백업 내보내기" }).click();
@@ -68,7 +68,8 @@ test("valid imports offer a merge and make merged history visible", async ({ pag
   await page.evaluate((record) => {
     localStorage.setItem("tagak:history", JSON.stringify({ version: 3, records: [record] }));
   }, makeRecord("current", 10));
-  await page.getByRole("button", { name: "[기타] 데이터 백업·가져오기" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await page.getByRole("button", { name: "데이터 백업·가져오기" }).click();
   await page.locator('input[type="file"]').setInputFiles({
     name: "tagak-backup.json",
     mimeType: "application/json",
@@ -78,15 +79,16 @@ test("valid imports offer a merge and make merged history visible", async ({ pag
   await expect(page.getByRole("alertdialog")).toBeVisible();
   await page.getByRole("button", { name: "병합" }).click();
   await expect(page.getByRole("status")).toHaveText("백업 데이터를 병합했습니다.");
-  await page.getByRole("button", { name: "← 메뉴" }).click();
-  await page.getByRole("button", { name: "[기타] 최근 연습 기록" }).click();
+  await page.getByRole("button", { name: "← 환경설정" }).click();
+  await page.getByRole("button", { name: "최근 연습 기록" }).click();
   await expect(page.locator(".history-list li")).toHaveCount(2);
 });
 
 test("corrupt imports leave the current data untouched", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => localStorage.setItem("tagak:history", "keep-this-value"));
-  await page.getByRole("button", { name: "[기타] 데이터 백업·가져오기" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await page.getByRole("button", { name: "데이터 백업·가져오기" }).click();
   await page.locator('input[type="file"]').setInputFiles({
     name: "broken.json",
     mimeType: "application/json",

@@ -112,7 +112,7 @@ export function DataTransferView({ onBack, copy }: DataTransferViewProps) {
       if (pending) cancelConflict();
       else onBack();
     }}>
-      <button type="button" className="back" onClick={onBack}>{copy.backToMenu}</button>
+      <button type="button" className="back" onClick={onBack}>{copy.backToSettings}</button>
       <h1 ref={title} tabIndex={-1}>{copy.dataTransferTitle}</h1>
       <p className="lede">{copy.dataTransferDescription}</p>
       <p>{copy.backupContents}</p>

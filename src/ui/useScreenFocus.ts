@@ -14,16 +14,12 @@ function restoreContentFocus(root: HTMLDivElement | null, state: PracticeState):
   if (!root) return;
   const visible = contentState(state);
   let target: HTMLElement | null = null;
-  if (visible.screen === "menu" || visible.screen === "library") {
+  if (visible.screen === "menu" || visible.screen === "games" || visible.screen === "library") {
     target = Array.from(root.querySelectorAll<HTMLElement>("button[data-activity]"))
       .find((button) => button.dataset.activity === visible.selected) ?? null;
   } else if (visible.screen === "practice" || visible.screen === "passage") {
     target = root.querySelector("#typing-input");
-  } else if (visible.screen === "free-practice") {
-    target = root.querySelector("#free-practice-input");
-  } else if (visible.screen === "positions") {
-    target = root.querySelector(".keyboard");
-  } else if (visible.screen === "result" || visible.screen === "history" || visible.screen === "data-transfer") {
+  } else if (visible.screen === "result") {
     target = root.querySelector("h1[tabindex='-1']");
   } else if (visible.screen === "challenge") {
     target = root.querySelector("#typing-input") ?? root.querySelector("button:not(.back)");
@@ -40,9 +36,16 @@ function canRestoreFocus(root: HTMLElement | null, target: HTMLElement): boolean
 
 function restoreScreenFocus(root: HTMLElement | null, screenContent: HTMLDivElement | null, state: PracticeState): void {
   if (state.screen === "settings" && root) {
-    const selected = root.querySelector<HTMLButtonElement>(".settings-menu [data-setting-row]:not(:disabled)");
-    const heading = root.querySelector<HTMLElement>(".settings-screen h1[tabindex='-1']");
-    (selected ?? heading)?.focus({ preventScroll: true });
+    if (state.view === "menu") {
+      const rows = Array.from(root.querySelectorAll<HTMLButtonElement>(".settings-menu [data-setting-row]:not(:disabled)"));
+      const selected = rows.find((row) => row.dataset.settingRow === state.focusRow) ?? rows[0];
+      const heading = root.querySelector<HTMLElement>(".settings-screen h1[tabindex='-1']");
+      (selected ?? heading)?.focus({ preventScroll: true });
+      return;
+    }
+    const heading = Array.from(root.querySelectorAll<HTMLElement>("h1[tabindex='-1']"))
+      .find((candidate) => candidate.closest("[hidden]") === null);
+    heading?.focus({ preventScroll: true });
     return;
   }
   restoreContentFocus(screenContent, state);

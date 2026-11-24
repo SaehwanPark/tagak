@@ -10,8 +10,6 @@
 | --- | --- | --- | --- |
 | 한국어 한 줄 | 69 | 직접 작성 12 · 짧은 인용 20 · 격언·속담 37 | `src/content/assets/one-line.ko.json` |
 | 영어 한 줄 | 55 | 직접 작성 6 · 짧은 인용 13 · 격언·속담 36 | `src/content/assets/one-line.en.json` |
-| 한국어 낱말 | 8 | 직접 작성 | `src/content/assets/words.ko.json` |
-| 영어 낱말 | 8 | 직접 작성 | `src/content/assets/words.en.json` |
 | 30초 낱말 도전 | 28 | 직접 작성 | `src/content/assets/challenge-words.json` |
 | 한국어 짧은 글 | 36 | 직접 작성 14 · CC BY-SA 4.0 21 · 퍼블릭 도메인 1 | `src/content/assets/passages.ko.json` |
 | 한국어 긴 글 | 9 | 직접 작성 2 · CC BY-SA 4.0 7 · 퍼블릭 도메인 0 | `src/content/assets/passages.ko.json` |
@@ -163,34 +161,6 @@
 | `en-saying-descartes` | English proverbs & sayings | 격언·속담 | René Descartes | Discourse on the Method | [열기](https://en.wikipedia.org/wiki/Cogito,_ergo_sum) |
 | `en-saying-hippocrates` | English proverbs & sayings | 격언·속담 | Hippocrates | Aphorisms | [열기](https://en.wikipedia.org/wiki/Hippocrates) |
 
-## 낱말 연습
-
-### 한국어 (8)
-
-| ID | 연습문 | 출처 유형 | 저자·발화자 | 출처 | 원문 |
-| --- | --- | --- | --- | --- | --- |
-| `ko-pencil` | 연필 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-window-word` | 창문 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-river` | 강물 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-breath` | 숨결 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-morning-word` | 아침 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-starlight` | 별빛 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-footstep` | 발걸음 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-notebook` | 공책 | 직접 작성 | — | 타각 직접 작성 | — |
-
-### 영어 (8)
-
-| ID | 연습문 | 출처 유형 | 저자·발화자 | 출처 | 원문 |
-| --- | --- | --- | --- | --- | --- |
-| `en-orchard` | orchard | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-lantern` | lantern | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-harbor` | harbor | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-meadow` | meadow | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-compass` | compass | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-thunder` | thunder | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-library` | library | 직접 작성 | — | 타각 직접 작성 | — |
-| `en-summer` | summer | 직접 작성 | — | 타각 직접 작성 | — |
-
 ## 30초 낱말 도전
 
 모든 도전 낱말은 직접 작성한 원문이다.
@@ -291,7 +261,7 @@
 
 ## 새 연습문을 추가할 때
 
-1. 알맞은 애셋에 항목을 추가한다. 한 줄·낱말·도전 낱말은 `src/content/assets/`의 JSON에 넣는다.
+1. 알맞은 애셋에 항목을 추가한다. 한 줄과 도전 낱말은 `src/content/assets/`의 JSON에 넣는다.
 2. 인용·전승 한 줄에는 `source`와 저자·출처·HTTPS URL을 담은 `credit`을 함께 적는다. 직접 작성한 한 줄은 기존처럼 `source: "original"`로 둔다. 복제 글(짧은 글·긴 글)에는 `license`와 `credit`을 함께 적고, 직접 작성한 글은 `license: "original"`과 `credit: null`을 쓴다. 출처 메타데이터가 불완전한 자료는 앱이 읽지 않는다.
 3. 발췌문은 제목에 `(발췌)`를 붙이고, 그림 캡션·각주·목록 기호·HTML 엔티티 같은 추출 잔여물을 제거한다. 복제 글은 완결된 문장으로 끝낸다.
 4. `npm run text-licenses:update`로 이 문서를 다시 생성한다.

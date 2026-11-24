@@ -5,7 +5,7 @@ import { passageActivities, passagesFor } from "./passages";
 
 it("skips unusable prompts without losing valid modes", () => {
   const lessons = textActivities([
-    { ...firstKoreanLesson, id: "bad", mode: "word", language: "en", text: " " },
+    { ...firstKoreanLesson, id: "bad", language: "en", text: " " },
     firstKoreanLesson,
   ]);
   expect(lessons.map((activity) => activity.id)).toEqual(["ko-line"]);
@@ -14,13 +14,11 @@ it("skips unusable prompts without losing valid modes", () => {
 it("trims only line-ending punctuation from Korean line prompts", () => {
   const lessons = textActivities([
     { ...firstKoreanLesson, id: "ko-line-test", text: "안녕, 반가워요!" },
-    { ...firstKoreanLesson, id: "ko-word-test", mode: "word", text: "단어!" },
     { ...firstKoreanLesson, id: "en-line-test", language: "en", text: "Hello!" },
   ]).flatMap((activity) => activity.lessons);
   const promptFor = (id: string) => lessons.find((lesson) => lesson.id === id)?.text;
 
   expect(promptFor("ko-line-test")).toBe("안녕, 반가워요");
-  expect(promptFor("ko-word-test")).toBe("단어!");
   expect(promptFor("en-line-test")).toBe("Hello!");
   const koreanLine = activities.find((activity) => activity.id === "ko-line");
   expect(koreanLine?.kind === "line" ? koreanLine.lessons[0]?.text : undefined)
@@ -29,7 +27,7 @@ it("trims only line-ending punctuation from Korean line prompts", () => {
 
 it("bundles line, short passage, and long passage assets for both languages", () => {
   expect(activities.map((activity) => activity.id)).toEqual(
-    ["ko-positions", "ko-word", "ko-line", "en-word", "en-line"],
+    ["ko-line", "en-line"],
   );
   const koreanLine = activities.find((activity) => activity.id === "ko-line");
   expect(koreanLine?.kind === "line" ? koreanLine.lessons.length : 0).toBeGreaterThan(5);

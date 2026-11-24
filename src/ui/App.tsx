@@ -2,9 +2,7 @@ import { Suspense, lazy, useEffect } from "react";
 import {
   challengeEntry,
   completionTime,
-  dataTransferEntry,
-  freePracticeEntry,
-  historyEntry,
+  gamesEntry,
   linePracticeSessionLength,
   settingsEntry,
   veniceEntry,
@@ -21,10 +19,8 @@ import type { Activity, Language } from "../content/lessons";
 import { longPassageEntry, passagesFor, shortPassageEntry } from "../content/passages";
 import type { PassageActivity } from "../content/passages";
 import { interfaceText } from "../content/interfaceText";
-import type { MenuCategory } from "../content/interfaceText";
 import { submissionEndsBundle } from "../domain/passagePractice";
 import { calculateLiveAccuracy, hasReachedEnd } from "../domain/typing";
-import type { PositionKey } from "../domain/positions";
 import { comparableRecord } from "../domain/history";
 import { defaultColorTheme, defaultSize } from "../storage/settingsStorage";
 import { ActivityMenu } from "./ActivityMenu";
@@ -32,8 +28,6 @@ import { PassageView } from "./PassageView";
 import { ChallengeView } from "./ChallengeView";
 import { DisplaySettings } from "./DisplaySettings";
 import { HistoryView } from "./HistoryView";
-import { FreePracticeView } from "./FreePracticeView";
-import { PositionView } from "./PositionView";
 import { PracticeView } from "./PracticeView";
 import { ResultView } from "./ResultView";
 import { ScreenCaptureControl } from "./ScreenCaptureControl";
@@ -52,14 +46,7 @@ function shouldPlayForCurrentSubmission(state: ReturnType<typeof usePracticeStat
 
 function activityLanguage(activity: Activity | PassageActivity): Language {
   if (activity.kind === "passage") return activity.language;
-  if (activity.kind === "position") return "ko";
   return activity.lessons[0]?.language ?? "ko";
-}
-
-function menuCategory(kind: string): MenuCategory {
-  if (kind === "challenge" || kind === "venice") return "game";
-  if (kind === "free-practice" || kind === "history" || kind === "settings" || kind === "data-transfer") return "other";
-  return "practice";
 }
 
 export function App() {
@@ -77,7 +64,7 @@ export function App() {
   const screenCapture = useScreenCapture(shell);
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
-    settingsReturnScreen === "positions" || settingsReturnScreen === "challenge" ||
+    settingsReturnScreen === "challenge" ||
     settingsReturnScreen === "venice" || settingsReturnScreen === "result";
   const settingsNotice = [appPreferences.notice, textSize.notice, colorTheme.notice, practiceFont.notice]
     .filter(Boolean).join(" ");
@@ -92,14 +79,6 @@ export function App() {
     if (completionSound && shouldPlayForCurrentSubmission(currentScreen, input)) playCompletionTone();
     dispatch({ type: "submit", ...(input === undefined ? {} : { input }), ...completionTime(at) });
   };
-  const onPositionKey = (key: PositionKey, at: number) => {
-    if (completionSound && currentScreen.screen === "positions" &&
-        currentScreen.session.correct === currentScreen.activity.keys.length - 1 &&
-        currentScreen.activity.keys[currentScreen.session.correct] === key) {
-      playCompletionTone();
-    }
-    dispatch({ type: "position-key", key, ...completionTime(at) });
-  };
   const notifyCompletion = () => { if (completionSound) playCompletionTone(); };
 
   useEffect(() => {
@@ -108,24 +87,21 @@ export function App() {
   }, [interfaceLanguage, practiceLanguage]);
 
   const languageActivities = activities.filter((activity) => {
-    if (activity.kind === "position") return practiceLanguage === "ko";
     return activity.lessons.some((lesson) => lesson.language === practiceLanguage);
   });
-  const shortPassages = passagesFor(practiceLanguage, "short");
-  const longPassages = passagesFor(practiceLanguage, "long");
   const mainActivities = [
     ...languageActivities,
-    ...(shortPassages.length ? [{ ...shortPassageEntry }] : []),
-    ...(longPassages.length ? [{ ...longPassageEntry }] : []),
-    ...(practiceLanguage === "ko" ? [challengeEntry, veniceEntry] : []),
-    freePracticeEntry,
-    historyEntry,
-    dataTransferEntry,
+    { ...shortPassageEntry },
+    { ...longPassageEntry },
+    gamesEntry,
     settingsEntry,
   ].map((activity) => ({
     ...activity,
     label: copy.activityLabel(activity.id, activity.label),
-    tag: `[${copy.menuTag(menuCategory(activity.kind))}]`,
+  }));
+  const gameActivities = [challengeEntry, veniceEntry].map((activity) => ({
+    ...activity,
+    label: copy.activityLabel(activity.id, activity.label),
   }));
   const libraryPassages = currentScreen.screen === "library"
     ? passagesFor(practiceLanguage, currentScreen.length)
@@ -179,14 +155,24 @@ export function App() {
           onStart={(activity) => {
             if (activity.kind === "short-library") dispatch({ type: "open-library", length: "short" });
             else if (activity.kind === "long-library") dispatch({ type: "open-library", length: "long" });
-            else if (activity.kind === "challenge") dispatch({ type: "open-challenge" });
-            else if (activity.kind === "venice") dispatch({ type: "open-venice" });
-            else if (activity.kind === "free-practice") dispatch({ type: "open-free-practice" });
-            else if (activity.kind === "history") dispatch({ type: "open-history" });
-            else if (activity.kind === "data-transfer") dispatch({ type: "open-data-transfer" });
+            else if (activity.kind === "games") dispatch({ type: "open-games" });
             else if (activity.kind === "settings") openSettings();
             else dispatch({ type: "start", activity, seed: createRunSeed() });
           }}
+        />
+      )}
+
+      {currentScreen.screen === "games" && (
+        <ActivityMenu
+          title={copy.games}
+          activities={gameActivities}
+          selected={currentScreen.selected}
+          copy={copy}
+          onStart={(activity) => {
+            if (activity.kind === "challenge") dispatch({ type: "open-challenge" });
+            else dispatch({ type: "open-venice" });
+          }}
+          onBack={back}
         />
       )}
 
@@ -200,24 +186,6 @@ export function App() {
             soundEnabled={completionSound}
             settingsOpen={state.screen === "settings" && state.returnState.screen === "venice"}
           />
-        </Suspense>
-      )}
-      {currentScreen.screen === "free-practice" && <FreePracticeView onBack={back} copy={copy} />}
-
-      {currentScreen.screen === "history" && (
-        <HistoryView
-          records={history.records}
-          onClear={history.reset}
-          onBack={back}
-          copy={copy}
-          interfaceLanguage={interfaceLanguage}
-          typingSpeedUnits={typingSpeedUnits}
-        />
-      )}
-
-      {currentScreen.screen === "data-transfer" && (
-        <Suspense fallback={<section className="screen" aria-busy="true" />}>
-          <DataTransferView onBack={back} copy={copy} />
         </Suspense>
       )}
 
@@ -271,40 +239,23 @@ export function App() {
         />
       )}
 
-      {currentScreen.screen === "positions" && (
-        <PositionView
-          activity={currentScreen.activity}
-          session={currentScreen.session}
-          onKey={onPositionKey}
-          onBack={back}
-          copy={copy}
-        />
-      )}
-
       {currentScreen.screen === "result" && (
         <ResultView
           title={currentScreen.lineSessionScores ? copy.lineSessionResult
             : currentScreen.activity.kind === "line" ? copy.previousSentence
-            : currentScreen.wordProgress ? currentScreen.wordProgress.title
               : copy.activityLabel(currentScreen.activity.id, currentScreen.activity.label)}
-          progress={currentScreen.wordProgress
-            ? copy.wordProgress(currentScreen.wordProgress.index + 1, currentScreen.wordProgress.total)
-            : currentScreen.lineSessionScores
-              ? copy.lineSessionCompleted(currentScreen.lineSessionScores.length)
-              : undefined}
+          progress={currentScreen.lineSessionScores
+            ? copy.lineSessionCompleted(currentScreen.lineSessionScores.length)
+            : undefined}
           {...(currentScreen.lineSessionScores ? { lineSessionScores: currentScreen.lineSessionScores } : {})}
           score={currentScreen.score}
-          showSpeed={currentScreen.activity.kind !== "position"}
+          showSpeed
           language={activityLanguage(currentScreen.activity)}
           speedUnit={typingSpeedUnits[activityLanguage(currentScreen.activity)]}
           comparison={latest ? comparableRecord(latest, history.records)?.score : undefined}
           backLabel={currentScreen.activity.kind === "passage"
             ? currentScreen.activity.length === "short" ? copy.shortPassage : copy.longPassage
             : copy.menu}
-          {...(currentScreen.wordProgress ? {
-            continueLabel: copy.nextWord,
-            onContinue: () => dispatch({ type: "continue" }),
-          } : {})}
           onRetry={() => {
             if (currentScreen.activity.kind !== "passage") {
               dispatch({ type: "retry-randomized", seed: createRunSeed() });
@@ -317,10 +268,13 @@ export function App() {
         />
       )}
 
-      {historyMessage && <p className="storage-notice" role="status">{historyMessage}</p>}
       </div>
 
-      {state.screen === "settings" && (
+      {historyMessage && (state.screen !== "settings" || state.view === "history") && (
+        <p className="storage-notice" role="status">{historyMessage}</p>
+      )}
+
+      {state.screen === "settings" && state.view === "menu" && (
         <DisplaySettings
           interfaceLanguage={interfaceLanguage}
           practiceLanguage={practiceLanguage}
@@ -340,6 +294,8 @@ export function App() {
           onFontChange={practiceFont.change}
           completionSound={completionSound}
           onCompletionSoundChange={(enabled) => { void appPreferences.change({ completionSound: enabled }); }}
+          onOpenHistory={() => dispatch({ type: "open-settings-history" })}
+          onOpenDataTransfer={() => dispatch({ type: "open-settings-data-transfer" })}
           onReset={() => {
             void Promise.all([
               appPreferences.reset(),
@@ -351,9 +307,27 @@ export function App() {
           onBack={closeSettings}
           backLabel={state.returnState.screen === "menu" ? copy.backToMenu : copy.back}
           practiceLanguageLocked={practiceLanguageLocked}
+          initialFocusRow={state.focusRow}
           notice={settingsNotice}
           copy={copy}
         />
+      )}
+
+      {state.screen === "settings" && state.view === "history" && (
+        <HistoryView
+          records={history.records}
+          onClear={history.reset}
+          onBack={() => dispatch({ type: "return-to-settings" })}
+          copy={copy}
+          interfaceLanguage={interfaceLanguage}
+          typingSpeedUnits={typingSpeedUnits}
+        />
+      )}
+
+      {state.screen === "settings" && state.view === "data-transfer" && (
+        <Suspense fallback={<section className="screen" aria-busy="true" />}>
+          <DataTransferView onBack={() => dispatch({ type: "return-to-settings" })} copy={copy} />
+        </Suspense>
       )}
 
     </main>

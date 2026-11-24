@@ -13,7 +13,7 @@ async function closeSettings(page: Page) {
 
 test("text size changes from settings, survives reload, and can be reset", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
   await input.fill("한글");
   await openSettings(page);
@@ -27,13 +27,13 @@ test("text size changes from settings, survives reload, and can be reset", async
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), settingsKey)).toContain("largest");
 
   await page.reload();
-  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
   await expect(input).toHaveCSS("font-size", "32px");
   await page.getByRole("button", { name: "← 메뉴" }).click();
   await openSettings(page);
   await page.getByRole("button", { name: "기본 크기로 되돌리기" }).click();
   await closeSettings(page);
-  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "따라 입력하기" })).toHaveCSS("font-size", "21.6px");
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), settingsKey)).toBeNull();
 });
@@ -66,7 +66,7 @@ test("practice fonts are kept separately for Korean and English", async ({ page 
   await expect(page.locator("html")).toHaveAttribute("data-practice-font", "gothic");
   await page.getByRole("button", { name: /연습 글꼴 · 영어/ }).click();
   await closeSettings(page);
-  await page.getByRole("button", { name: "[연습] 한 줄", exact: true }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
   await expect(page.locator("#typing-target")).toHaveCSS("font-family", 'Georgia, "Times New Roman", serif');
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-practice-language", "en");
@@ -120,7 +120,7 @@ test("a denied practice font write applies in this tab and reports the failure",
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), practiceFontKey)).toBeNull();
 });
 
-test("practice font applies to practice text and editors while menus keep their font", async ({ page }) => {
+test("practice font applies to practice text while menus keep their font", async ({ page }) => {
   await page.goto("/");
   await openSettings(page);
   await page.getByRole("button", { name: /연습 글꼴 · 한국어/ }).click();
@@ -128,17 +128,14 @@ test("practice font applies to practice text and editors while menus keep their 
   const menuFont = await page.locator(".lesson-button").first().evaluate((element) => getComputedStyle(element).fontFamily);
   expect(menuFont).not.toContain("Batang");
 
-  await page.getByRole("button", { name: "[연습] 짧은 글" }).click();
+  await page.getByRole("button", { name: "짧은 글" }).click();
   await page.getByRole("button", { name: /새벽 강변/ }).click();
   await expect(page.locator(".passage-page li").first()).toHaveCSS("font-family", 'Batang, "Times New Roman", serif');
   await expect(page.locator("#typing-target")).toHaveCSS("font-family", 'Batang, "Times New Roman", serif');
 
   await page.goto("/");
-  await page.getByRole("button", { name: "[기타] 연습장" }).click();
-  await expect(page.getByRole("textbox", { name: "원하는 내용을 자유롭게 입력하세요" })).toHaveCSS("font-family", 'Batang, "Times New Roman", serif');
-
-  await page.goto("/");
-  await page.getByRole("button", { name: "[게임] 30초 낱말 도전" }).click();
+  await page.getByRole("button", { name: "게임", exact: true }).click();
+  await page.getByRole("button", { name: "30초 낱말 도전", exact: true }).click();
   await page.getByRole("button", { name: "도전 시작" }).click();
   await expect(page.locator("#typing-target")).toHaveCSS("font-family", 'Batang, "Times New Roman", serif');
   await expect(page.getByRole("textbox", { name: "따라 입력하기" })).toHaveCSS("font-family", 'Batang, "Times New Roman", serif');

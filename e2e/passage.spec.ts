@@ -6,7 +6,7 @@ import { stubCompletionTone } from "./helpers/audio";
 test("short passage lines advance in five-line pages and return to the selected passage", async ({ page }) => {
   const passage = passagesFor("ko", "short")[0]!;
   await page.goto("/");
-  const library = page.getByRole("button", { name: "[연습] 짧은 글" });
+  const library = page.getByRole("button", { name: "짧은 글" });
   await library.click();
   const entry = page.getByRole("button", { name: /새벽 강변/ });
   await expect(entry).toBeFocused();
@@ -32,7 +32,7 @@ test("short passage lines advance in five-line pages and return to the selected 
 test("long passages expose five-line pages and their genre and size", async ({ page }) => {
   const passage = passagesFor("ko", "long")[0]!;
   await page.goto("/");
-  await page.getByRole("button", { name: "[연습] 긴 글" }).click();
+  await page.getByRole("button", { name: "긴 글" }).click();
   const entry = page.getByRole("button", { name: new RegExp(passage.label) });
   await expect(entry).toContainText(`${passage.characterCount}자`);
   await entry.click();
@@ -53,7 +53,7 @@ test("bundle speed and completion sound appear only when a five-line bundle ends
   const tones = await stubCompletionTone(page);
 
   await page.goto("/");
-  await page.getByRole("button", { name: "[연습] 짧은 글" }).click();
+  await page.getByRole("button", { name: "짧은 글" }).click();
   await page.getByRole("button", { name: /새벽 강변/ }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
 
@@ -81,10 +81,10 @@ test("bundle speed and completion sound appear only when a five-line bundle ends
 
 test("copied passages show their author, source, and license in the list", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "[연습] 짧은 글" }).click();
+  await page.getByRole("button", { name: "짧은 글" }).click();
   const entry = page.getByRole("button", { name: /운수 좋은 날/ });
   await expect(entry).toContainText("현진건 · 한국어 위키문헌 · CC BY-SA 4.0");
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "[연습] 긴 글" }).click();
+  await page.getByRole("button", { name: "긴 글" }).click();
   await expect(page.getByRole("button", { name: /날개/ })).toContainText("이상 · 한국어 위키문헌");
 });

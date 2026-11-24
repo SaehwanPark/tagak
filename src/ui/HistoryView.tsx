@@ -54,7 +54,7 @@ export function HistoryView({ records, onClear, onBack, copy, interfaceLanguage,
         onBack();
       }
     }}>
-      <button type="button" className="back" onClick={onBack}>{copy.backToMenu}</button>
+      <button type="button" className="back" onClick={onBack}>{copy.backToSettings}</button>
       <h1 ref={title} tabIndex={-1}>{copy.activityLabel("history", "Recent practice")}</h1>
       <div className="history-toolbar">
         <label>{copy.practiceKind}{" "}

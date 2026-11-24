@@ -1,6 +1,6 @@
 import { activities, challengeWords } from "./library";
 import { passageActivities } from "./passages";
-import type { Language, TextLesson, TextMode } from "./lessons";
+import type { Language, TextLesson } from "./lessons";
 
 const licenseNames = {
   original: "직접 작성",
@@ -18,9 +18,9 @@ function escapeCell(value: string): string {
   return value.replace(/\|/g, "\\|");
 }
 
-function textLessons(mode: TextMode, language: Language): TextLesson[] {
+function textLessons(language: Language): TextLesson[] {
   return activities.flatMap((activity) =>
-    activity.kind === mode ? activity.lessons.filter((lesson) => lesson.language === language) : []
+    activity.lessons.filter((lesson) => lesson.language === language)
   );
 }
 
@@ -75,10 +75,8 @@ function passageTable(length: "short" | "long", language: Language): string[] {
  * asset-level credit or license metadata.
  */
 export function textLicenseMarkdown(): string {
-  const koreanLines = textLessons("line", "ko");
-  const englishLines = textLessons("line", "en");
-  const koreanWords = textLessons("word", "ko");
-  const englishWords = textLessons("word", "en");
+  const koreanLines = textLessons("ko");
+  const englishLines = textLessons("en");
   const koreanShort = passageActivities.filter((passage) => passage.language === "ko" && passage.length === "short");
   const koreanLong = passageActivities.filter((passage) => passage.language === "ko" && passage.length === "long");
   const englishShort = passageActivities.filter((passage) => passage.language === "en" && passage.length === "short");
@@ -99,8 +97,6 @@ export function textLicenseMarkdown(): string {
     "| --- | --- | --- | --- |",
     `| 한국어 한 줄 | ${koreanLines.length} | ${textSourceSummary(koreanLines)} | \`src/content/assets/one-line.ko.json\` |`,
     `| 영어 한 줄 | ${englishLines.length} | ${textSourceSummary(englishLines)} | \`src/content/assets/one-line.en.json\` |`,
-    `| 한국어 낱말 | ${koreanWords.length} | 직접 작성 | \`src/content/assets/words.ko.json\` |`,
-    `| 영어 낱말 | ${englishWords.length} | 직접 작성 | \`src/content/assets/words.en.json\` |`,
     `| 30초 낱말 도전 | ${challengeWords.length} | 직접 작성 | \`src/content/assets/challenge-words.json\` |`,
     `| 한국어 짧은 글 | ${koreanShort.length} | 직접 작성 ${koreanShort.filter((passage) => passage.license === "original").length} · CC BY-SA 4.0 ${koreanShort.filter((passage) => passage.license === "cc-by-sa-4.0").length} · 퍼블릭 도메인 ${koreanShort.filter((passage) => passage.license === "public-domain").length} | \`src/content/assets/passages.ko.json\` |`,
     `| 한국어 긴 글 | ${koreanLong.length} | 직접 작성 ${koreanLong.filter((passage) => passage.license === "original").length} · CC BY-SA 4.0 ${koreanLong.filter((passage) => passage.license === "cc-by-sa-4.0").length} · 퍼블릭 도메인 ${koreanLong.filter((passage) => passage.license === "public-domain").length} | \`src/content/assets/passages.ko.json\` |`,
@@ -126,16 +122,6 @@ export function textLicenseMarkdown(): string {
     "",
     ...lessonTable(englishLines),
     "",
-    "## 낱말 연습",
-    "",
-    `### 한국어 (${koreanWords.length})`,
-    "",
-    ...lessonTable(koreanWords),
-    "",
-    `### 영어 (${englishWords.length})`,
-    "",
-    ...lessonTable(englishWords),
-    "",
     ...challengeSection(),
     "",
     "## 짧은 글",
@@ -160,7 +146,7 @@ export function textLicenseMarkdown(): string {
     "",
     "## 새 연습문을 추가할 때",
     "",
-    "1. 알맞은 애셋에 항목을 추가한다. 한 줄·낱말·도전 낱말은 `src/content/assets/`의 JSON에 넣는다.",
+    "1. 알맞은 애셋에 항목을 추가한다. 한 줄과 도전 낱말은 `src/content/assets/`의 JSON에 넣는다.",
     "2. 인용·전승 한 줄에는 `source`와 저자·출처·HTTPS URL을 담은 `credit`을 함께 적는다. 직접 작성한 한 줄은 기존처럼 `source: \"original\"`로 둔다. 복제 글(짧은 글·긴 글)에는 `license`와 `credit`을 함께 적고, 직접 작성한 글은 `license: \"original\"`과 `credit: null`을 쓴다. 출처 메타데이터가 불완전한 자료는 앱이 읽지 않는다.",
     "3. 발췌문은 제목에 `(발췌)`를 붙이고, 그림 캡션·각주·목록 기호·HTML 엔티티 같은 추출 잔여물을 제거한다. 복제 글은 완결된 문장으로 끝낸다.",
     "4. `npm run text-licenses:update`로 이 문서를 다시 생성한다.",
