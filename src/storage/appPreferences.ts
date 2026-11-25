@@ -5,6 +5,11 @@ import {
 } from "../domain/typingSpeed";
 import type { TypingSpeedUnits } from "../domain/typingSpeed";
 import {
+  defaultLinePracticeSessionLength,
+  isLinePracticeSessionLength,
+} from "../domain/linePracticeSettings";
+import type { LinePracticeSessionLength } from "../domain/linePracticeSettings";
+import {
   ensureStorageMigrated,
   migrateStorageValue,
   readStorageValue,
@@ -20,6 +25,7 @@ export type AppPreferences = Readonly<{
   practiceLanguage: Language;
   completionSound: boolean;
   typingSpeedUnits: TypingSpeedUnits;
+  linePracticeSessionLength: LinePracticeSessionLength;
 }>;
 
 type LegacyAppPreferences = Readonly<{
@@ -33,6 +39,7 @@ export const defaultAppPreferences: AppPreferences = {
   practiceLanguage: "ko",
   completionSound: false,
   typingSpeedUnits: defaultTypingSpeedUnits,
+  linePracticeSessionLength: defaultLinePracticeSessionLength,
 };
 
 export type AppPreferencesRead = Readonly<{ value: AppPreferences; valid: boolean }>;
@@ -53,6 +60,17 @@ function isAppPreferences(value: unknown): value is AppPreferences {
     "typingSpeedUnits" in value && typeof value.typingSpeedUnits === "object" &&
     value.typingSpeedUnits !== null &&
     "ko" in value.typingSpeedUnits && isTypingSpeedUnit(value.typingSpeedUnits.ko) &&
+    "en" in value.typingSpeedUnits && isTypingSpeedUnit(value.typingSpeedUnits.en) &&
+    "linePracticeSessionLength" in value && isLinePracticeSessionLength(value.linePracticeSessionLength);
+}
+
+function isVersionTwoAppPreferences(value: unknown): value is LegacyAppPreferences & {
+  typingSpeedUnits: TypingSpeedUnits;
+} {
+  return isLegacyAppPreferences(value) &&
+    "typingSpeedUnits" in value && typeof value.typingSpeedUnits === "object" &&
+    value.typingSpeedUnits !== null &&
+    "ko" in value.typingSpeedUnits && isTypingSpeedUnit(value.typingSpeedUnits.ko) &&
     "en" in value.typingSpeedUnits && isTypingSpeedUnit(value.typingSpeedUnits.en);
 }
 
@@ -65,11 +83,24 @@ export function decodeAppPreferences(raw: string | null): AppPreferencesRead {
     }
     if (value.version === 1 && isLegacyAppPreferences(value.preferences)) {
       return {
-        value: { ...value.preferences, typingSpeedUnits: defaultTypingSpeedUnits },
+        value: {
+          ...value.preferences,
+          typingSpeedUnits: defaultTypingSpeedUnits,
+          linePracticeSessionLength: defaultLinePracticeSessionLength,
+        },
         valid: true,
       };
     }
-    if (value.version === 2 && isAppPreferences(value.preferences)) {
+    if (value.version === 2 && isVersionTwoAppPreferences(value.preferences)) {
+      return {
+        value: {
+          ...value.preferences,
+          linePracticeSessionLength: defaultLinePracticeSessionLength,
+        },
+        valid: true,
+      };
+    }
+    if (value.version === 3 && isAppPreferences(value.preferences)) {
       return { value: value.preferences, valid: true };
     }
     return { value: defaultAppPreferences, valid: false };
@@ -105,7 +136,7 @@ export async function saveAppPreferences(
       }
       if (!migrateStorageValue("preferences", isValidAppPreferences)) return false;
       if (!readAppPreferences().valid) return false;
-      localStorage.setItem(appPreferencesKey, JSON.stringify({ version: 2, preferences }));
+      localStorage.setItem(appPreferencesKey, JSON.stringify({ version: 3, preferences }));
       return true;
     });
   } catch {

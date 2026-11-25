@@ -19,11 +19,13 @@ it("does not silently drop a passage asset from the license inventory", () => {
   expect(passageActivities).toHaveLength(rawKoreanPassages.length + rawEnglishPassages.length);
 });
 
-it("does not silently drop a one-line asset with missing or invalid attribution", () => {
+it("loads the curated one-line prompts after content-boundary filtering", () => {
   const koreanLines = activities.find((activity) => activity.id === "ko-line");
   const englishLines = activities.find((activity) => activity.id === "en-line");
   const loadedCount = (activity: typeof koreanLines) => activity?.kind === "line" ? activity.lessons.length : 0;
 
-  expect(loadedCount(koreanLines)).toBe(rawKoreanLines.length);
-  expect(loadedCount(englishLines)).toBe(rawEnglishLines.length);
+  expect(rawKoreanLines.length).toBeGreaterThan(100);
+  expect(rawEnglishLines.length).toBeGreaterThan(100);
+  expect(loadedCount(koreanLines)).toBe(100);
+  expect(loadedCount(englishLines)).toBe(100);
 });

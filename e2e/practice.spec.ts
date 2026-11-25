@@ -115,9 +115,38 @@ test("one-line practice completes its 20-sentence session with speed statistics"
   await expect(page.getByRole("heading", { name: "연습 완료" })).toBeFocused();
   await expect(page.getByText("한 줄 연습 세션")).toBeVisible();
   await expect(page.getByText("20문장 완료")).toBeVisible();
-  await expect(page.getByText("통계에 포함된 속도 20개")).toBeVisible();
+  await expect(page.getByText("유효한 속도 20개 중 18개로 통계 계산")).toBeVisible();
   const statistics = page.locator(".line-session-statistics .scores");
-  await expect(statistics.locator("dt")).toHaveText(["평균", "표준편차", "중간값", "IQR"]);
+  await expect(statistics.locator("dt")).toHaveText(["평균", "표준편차", "중간값", "IQR (P25–P75)"]);
+});
+
+test("uses the configured sentence count and reports the trimmed quartile range", async ({ page }) => {
+  await page.clock.install();
+  await page.goto("/");
+  await page.getByRole("button", { name: "환경설정" }).click();
+  const lineCount = page.getByRole("button", { name: /한 줄 문장 수/ });
+  await lineCount.focus();
+  await lineCount.press("ArrowLeft");
+  await lineCount.press("ArrowLeft");
+  await page.getByRole("button", { name: "← 메뉴" }).click();
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
+
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  const target = page.locator("#typing-target");
+  for (let completed = 0; completed < 5; completed += 1) {
+    await expect(page.getByText(`문장 ${completed + 1} / 5`)).toBeVisible();
+    const prompt = await target.getAttribute("aria-label");
+    expect(prompt).not.toBeNull();
+    await input.fill(prompt!);
+    await page.clock.fastForward(2_000);
+    await input.press("Enter");
+  }
+
+  await expect(page.getByText("5문장 완료")).toBeVisible();
+  await expect(page.getByText("유효한 속도 5개 중 3개로 통계 계산")).toBeVisible();
+  const statistics = page.locator(".line-session-statistics .scores");
+  await expect(statistics.locator("dt").last()).toHaveText("IQR (P25–P75)");
+  await expect(statistics.locator("dd").last()).toHaveText(/^\d+–\d+$/);
 });
 
 test("IME composition and its Enter are processed separately from submission", async ({ page }) => {

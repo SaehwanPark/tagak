@@ -567,5 +567,327 @@
       "source": "Aphorisms",
       "url": "https://en.wikipedia.org/wiki/Hippocrates"
     }
+  },
+  {
+    "id": "en-proverb-31",
+    "title": "English proverbs",
+    "text": "A bad workman always blames his tools",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-32",
+    "title": "English proverbs",
+    "text": "A bird in the hand is worth two in the bush",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-33",
+    "title": "English proverbs",
+    "text": "A chain is only as strong as its weakest link",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-34",
+    "title": "English proverbs",
+    "text": "A friend in need is a friend indeed",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-35",
+    "title": "English proverbs",
+    "text": "A watched pot never boils",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-36",
+    "title": "English proverbs",
+    "text": "All roads lead to Rome",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-37",
+    "title": "English proverbs",
+    "text": "An apple a day keeps the doctor away",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-38",
+    "title": "English proverbs",
+    "text": "Beggars cannot be choosers",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-39",
+    "title": "English proverbs",
+    "text": "Blood is thicker than water",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-40",
+    "title": "English proverbs",
+    "text": "Do not judge a book by its cover",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-41",
+    "title": "English proverbs",
+    "text": "Good things come to those who wait",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-42",
+    "title": "English proverbs",
+    "text": "It takes two to tango",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-43",
+    "title": "English proverbs",
+    "text": "Laughter is the best medicine",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-44",
+    "title": "English proverbs",
+    "text": "Look after the pennies and the pounds look after themselves",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-45",
+    "title": "English proverbs",
+    "text": "No news is good news",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-46",
+    "title": "English proverbs",
+    "text": "Nothing ventured nothing gained",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-47",
+    "title": "English proverbs",
+    "text": "One swallow does not make a summer",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-48",
+    "title": "English proverbs",
+    "text": "People who live in glass houses should not throw stones",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-49",
+    "title": "English proverbs",
+    "text": "The best things in life are free",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-50",
+    "title": "English proverbs",
+    "text": "The proof of the pudding is in the eating",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-51",
+    "title": "English proverbs",
+    "text": "There is no smoke without fire",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-52",
+    "title": "English proverbs",
+    "text": "Too many cooks spoil the broth",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-53",
+    "title": "English proverbs",
+    "text": "You can lead a horse to water but you cannot make it drink",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-54",
+    "title": "English proverbs",
+    "text": "When the going gets tough the tough get going",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-proverb-55",
+    "title": "English proverbs",
+    "text": "You cannot make an omelette without breaking eggs",
+    "source": "traditional",
+    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+  },
+  {
+    "id": "en-quote-hamlet-brevity",
+    "title": "Hamlet",
+    "text": "Brevity is the soul of wit",
+    "source": "quote",
+    "credit": { "author": "William Shakespeare", "source": "Hamlet", "url": "https://www.gutenberg.org/ebooks/100" }
+  },
+  {
+    "id": "en-quote-hamlet-joint",
+    "title": "Hamlet",
+    "text": "The time is out of joint",
+    "source": "quote",
+    "credit": { "author": "William Shakespeare", "source": "Hamlet", "url": "https://www.gutenberg.org/ebooks/100" }
+  },
+  {
+    "id": "en-quote-alice-book",
+    "title": "Alice in Wonderland",
+    "text": "There ought to be a book written about me",
+    "source": "quote",
+    "credit": { "author": "Alice", "source": "Alice's Adventures in Wonderland", "url": "https://www.gutenberg.org/files/11/11-h/11-h.htm" }
+  },
+  {
+    "id": "en-quote-alice-puzzle",
+    "title": "Alice in Wonderland",
+    "text": "Who in the world am I Ah thats the great puzzle",
+    "source": "quote",
+    "credit": { "author": "Alice", "source": "Alice's Adventures in Wonderland", "url": "https://www.gutenberg.org/files/11/11-h/11-h.htm" }
+  },
+  {
+    "id": "en-quote-christmas-bless",
+    "title": "A Christmas Carol",
+    "text": "God bless us every one",
+    "source": "quote",
+    "credit": { "author": "Tiny Tim", "source": "A Christmas Carol", "url": "https://www.gutenberg.org/files/46/46-h/46-h.htm" }
+  },
+  {
+    "id": "en-quote-tale-times",
+    "title": "A Tale of Two Cities",
+    "text": "It was the best of times it was the worst of times",
+    "source": "quote",
+    "credit": { "author": "Charles Dickens", "source": "A Tale of Two Cities", "url": "https://www.gutenberg.org/files/98/98-h/98-h.htm" }
+  },
+  {
+    "id": "en-original-paper-boat",
+    "title": "A paper boat",
+    "text": "A paper boat can travel far by reading the current"
+  },
+  {
+    "id": "en-original-slow-walk",
+    "title": "Slow walk",
+    "text": "Slow walks reveal details hidden from hurried eyes"
+  },
+  {
+    "id": "en-original-last-bus",
+    "title": "The last bus",
+    "text": "The empty street stayed bright after the last bus passed"
+  },
+  {
+    "id": "en-original-short-pause",
+    "title": "A short pause",
+    "text": "A short pause made the next direction easier to see"
+  },
+  {
+    "id": "en-original-rhythm",
+    "title": "Different rhythms",
+    "text": "Different rhythms gathered into one patient song"
+  },
+  {
+    "id": "en-original-waiting",
+    "title": "Waiting",
+    "text": "Waiting can be a time to choose your thoughts"
+  },
+  {
+    "id": "en-original-rain-umbrella",
+    "title": "Rain on the umbrella",
+    "text": "Rain tapped a quiet rhythm against the folded umbrella"
+  },
+  {
+    "id": "en-original-daily-notes",
+    "title": "Daily notes",
+    "text": "A small notebook can hold an entire day of joy"
+  },
+  {
+    "id": "en-original-first-snow",
+    "title": "Fresh snow",
+    "text": "Fresh snow gave every footstep a different path"
+  },
+  {
+    "id": "en-original-early-arrival",
+    "title": "Arriving early",
+    "text": "We arrived early and watched the neighborhood wake"
+  },
+  {
+    "id": "en-original-unspoken",
+    "title": "Unspoken feelings",
+    "text": "Unspoken feelings grow slowly between familiar glances"
+  },
+  {
+    "id": "en-original-new-leaf",
+    "title": "A new leaf",
+    "text": "The plant opened a new leaf in the sunny window"
+  },
+  {
+    "id": "en-original-bookshop",
+    "title": "A little bookshop",
+    "text": "A little bookshop stayed in our memory for years"
+  },
+  {
+    "id": "en-original-glass-of-water",
+    "title": "A warm glass of water",
+    "text": "A warm glass of water began a long conversation"
+  },
+  {
+    "id": "en-original-old-letter",
+    "title": "A letter from home",
+    "text": "The letter carried the scent of wind from home"
+  },
+  {
+    "id": "en-original-evening-street",
+    "title": "The evening street",
+    "text": "The corner shops began to glow as evening settled"
+  },
+  {
+    "id": "en-original-after-rain",
+    "title": "After the rain",
+    "text": "Clouds rested like shadows across the empty field"
+  },
+  {
+    "id": "en-original-old-photo",
+    "title": "An old photograph",
+    "text": "Friends in old photographs seemed to laugh more slowly"
+  },
+  {
+    "id": "en-original-dinner-table",
+    "title": "The dinner table",
+    "text": "Stories from the dinner table washed away todays tiredness"
+  },
+  {
+    "id": "en-original-again",
+    "title": "One more try",
+    "text": "One more try helped my hands find the familiar path"
+  },
+  {
+    "id": "en-original-practice-note",
+    "title": "A practice note",
+    "text": "I wrote each new sentence carefully across the white page"
   }
 ]

@@ -63,6 +63,28 @@ test("completion sound is off by default", async ({ page }) => {
   await expect(page.getByRole("button", { name: /효과음/ })).toContainText("끔");
 });
 
+test("line sentence count cycles, persists, and resets with the other preferences", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "환경설정" }).click();
+  const lineCount = page.getByRole("button", { name: /한 줄 문장 수/ });
+  await expect(lineCount).toContainText("20문장");
+  await lineCount.focus();
+  await lineCount.press("ArrowLeft");
+  await lineCount.press("ArrowLeft");
+  await expect(lineCount).toContainText("5문장");
+  await expect.poll(() => page.evaluate((key) => {
+    const saved = JSON.parse(localStorage.getItem(key) ?? "null");
+    return [saved?.version, saved?.preferences?.linePracticeSessionLength];
+  }, appPreferencesKey)).toEqual([3, 5]);
+
+  await page.reload();
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await expect(page.getByRole("button", { name: /한 줄 문장 수/ })).toContainText("5문장");
+  await page.getByRole("button", { name: "환경설정을 기본값으로 되돌리기" }).click();
+  await expect(page.getByRole("button", { name: /한 줄 문장 수/ })).toContainText("20문장");
+  await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), appPreferencesKey)).toBeNull();
+});
+
 test("interface and practice languages are independent and the five home entries stay stable", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "환경설정" }).click();
@@ -100,7 +122,7 @@ test("speed units have language-specific defaults and save independently", async
   await expect.poll(() => page.evaluate((key) => {
     const saved = JSON.parse(localStorage.getItem(key) ?? "null");
     return [saved?.version, saved?.preferences?.typingSpeedUnits?.ko, saved?.preferences?.typingSpeedUnits?.en];
-  }, appPreferencesKey)).toEqual([2, "wpm", "cpm"]);
+  }, appPreferencesKey)).toEqual([3, "wpm", "cpm"]);
 
   await page.getByRole("button", { name: "환경설정을 기본값으로 되돌리기" }).click();
   await expect(koreanUnit).toContainText("분당 타수 (CPM)");
@@ -120,7 +142,7 @@ test("A12 preferences migrate and English WPM stays consistent in results and hi
   await expect(koreanUnit).toContainText("Keystrokes/minute (CPM)");
   await koreanUnit.click();
   await expect.poll(() => page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "null"), appPreferencesKey))
-    .toMatchObject({ version: 2, preferences: { interfaceLanguage: "en", practiceLanguage: "en", completionSound: false, typingSpeedUnits: { ko: "wpm", en: "wpm" } } });
+    .toMatchObject({ version: 3, preferences: { interfaceLanguage: "en", practiceLanguage: "en", completionSound: false, typingSpeedUnits: { ko: "wpm", en: "wpm" }, linePracticeSessionLength: 20 } });
   await page.getByRole("button", { name: "← Menu" }).click();
 
   async function completeEnglishLine() {

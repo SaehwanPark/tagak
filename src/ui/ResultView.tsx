@@ -31,8 +31,12 @@ export function ResultView({
   const sessionStatistics = lineSessionScores === undefined
     ? null
     : summarizeTypingRates(lineSessionScores.map((item) =>
-      toDisplayedTypingSpeed(item.charactersPerMinute, item.keystrokesPerMinute, language, speedUnit)));
+      toDisplayedTypingSpeed(item.charactersPerMinute, item.keystrokesPerMinute, language, speedUnit)), lineSessionScores.length);
   const formattedStatistic = (value: number | null) => value === null ? "—" : String(Math.round(value));
+  const formattedQuartileRange = () => sessionStatistics?.lowerQuartile === null ||
+    sessionStatistics?.upperQuartile === null || !sessionStatistics
+    ? "—"
+    : `${formattedStatistic(sessionStatistics.lowerQuartile)}–${formattedStatistic(sessionStatistics.upperQuartile)}`;
 
   return (
     <section className="screen result-screen" onKeyDown={(event) => {
@@ -54,12 +58,12 @@ export function ResultView({
         {sessionStatistics && (
           <section className="previous-score line-session-statistics" aria-labelledby="line-session-statistics-title">
             <h2 id="line-session-statistics-title">{copy.lineSessionStatistics} · {copy.speedLabel(speedUnit, language)}</h2>
-            <p className="result-progress">{copy.lineSessionSampleCount(sessionStatistics.sampleCount)}</p>
+            <p className="result-progress">{copy.lineSessionSampleCount(sessionStatistics.includedSampleCount, sessionStatistics.sampleCount)}</p>
             <dl className="scores">
               <div><dt>{copy.mean}</dt><dd>{formattedStatistic(sessionStatistics.mean)}</dd></div>
               <div><dt>{copy.standardDeviation}</dt><dd>{formattedStatistic(sessionStatistics.populationStandardDeviation)}</dd></div>
               <div><dt>{copy.median}</dt><dd>{formattedStatistic(sessionStatistics.median)}</dd></div>
-              <div><dt>{copy.interquartileRange}</dt><dd>{formattedStatistic(sessionStatistics.interquartileRange)}</dd></div>
+              <div><dt>{copy.interquartileRange}</dt><dd>{formattedQuartileRange()}</dd></div>
             </dl>
           </section>
         )}

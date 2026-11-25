@@ -3,6 +3,7 @@ import { activities } from "../content/library";
 import type { TextActivity } from "../content/lessons";
 import { passagesFor } from "../content/passages";
 import { shuffleWithSeed } from "../domain/random";
+import { linePracticeSessionLengths } from "../domain/linePracticeSettings";
 import { completionTime, gamesEntry, linePracticeSessionLength, reducePracticeState, settingsEntry } from "./usePractice";
 import type { PracticeState } from "./usePractice";
 
@@ -10,10 +11,10 @@ type PracticeScreen = Extract<PracticeState, { screen: "practice" }>;
 
 const lines = activities.find((activity): activity is TextActivity => activity.id === "ko-line")!;
 
-function startLines(seed = 0x12345678): PracticeScreen {
+function startLines(seed = 0x12345678, lineSessionLength = linePracticeSessionLength): PracticeScreen {
   const started = reducePracticeState(
     { screen: "menu", selected: null },
-    { type: "start", activity: lines, seed },
+    { type: "start", activity: lines, seed, lineSessionLength },
   );
   if (started.screen !== "practice") throw new Error("expected one-line practice");
   return started;
@@ -89,6 +90,27 @@ describe("one-line practice progression", () => {
     expect(restarted.completedLineScores).toEqual([]);
     expect(restarted.round).toBe(0);
     expect(restarted.activity.lessons).toEqual(shuffleWithSeed(state.activity.lessons, 2));
+  });
+
+  it("completes every supported session length without repeating a prompt", () => {
+    for (const lineSessionLength of linePracticeSessionLengths) {
+      let state: PracticeState = startLines(5, lineSessionLength);
+      const visited = new Set<string>();
+
+      for (let index = 0; index < lineSessionLength; index += 1) {
+        if (state.screen !== "practice") throw new Error(`session ended before ${lineSessionLength} prompts`);
+        visited.add(state.lesson.id);
+        state = submit(state, state.lesson.text);
+      }
+
+      expect(state.screen).toBe("result");
+      if (state.screen !== "result") continue;
+      expect(state.lineSessionScores).toHaveLength(lineSessionLength);
+      expect(visited.size).toBe(lineSessionLength);
+      const restarted = reducePracticeState(state, { type: "retry-randomized", seed: 6 });
+      if (restarted.screen !== "practice") throw new Error("expected another one-line session");
+      expect(restarted.lineSessionLength).toBe(lineSessionLength);
+    }
   });
 
   it("returns from each passage without changing its order", () => {

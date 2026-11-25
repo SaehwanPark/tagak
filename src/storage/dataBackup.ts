@@ -94,7 +94,7 @@ function serializeData(data: BackupData): string {
     version: backupVersion,
     exportedAt: new Date().toISOString(),
     data: {
-      preferences: { version: 2, preferences: normalized.preferences },
+      preferences: { version: 3, preferences: normalized.preferences },
       textSize: { version: 1, size: normalized.textSize },
       colorTheme: { version: 1, theme: normalized.colorTheme },
       practiceFonts: { version: 2, fonts: normalized.practiceFonts },
@@ -242,7 +242,7 @@ function mergeData(existing: BackupData, imported: BackupData, stored: ReadonlyS
 function serializeStorage(data: BackupData): Readonly<Record<(typeof dataKeys)[number], string>> {
   const normalized = stableData(data);
   return {
-    [storageKeys.preferences]: JSON.stringify({ version: 2, preferences: normalized.preferences }),
+    [storageKeys.preferences]: JSON.stringify({ version: 3, preferences: normalized.preferences }),
     [storageKeys.display]: JSON.stringify({ version: 1, size: normalized.textSize }),
     [storageKeys.colorTheme]: JSON.stringify({ version: 1, theme: normalized.colorTheme }),
     [storageKeys.practiceFont]: JSON.stringify({ version: 2, fonts: normalized.practiceFonts }),
