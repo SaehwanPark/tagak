@@ -6,6 +6,19 @@
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-24
+
+### Changed
+
+- 이슈 [#67](https://github.com/SaehwanPark/tagak/issues/67): 앱 shell을 viewport 높이에 맞추고 문서 바깥 스크롤을 막았습니다. 긴 라이브러리·설정·지문·기록·결과는 내부 영역만 스크롤합니다.
+- 메뉴와 설정에서 키보드 포커스 항목을 보이게 유지하고, PageUp/PageDown은 실제 목록 높이를 따라 이동합니다. 지문·기록·결과·순위표 영역은 키보드 스크롤을 지원합니다.
+- 짧은 창에서 홈 목록·연습·도전·베네치아 화면의 간격을 줄이고, 베네치아 보드가 남은 높이를 채우게 했습니다. 아주 낮은 브라우저 viewport는 화면 내부 스크롤을 사용합니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 18개 파일 103개 테스트, 프로덕션 빌드, Playwright E2E 69개. 앱 JS 청크는 524.45KB로 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build`가 macOS `.app`과 DMG를 생성했습니다. 이슈 #67의 플랫폼별 창 조작 범위와 미검증 항목은 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 있습니다.
+
 ## [0.7.0] - 2026-11-24
 
 ### Changed

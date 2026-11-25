@@ -19,6 +19,7 @@ import { readVeniceRecords, saveVeniceRun, veniceStorageKey } from "../storage/v
 import { storedDataChangedEvent } from "../storage/storageEvents";
 import type { VeniceRecords, VeniceStorageRead } from "../storage/veniceStorage";
 import { useFocus } from "./useFocus";
+import { handleScrollRegionKeyDown } from "./focusWithinScrollRegion";
 import { playVeniceSound } from "./veniceSound";
 import { createRunSeed } from "./randomSeed";
 
@@ -232,7 +233,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
 
   if (state.phase === "ready") {
     return (
-      <section className="screen venice-screen" onKeyDown={handleReadyKeys}>
+      <section className="screen venice-screen venice-ready-screen" onKeyDown={handleReadyKeys}>
         <button className="back" type="button" onClick={onBack}>{copy.backToMenu}</button>
         <h1>{copy.veniceTitle}</h1>
         <p className="lede">{copy.veniceInstruction}</p>
@@ -273,7 +274,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
       });
     }
     return (
-      <section className="screen venice-screen" onKeyDown={(event) => {
+      <section className="screen venice-screen venice-result-screen" onKeyDown={(event) => {
         if (event.repeat || event.nativeEvent.isComposing) return;
         if (event.key === "Escape") onBack();
         if (event.key === "Enter" && event.target === resultHeading.current) restart();
@@ -289,7 +290,14 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
         </dl>
         <h2 className="venice-table-title">{copy.veniceTopScores}</h2>
         {topScores.length === 0 ? <p>{copy.veniceNoScores}</p> : (
-          <div className="venice-table-scroll" role="region" aria-label={copy.veniceTopScores} tabIndex={0}>
+          <div
+            className="venice-table-scroll"
+            role="region"
+            aria-label={copy.veniceTopScores}
+            tabIndex={0}
+            data-scroll-region
+            onKeyDown={handleScrollRegionKeyDown}
+          >
             <table className="venice-scores-table">
               <thead><tr>
                 <th scope="col">{copy.veniceRank}</th>
@@ -328,7 +336,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
   const currentEffect = Object.entries(runtime?.effects ?? {}).find(([, expiresAt]) =>
     expiresAt !== undefined && expiresAt > (runtime?.elapsedMs ?? 0))?.[0];
   return (
-    <section className="screen venice-screen" onKeyDown={handlePlayingKeys}>
+    <section className="screen venice-screen venice-playing-screen" onKeyDown={handlePlayingKeys}>
       <div className="venice-header">
         <h1>{copy.veniceTitle}</h1>
         <button className="button secondary venice-pause-button" type="button" onClick={() => setUserPaused(!userPaused)}>

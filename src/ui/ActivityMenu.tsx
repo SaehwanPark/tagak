@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react";
 import type { KeyboardEvent } from "react";
 import type { InterfaceText } from "../content/interfaceText";
+import { focusWithinScrollRegion } from "./focusWithinScrollRegion";
 type MenuEntry = { id: string; label: string; detail?: string; creditLabel?: string };
-
-// PageUp/PageDown move about one screenful of menu rows, matching the visible list height.
-const pageSize = 5;
 
 type ActivityMenuProps<Entry extends MenuEntry> = {
   activities: readonly Entry[];
@@ -24,7 +22,7 @@ export function ActivityMenu<Entry extends MenuEntry>({
   useEffect(() => {
     const buttons = Array.from(list.current?.querySelectorAll("button") ?? []);
     const target = buttons.find((button) => button.dataset.activity === selected) ?? buttons[0];
-    target?.focus();
+    focusWithinScrollRegion(target);
   }, [selected]);
 
   function moveFocus(event: KeyboardEvent<HTMLDivElement>) {
@@ -35,13 +33,33 @@ export function ActivityMenu<Entry extends MenuEntry>({
     const current = buttons.findIndex((button) => button === event.target);
     if (current < 0) return;
     event.preventDefault();
-    // Home/End jump to the list edges; PageUp/PageDown move a screenful of entries at once.
-    const step = event.key === "ArrowDown" || event.key === "PageDown" ? 1 : -1;
-    const distance = event.key === "PageUp" || event.key === "PageDown" ? pageSize : 1;
-    const nextIndex = event.key === "Home" ? 0
-      : event.key === "End" ? buttons.length - 1
-        : (current + step * distance + buttons.length) % buttons.length;
-    buttons[nextIndex]?.focus();
+    let nextIndex: number;
+    if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = buttons.length - 1;
+    } else if (event.key === "PageUp" || event.key === "PageDown") {
+      const direction = event.key === "PageDown" ? 1 : -1;
+      const currentBounds = buttons[current]?.getBoundingClientRect();
+      const visibleDistance = Math.max(0, event.currentTarget.clientHeight - (currentBounds?.height ?? 0));
+      const destinationTop = (currentBounds?.top ?? 0) + direction * visibleDistance;
+      nextIndex = current;
+      if (direction > 0) {
+        while (nextIndex + 1 < buttons.length && buttons[nextIndex + 1]!.getBoundingClientRect().top <= destinationTop) {
+          nextIndex += 1;
+        }
+        if (nextIndex === current) nextIndex = current === buttons.length - 1 ? 0 : current + 1;
+      } else {
+        while (nextIndex > 0 && buttons[nextIndex - 1]!.getBoundingClientRect().top >= destinationTop) {
+          nextIndex -= 1;
+        }
+        if (nextIndex === current) nextIndex = current === 0 ? buttons.length - 1 : current - 1;
+      }
+    } else {
+      const step = event.key === "ArrowDown" ? 1 : -1;
+      nextIndex = (current + step + buttons.length) % buttons.length;
+    }
+    focusWithinScrollRegion(buttons[nextIndex]);
   }
 
   return (
@@ -50,7 +68,7 @@ export function ActivityMenu<Entry extends MenuEntry>({
     }}>
       {onBack && <button className="back" type="button" onClick={onBack}>{copy.backToMenu}</button>}
       <h1>{title}</h1>
-      <div className="activity-menu" ref={list} onKeyDown={moveFocus}>
+      <div className="activity-menu" ref={list} role="group" aria-label={title} data-scroll-region onKeyDown={moveFocus}>
         {activities.map((activity) => (
           <button
             key={activity.id}

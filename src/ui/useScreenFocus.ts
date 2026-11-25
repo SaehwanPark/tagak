@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { PracticeState } from "../app/usePractice";
+import { focusWithinScrollRegion } from "./focusWithinScrollRegion";
 
 /** The screen currently visible; settings wraps the screen it returned from. */
 export function contentState(state: PracticeState) {
@@ -26,7 +27,7 @@ function restoreContentFocus(root: HTMLDivElement | null, state: PracticeState):
   } else if (visible.screen === "venice") {
     target = root.querySelector("#venice-input") ?? root.querySelector(".venice-start-level");
   }
-  target?.focus({ preventScroll: true });
+  focusWithinScrollRegion(target);
 }
 
 function canRestoreFocus(root: HTMLElement | null, target: HTMLElement): boolean {
@@ -40,12 +41,12 @@ function restoreScreenFocus(root: HTMLElement | null, screenContent: HTMLDivElem
       const rows = Array.from(root.querySelectorAll<HTMLButtonElement>(".settings-menu [data-setting-row]:not(:disabled)"));
       const selected = rows.find((row) => row.dataset.settingRow === state.focusRow) ?? rows[0];
       const heading = root.querySelector<HTMLElement>(".settings-screen h1[tabindex='-1']");
-      (selected ?? heading)?.focus({ preventScroll: true });
+      focusWithinScrollRegion(selected ?? heading);
       return;
     }
     const heading = Array.from(root.querySelectorAll<HTMLElement>("h1[tabindex='-1']"))
       .find((candidate) => candidate.closest("[hidden]") === null);
-    heading?.focus({ preventScroll: true });
+    focusWithinScrollRegion(heading);
     return;
   }
   restoreContentFocus(screenContent, state);
@@ -86,7 +87,7 @@ export function useScreenFocus(state: PracticeState) {
       if (!focusWasLost.current || document.visibilityState === "hidden") return;
       const previous = lastAppFocus.current;
       if (previous && canRestoreFocus(shell.current, previous)) {
-        previous.focus({ preventScroll: true });
+        focusWithinScrollRegion(previous);
       } else {
         restoreScreenFocus(shell.current, screenContent.current, stateForFocus.current);
       }
@@ -128,7 +129,7 @@ export function useScreenFocus(state: PracticeState) {
   useEffect(() => {
     if (settingsWereOpen.current && state.screen !== "settings") {
       const previousFocus = focusBeforeSettings.current;
-      if (previousFocus?.isConnected) previousFocus.focus();
+      if (previousFocus?.isConnected) focusWithinScrollRegion(previousFocus);
       else restoreContentFocus(screenContent.current, state);
       focusBeforeSettings.current = null;
     }
