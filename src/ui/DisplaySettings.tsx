@@ -10,13 +10,17 @@ import type { AppPreferences } from "../storage/appPreferences";
 import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
 import type { TypingSpeedUnit, TypingSpeedUnits } from "../domain/typingSpeed";
+import { linePracticeSessionLengths } from "../domain/linePracticeSettings";
+import type { LinePracticeSessionLength } from "../domain/linePracticeSettings";
 import { focusWithinScrollRegion } from "./focusWithinScrollRegion";
 
 type DisplaySettingsProps = {
   interfaceLanguage: Language;
   practiceLanguage: Language;
+  linePracticeSessionLength: LinePracticeSessionLength;
   onInterfaceLanguageChange: (language: Language) => void;
   onPracticeLanguageChange: (language: Language) => void;
+  onLinePracticeSessionLengthChange: (length: LinePracticeSessionLength) => void;
   typingSpeedUnits: TypingSpeedUnits;
   onTypingSpeedUnitChange: (language: Language, unit: TypingSpeedUnit) => void;
   size: TextSize;
@@ -38,7 +42,7 @@ type DisplaySettingsProps = {
   copy: InterfaceText;
 };
 
-type SettingOption<Value extends string> = { value: Value; label: string };
+type SettingOption<Value extends string | number> = { value: Value; label: string };
 
 type SettingRowProps = {
   id: string;
@@ -49,13 +53,13 @@ type SettingRowProps = {
   help?: string;
 };
 
-type ChoiceRowProps<Value extends string> = SettingRowProps & {
+type ChoiceRowProps<Value extends string | number> = SettingRowProps & {
   value: Value;
   options: readonly SettingOption<Value>[];
   onChange: (value: Value) => void;
 };
 
-function cycleOption<Value extends string>(
+function cycleOption<Value extends string | number>(
   value: Value,
   options: readonly SettingOption<Value>[],
   direction: -1 | 1,
@@ -65,7 +69,7 @@ function cycleOption<Value extends string>(
   return options[nextIndex]?.value ?? value;
 }
 
-function ChoiceRow<Value extends string>({
+function ChoiceRow<Value extends string | number>({
   id, label, active, value, options, onChange, onFocus, disabled = false, help,
 }: ChoiceRowProps<Value>) {
   const current = options.find((option) => option.value === value);
@@ -120,8 +124,10 @@ function ActionRow({ id, label, active, onFocus, onClick }: SettingRowProps & { 
 export function DisplaySettings({
   interfaceLanguage,
   practiceLanguage,
+  linePracticeSessionLength,
   onInterfaceLanguageChange,
   onPracticeLanguageChange,
+  onLinePracticeSessionLengthChange,
   typingSpeedUnits,
   onTypingSpeedUnitChange,
   size,
@@ -213,6 +219,19 @@ export function DisplaySettings({
           onFocus={() => setFocusedRow("practice-language")}
           disabled={practiceLanguageLocked}
           {...(practiceLanguageLocked ? { help: copy.practiceLanguageAfterMenu } : {})}
+        />
+        <ChoiceRow<LinePracticeSessionLength>
+          id="line-practice-session-length"
+          label={copy.linePracticeSessionLength}
+          active={focusedRow === "line-practice-session-length"}
+          value={linePracticeSessionLength}
+          options={linePracticeSessionLengths.map((count) => ({
+            value: count,
+            label: copy.linePracticeSessionLengthOption(count),
+          }))}
+          onChange={onLinePracticeSessionLengthChange}
+          onFocus={() => setFocusedRow("line-practice-session-length")}
+          help={copy.linePracticeSessionLengthHelp}
         />
         <ChoiceRow<TypingSpeedUnit>
           id="korean-speed-unit"

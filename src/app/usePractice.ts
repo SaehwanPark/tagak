@@ -12,13 +12,15 @@ import type { PassageSession } from "../domain/passagePractice";
 import { calculateTypingScore, createPracticeSession, hasReachedEnd, reducePracticeSession } from "../domain/typing";
 import type { PracticeSession, TypingScore } from "../domain/typing";
 import type { PracticeRecord } from "../domain/history";
+import { defaultLinePracticeSessionLength } from "../domain/linePracticeSettings";
+import type { LinePracticeSessionLength } from "../domain/linePracticeSettings";
 
 export const gamesEntry = { id: "games", label: "게임", kind: "games" } as const;
 export const challengeEntry = { id: "challenge", label: "30초 낱말 도전", kind: "challenge" } as const;
 export const veniceEntry = { id: "venice", label: "베네치아", kind: "venice" } as const;
 export const settingsEntry = { id: "settings", label: "환경설정", kind: "settings" } as const;
 export const passageEntries = [shortPassageEntry, longPassageEntry] as const;
-export const linePracticeSessionLength = 20;
+export const linePracticeSessionLength = defaultLinePracticeSessionLength;
 
 export type PracticeContentState =
   | { screen: "menu"; selected: string | null }
@@ -35,6 +37,7 @@ export type PracticeContentState =
       session: PracticeSession;
       previous: TypingScore | null;
       completedLineScores: readonly TypingScore[];
+      lineSessionLength: LinePracticeSessionLength;
     }
   | { screen: "passage"; activity: PassageActivity; session: PassageSession }
   | {
@@ -42,6 +45,7 @@ export type PracticeContentState =
       activity: Activity | PassageActivity;
       score: TypingScore;
       lineSessionScores?: readonly TypingScore[];
+      lineSessionLength?: LinePracticeSessionLength;
     };
 
 type SettingsView = "menu" | "history" | "data-transfer";
@@ -51,7 +55,7 @@ export type PracticeState =
 
 type CompletionTime = { id: string; completedAt: number; at: number };
 export type AppAction =
-  | { type: "start"; activity: Activity; seed: number }
+  | { type: "start"; activity: Activity; seed: number; lineSessionLength?: LinePracticeSessionLength }
   | { type: "start-passage"; activity: PassageActivity }
   | { type: "open-library"; length: PassageLength }
   | { type: "open-games" }
@@ -69,7 +73,12 @@ export type AppAction =
   | { type: "retry" }
   | { type: "retry-randomized"; seed: number };
 
-function startLesson(activity: Activity, index: number, round: number): PracticeState {
+function startLesson(
+  activity: Activity,
+  index: number,
+  round: number,
+  lineSessionLength: LinePracticeSessionLength,
+): PracticeState {
   return {
     screen: "practice",
     activity,
@@ -79,11 +88,16 @@ function startLesson(activity: Activity, index: number, round: number): Practice
     session: createPracticeSession(),
     previous: null,
     completedLineScores: [],
+    lineSessionLength,
   };
 }
 
-function startActivity(activity: Activity, seed: number): PracticeState {
-  return startLesson({ ...activity, lessons: shuffleWithSeed(activity.lessons, seed) }, 0, 0);
+function startActivity(
+  activity: Activity,
+  seed: number,
+  lineSessionLength = defaultLinePracticeSessionLength,
+): PracticeState {
+  return startLesson({ ...activity, lessons: shuffleWithSeed(activity.lessons, seed) }, 0, 0, lineSessionLength);
 }
 
 function startPassage(activity: PassageActivity): PracticeState {
@@ -103,6 +117,7 @@ function reduceTextPractice(
       activity: state.activity,
       score: state.previous,
       lineSessionScores: state.completedLineScores,
+      lineSessionLength: state.lineSessionLength,
     };
   }
   if (action.type !== "submit") return state;
@@ -114,12 +129,13 @@ function reduceTextPractice(
   const completed = reducePracticeSession(session, { type: "submitted", at: action.at });
   const score = calculateTypingScore(state.lesson.text, completed, action.at, state.lesson.language);
   const completedLineScores = [...state.completedLineScores, score];
-  if (completedLineScores.length >= linePracticeSessionLength) {
+  if (completedLineScores.length >= state.lineSessionLength) {
     return {
       screen: "result",
       activity: state.activity,
       score,
       lineSessionScores: completedLineScores,
+      lineSessionLength: state.lineSessionLength,
     };
   }
   const index = (state.index + 1) % state.activity.lessons.length;
@@ -178,7 +194,9 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
   if (action.type === "open-games") return { screen: "games", selected: null };
   if (action.type === "open-challenge") return { screen: "challenge" };
   if (action.type === "open-venice") return { screen: "venice" };
-  if (action.type === "start") return startActivity(action.activity, action.seed);
+  if (action.type === "start") {
+    return startActivity(action.activity, action.seed, action.lineSessionLength ?? defaultLinePracticeSessionLength);
+  }
   if (action.type === "start-passage") return startPassage(action.activity);
 
   if (state.screen === "menu") return state;
@@ -208,7 +226,9 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
   }
   if (state.screen === "result") {
     if (action.type === "retry-randomized") {
-      if (state.activity.kind !== "passage") return startActivity(state.activity, action.seed);
+      if (state.activity.kind !== "passage") {
+        return startActivity(state.activity, action.seed, state.lineSessionLength ?? defaultLinePracticeSessionLength);
+      }
       return state;
     }
     if (action.type === "retry") {

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { decodeDataBackup, restoreDataBackup } from "./dataBackup";
+import { createDataBackup, decodeDataBackup, restoreDataBackup } from "./dataBackup";
 import type { DataBackup } from "./dataBackup";
 import { defaultAppPreferences } from "./appPreferences";
 import { historyKey } from "./historyStorage";
@@ -156,6 +156,23 @@ describe("portable data backups", () => {
       }],
     };
     expect(readBackup(JSON.stringify(old)).data.history[0]?.mode).toBe("line");
+  });
+
+  it("exports and restores the configured line session length", async () => {
+    localStorage.setItem("tagak:preferences", JSON.stringify({
+      version: 3,
+      preferences: { ...defaultAppPreferences, linePracticeSessionLength: 75 },
+    }));
+
+    const raw = createDataBackup();
+    expect(raw).not.toBeNull();
+    const backup = readBackup(raw!);
+    expect(backup.data.preferences.linePracticeSessionLength).toBe(75);
+    expect(JSON.parse(raw!).data.preferences.version).toBe(3);
+
+    expect(await restoreDataBackup(backup, "replace")).toEqual({ ok: true });
+    const restored = JSON.parse(localStorage.getItem("tagak:preferences") ?? "null");
+    expect(restored).toMatchObject({ version: 3, preferences: { linePracticeSessionLength: 75 } });
   });
 
   it("merges unique records without replacing current preferences and repeated imports are idempotent", async () => {

@@ -33,7 +33,8 @@ src/
 ├── domain/                 # 순수 규칙
 │   ├── typing.ts           # 세션·채점·한글 타수·문자소 분할·실시간 정확도
 │   ├── typingSpeed.ts      # cpm/wpm 단위 변환
-│   ├── typingStatistics.ts # 세션 속도 분포 통계
+│   ├── typingStatistics.ts # 이상치 제외 세션 속도 분포 통계
+│   ├── linePracticeSettings.ts # 허용 세션 문장 수와 기본값
 │   ├── textLayout.ts       # 5줄 묶음, 폭 기준 줄바꿈
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
 │   ├── random.ts           # 시드 정규화, xorshift32, Fisher–Yates 셔플
@@ -42,14 +43,14 @@ src/
 │   └── history.ts          # 기록 모드·정렬·중복 제거·직전 기록 비교
 ├── content/
 │   ├── interfaceText.ts    # 한국어/영어 UI 문구 (InterfaceText 타입)
-│   ├── lessons.ts          # 한 줄 자료 타입과 검증, 한글 문장부호 정리
+│   ├── lessons.ts          # 한 줄 자료 검증, 언어 문자 필터와 문장 정리
 │   ├── library.ts          # 애셋 JSON → 활동 목록, 도전 낱말
 │   ├── veniceWords.ts      # 베네치아 한글 낱말 애셋 검증·타수 계산
 │   ├── passages.ts         # 글 애셋 검증(라이선스·출처)과 줄바꿈
 │   ├── textLicenseInventory.ts # 연습문 출처·라이선스 문서 생성
 │   └── assets/*.json       # 한 줄·글·게임 연습 자료 원본
 ├── storage/
-│   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위 (v2)
+│   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위·한 줄 세션 수 (v3)
 │   ├── settingsStorage.ts  # 글자 크기 / 테마 / 언어별 글꼴
 │   ├── historyStorage.ts   # 최근 기록 (v3, 구버전·제거 모드 읽기 호환)
 │   ├── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
@@ -160,7 +161,7 @@ src/
 - 이벤트: `start`, `open-games`, `open-settings-history`, `open-settings-data-transfer`, `input-changed`, `submit`, `retry`, `return-to-menu` 등
 - 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
-`reduceTextPractice`는 한 줄 문장 완료 점수를 세션 메모리에 모아 기본 20문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 저장 큐에서 각각 처리합니다. `ResultView`는 세션 속도를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 평균·모집단 표준편차·중간값·사분위범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
+`reduceTextPractice`는 한 줄 문장 완료 점수를 세션 메모리에 모아 설정한 5·10·20·30·50·75·100문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 저장 큐에서 각각 처리합니다. `ResultView`는 세션 속도를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 이상치를 제외한 평균·모집단 표준편차·중간값·P25–P75 범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
 
 ## 저장 계층
 
@@ -170,7 +171,7 @@ src/
 
 | 키 | 내용 | 버전 / 마이그레이션 |
 | --- | --- | --- |
-| `tagak:preferences` | 인터페이스·연습 언어, 완료 효과음, 언어별 속도 단위 | v2, v1은 속도 단위 기본값을 채워 읽음 |
+| `tagak:preferences` | 인터페이스·연습 언어, 완료 효과음, 언어별 속도 단위, 한 줄 세션 문장 수 | v3, v1·v2는 새 값 기본값을 채워 읽음 |
 | `tagak:display` | 글자 크기 | v1 |
 | `tagak:color-theme` | 색상 테마 | v1 |
 | `tagak:practice-font` | 한국어/영어별 글꼴 | v2, v1(공통 글꼴)을 두 언어에 복사 |

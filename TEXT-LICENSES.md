@@ -8,8 +8,8 @@
 
 | 자료 묶음 | 개수 | 출처 유형·라이선스 | 애셋 |
 | --- | --- | --- | --- |
-| 한국어 한 줄 | 69 | 직접 작성 12 · 짧은 인용 20 · 격언·속담 37 | `src/content/assets/one-line.ko.json` |
-| 영어 한 줄 | 55 | 직접 작성 6 · 짧은 인용 13 · 격언·속담 36 | `src/content/assets/one-line.en.json` |
+| 한국어 한 줄 | 100 | 직접 작성 38 · 짧은 인용 10 · 격언·속담 52 | `src/content/assets/one-line.ko.json` |
+| 영어 한 줄 | 100 | 직접 작성 27 · 짧은 인용 16 · 격언·속담 57 | `src/content/assets/one-line.en.json` |
 | 30초 낱말 도전 | 28 | 직접 작성 | `src/content/assets/challenge-words.json` |
 | 한국어 짧은 글 | 36 | 직접 작성 14 · CC BY-SA 4.0 21 · 퍼블릭 도메인 1 | `src/content/assets/passages.ko.json` |
 | 한국어 긴 글 | 9 | 직접 작성 2 · CC BY-SA 4.0 7 · 퍼블릭 도메인 0 | `src/content/assets/passages.ko.json` |
@@ -27,7 +27,7 @@
 
 ## 한 줄 연습
 
-### 한국어 (69)
+### 한국어 (100)
 
 | ID | 연습문 | 출처 유형 | 저자·발화자 | 출처 | 원문 |
 | --- | --- | --- | --- | --- | --- |
@@ -43,65 +43,96 @@
 | `ko-cat` | 창가의 고양이 | 직접 작성 | — | 타각 직접 작성 | — |
 | `ko-library` | 도서관의 오후 | 직접 작성 | — | 타각 직접 작성 | — |
 | `ko-night-train` | 밤기차 | 직접 작성 | — | 타각 직접 작성 | — |
-| `ko-quote-slamdunk-left` | 애니메이션 명대사 | 짧은 인용 | 강백호 | 《슬램덩크》 | [열기](https://www.youtube.com/watch?v=rD-mTNjXaZI) |
 | `ko-quote-slamdunk-give-up` | 애니메이션 명대사 | 짧은 인용 | 안 선생님 | 《슬램덩크》 | [열기](https://sekihi.net/ko-kr/stones/6942) |
 | `ko-quote-one-piece` | 애니메이션 명대사 | 짧은 인용 | 몽키 D. 루피 | 《원피스》 1화 | [열기](https://tv.apple.com/kr/episode/%E1%84%82%E1%85%A1%E1%84%82%E1%85%B3%E1%86%AB%E1%84%8B%E1%85%A3-%E1%84%85%E1%85%AE%E1%84%91%E1%85%B5-%E1%84%92%E1%85%A2%E1%84%8C%E1%85%A5%E1%86%A8%E1%84%8B%E1%85%AA%E1%86%BC%E1%84%8B%E1%85%B5-%E1%84%83%E1%85%AC%E1%86%AF-%E1%84%80%E1%85%A5%E1%84%8B%E1%85%A3/umc.cmc.3i6gftpoqek3o947i6nlnjzg6?showId=umc.cmc.2jf3h5bibsseewr9bh0rg5kcl) |
 | `ko-quote-pokemon` | 애니메이션 명대사 | 짧은 인용 | 한지우 | 《극장판 포켓몬스터: 너로 정했다!》 | [열기](https://new.pokemonkorea.co.kr/animation/34) |
-| `ko-quote-conan` | 애니메이션 명대사 | 짧은 인용 | 에도가와 코난 | 《명탐정 코난》 | [열기](https://artplex.co.kr/campaigns/detective-conan_2026jan.html) |
-| `ko-quote-demon-slayer` | 애니메이션 명대사 | 짧은 인용 | 렌고쿠 쿄쥬로 | 《귀멸의 칼날: 무한열차편》 | [열기](https://tv.apple.com/kr/episode/%E1%84%86%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B3%E1%86%AF-%E1%84%87%E1%85%AE%E1%86%AF%E1%84%90%E1%85%A2%E1%84%8B%E1%85%AF%E1%84%85%E1%85%A1/umc.cmc.3k1fhmt282os5xbxiaqmbksv2?showId=umc.cmc.1lfa5s90fe9hsizlhvvkcpxiq) |
 | `ko-quote-naruto` | 애니메이션 명대사 | 짧은 인용 | 우즈마키 나루토 | 《나루토》 | [열기](https://jyucom.tistory.com/entry/%EB%82%98%EB%A3%A8%ED%86%A0-%EC%95%A0%EB%8B%88-%ED%8C%AC%EC%9D%B4%EB%9D%BC%EB%A9%B4-%EA%BC%AD-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%EB%AA%A8%EB%93%A0-%EA%B2%83) |
-| `ko-quote-my-hero` | 애니메이션 명대사 | 짧은 인용 | 올마이트 | 《나의 히어로 아카데미아》 | [열기](https://note.com/hazumu_rhythm/n/n59bbdbde6e8f?hl=ko) |
-| `ko-quote-fullmetal` | 애니메이션 명대사 | 짧은 인용 | 에드워드 엘릭 | 《강철의 연금술사》 | [열기](https://en.wikiquote.org/wiki/Fullmetal_Alchemist) |
 | `ko-quote-toy-story` | 애니메이션 명대사 | 짧은 인용 | 버즈 라이트이어 | 《토이 스토리》 | [열기](https://news.disney.com/ultimate-list-toy-story-quotes) |
 | `ko-quote-zelda` | 게임 명대사 | 짧은 인용 | 노인 · 한국어 번역 | 《젤다의 전설》 | [열기](https://zelda.nintendo.com/breath-of-the-wild/assets/pdfs/ExplorersGuide.pdf) |
-| `ko-quote-portal` | 게임 명대사 | 짧은 인용 | 벽의 낙서 · 한국어 번역 | 《포털》 | [열기](https://en.wikipedia.org/wiki/The_cake_is_a_lie) |
 | `ko-quote-skyrim` | 게임 명대사 | 짧은 인용 | 경비병 | 《엘더스크롤 V: 스카이림》 | [열기](https://elderscrolls.bethesda.net/ko-KR/news/6KNyeH7wG4FOFIEev8VaX1/how-an-arrow-in-the-knee-made-its-way-to-skyrim) |
-| `ko-quote-overwatch` | 게임 명대사 | 짧은 인용 | 메르시 | 《오버워치》 | [열기](https://overwatch.blizzard.com/ko-kr/news/23223599/take-flight-in-mercy-s-recall-challenge/) |
 | `ko-quote-diablo` | 게임 명대사 | 짧은 인용 | 데커드 케인 · 한국어 번역 | 《디아블로》 | [열기](https://en.wikiquote.org/wiki/Diablo) |
-| `ko-quote-starcraft` | 게임 명대사 | 짧은 인용 | 프로토스 사령관 | 《스타크래프트》 | [열기](https://starcraft.fandom.com/wiki/Pylon) |
-| `ko-quote-metal-gear` | 게임 명대사 | 짧은 인용 | 솔리드 스네이크 · 한국어 번역 | 《메탈 기어 솔리드 2》 | [열기](https://quotegeek.com/games/metal-gear-solid-2-sons-of-liberty/kept-you-waiting-huh/) |
-| `ko-quote-bioshock` | 게임 명대사 | 짧은 인용 | 아틀라스 · 한국어 번역 | 《바이오쇼크》 | [열기](https://en.wikiquote.org/wiki/BioShock) |
-| `ko-quote-ace-attorney` | 게임 명대사 | 짧은 인용 | 나루호도 류이치 | 《역전재판》 | [열기](https://news.capcomusa.com/lets/browse/ace-attorney-101-with-phoenix-wright-and-maya-fey) |
-| `ko-quote-street-fighter` | 게임 명대사 | 짧은 인용 | 류 | 《스트리트 파이터》 | [열기](https://www.streetfighter.com/6/character/ryu) |
 | `ko-saying-proverb-01` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-02` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-03` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-04` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-05` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-06` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-07` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-08` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-09` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-10` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-11` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-12` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-13` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-14` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-15` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-16` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-17` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-18` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-19` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-20` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-21` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-22` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-23` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-24` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-25` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-26` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-27` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-28` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-29` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-30` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
 | `ko-saying-proverb-31` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-proverb-32` | 한국 격언·속담 | 격언·속담 | 구전 | 위키낱말사전 · 한국어 속담 | [열기](https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4) |
-| `ko-saying-bacon` | 한국 격언·속담 | 격언·속담 | 프랜시스 베이컨 | 격언 · 지식은 힘이다 | [열기](https://en.wikipedia.org/wiki/Knowledge_is_power) |
-| `ko-saying-franklin` | 한국 격언·속담 | 격언·속담 | 벤저민 프랭클린 | 《젊은 상인에게 주는 조언》 | [열기](https://en.wikipedia.org/wiki/Benjamin_Franklin) |
-| `ko-saying-delphi` | 한국 격언·속담 | 격언·속담 | 델포이 격언 | 고대 그리스 격언 | [열기](https://en.wikipedia.org/wiki/Know_thyself) |
 | `ko-saying-descartes` | 한국 격언·속담 | 격언·속담 | 르네 데카르트 | 《방법서설》 | [열기](https://en.wikipedia.org/wiki/Cogito,_ergo_sum) |
 | `ko-saying-hippocrates` | 한국 격언·속담 | 격언·속담 | 히포크라테스 | 《아포리즘》 | [열기](https://en.wikipedia.org/wiki/Hippocrates) |
+| `ko-proverb-33` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-34` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-35` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-36` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-37` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-38` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-39` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-40` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-41` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-42` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-43` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-44` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-45` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-46` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-47` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-48` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-49` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-50` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-51` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-52` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-53` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-54` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-55` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-56` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-57` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-58` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-59` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-60` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-61` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-62` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-proverb-63` | 전승 속담 | 격언·속담 | 국립국어원 | 한국어교육 어휘 내용 개발 2단계 | [열기](https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf) |
+| `ko-quote-hong-gildong-01` | 고전 소설 명대사 | 짧은 인용 | 홍길동 | 《홍길동전》 현대어 발췌 | [열기](https://contents.history.go.kr/data/pdf/eh/eh_r0314_0010.pdf) |
+| `ko-quote-hong-gildong-02` | 고전 소설 명대사 | 짧은 인용 | 홍길동 | 《홍길동전》 현대어 발췌 | [열기](https://contents.history.go.kr/data/pdf/eh/eh_r0314_0010.pdf) |
+| `ko-original-dawn-kitchen` | 새벽의 부엌 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-paper-boat` | 종이배의 항해 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-slow-walk` | 느린 산책 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-window-song` | 창문 사이의 노래 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-old-map` | 오래된 지도 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-last-bus` | 마지막 버스 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-short-pause` | 짧은 멈춤 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-rhythm` | 서로 다른 박자 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-waiting` | 기다림의 시간 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-rain-umbrella` | 비와 우산 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-daily-notes` | 하루의 기록 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-first-snow` | 첫눈의 길 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-early-arrival` | 먼저 도착한 아침 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-unspoken` | 말하지 않은 마음 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-new-leaf` | 화분의 새잎 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-bookshop` | 작은 서점 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-glass-of-water` | 따뜻한 물 한 잔 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-old-letter` | 먼 길을 온 편지 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-evening-street` | 저녁 골목 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-after-rain` | 비 갠 운동장 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-old-photo` | 오래된 사진 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-dinner-table` | 저녁 식탁 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-again` | 한 번 더 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-small-mistake` | 작은 실수 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-practice-note` | 연습 기록 | 직접 작성 | — | 타각 직접 작성 | — |
+| `ko-original-new-name` | 처음 만난 이름 | 직접 작성 | — | 타각 직접 작성 | — |
 
-### 영어 (55)
+### 영어 (100)
 
 | ID | 연습문 | 출처 유형 | 저자·발화자 | 출처 | 원문 |
 | --- | --- | --- | --- | --- | --- |
@@ -114,10 +145,7 @@
 | `en-quote-gone-with-the-wind` | Movie quotes | 짧은 인용 | Rhett Butler | Gone with the Wind | [열기](https://www.afi.com/afis-100-years-100-movie-quotes/) |
 | `en-quote-casablanca` | Movie quotes | 짧은 인용 | Rick Blaine | Casablanca | [열기](https://www.afi.com/afis-100-years-100-movie-quotes/) |
 | `en-quote-star-wars` | Movie quotes | 짧은 인용 | A farewell | Star Wars | [열기](https://www.afi.com/afis-100-years-100-movie-quotes/) |
-| `en-quote-terminator` | Movie quotes | 짧은 인용 | The Terminator | The Terminator | [열기](https://www.afi.com/afis-100-years-100-movie-quotes/) |
-| `en-quote-et` | Movie quotes | 짧은 인용 | E.T. | E.T. the Extra-Terrestrial | [열기](https://www.afi.com/afis-100-years-100-movie-quotes/) |
 | `en-quote-a-few-good-men` | Movie quotes | 짧은 인용 | Nathan R. Jessep | A Few Good Men | [열기](https://quotations.pro/people/nathan-jessup/quote/you-cant-handle-the-truth) |
-| `en-quote-dark-knight` | Movie quotes | 짧은 인용 | The Joker | The Dark Knight | [열기](https://www.acmi.net.au/stories-and-ideas/the-dark-knight-why-so-serious/) |
 | `en-quote-sixth-sense` | Movie quotes | 짧은 인용 | Cole Sear | The Sixth Sense | [열기](https://catalog.afi.com/Film/55204-THE-SIXTH-SENSE) |
 | `en-quote-jerry-maguire` | Movie quotes | 짧은 인용 | Dorothy Boyd | Jerry Maguire | [열기](https://en.wikiquote.org/wiki/Jerry_Maguire) |
 | `en-quote-dirty-dancing` | Movie quotes | 짧은 인용 | Johnny Castle | Dirty Dancing | [열기](https://en.wikiquote.org/wiki/Dirty_Dancing) |
@@ -126,7 +154,6 @@
 | `en-quote-wizard-of-oz` | Movie quotes | 짧은 인용 | Dorothy Gale | The Wizard of Oz | [열기](https://www.youtube.com/watch?v=NFWMBE-mQEc) |
 | `en-saying-proverb-01` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-proverb-02` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
-| `en-saying-proverb-03` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-proverb-04` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-proverb-05` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-proverb-06` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
@@ -155,11 +182,60 @@
 | `en-saying-proverb-29` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-proverb-30` | English proverbs & sayings | 격언·속담 | Traditional | English proverb | [열기](https://en.wiktionary.org/wiki/Category:English_proverbs) |
 | `en-saying-lao-tzu` | English proverbs & sayings | 격언·속담 | Lao Tzu | Tao Te Ching | [열기](https://en.wikipedia.org/wiki/Tao_Te_Ching) |
-| `en-saying-bacon` | English proverbs & sayings | 격언·속담 | Francis Bacon | Meditationes Sacrae | [열기](https://en.wikipedia.org/wiki/Knowledge_is_power) |
-| `en-saying-franklin` | English proverbs & sayings | 격언·속담 | Benjamin Franklin | Advice to a Young Tradesman | [열기](https://en.wikipedia.org/wiki/Benjamin_Franklin) |
-| `en-saying-delphi` | English proverbs & sayings | 격언·속담 | Delphic maxim | Ancient Greek aphorism | [열기](https://en.wikipedia.org/wiki/Know_thyself) |
 | `en-saying-descartes` | English proverbs & sayings | 격언·속담 | René Descartes | Discourse on the Method | [열기](https://en.wikipedia.org/wiki/Cogito,_ergo_sum) |
 | `en-saying-hippocrates` | English proverbs & sayings | 격언·속담 | Hippocrates | Aphorisms | [열기](https://en.wikipedia.org/wiki/Hippocrates) |
+| `en-proverb-31` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-32` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-33` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-34` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-35` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-36` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-37` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-38` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-39` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-40` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-41` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-42` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-43` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-44` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-45` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-46` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-47` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-48` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-49` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-50` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-51` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-52` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-53` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-54` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-proverb-55` | English proverbs | 격언·속담 | Traditional English proverb | Oxford Dictionary of Proverbs | [열기](https://doi.org/10.1093/acref/9780198734901.001.0001) |
+| `en-quote-hamlet-brevity` | Hamlet | 짧은 인용 | William Shakespeare | Hamlet | [열기](https://www.gutenberg.org/ebooks/100) |
+| `en-quote-hamlet-joint` | Hamlet | 짧은 인용 | William Shakespeare | Hamlet | [열기](https://www.gutenberg.org/ebooks/100) |
+| `en-quote-alice-book` | Alice in Wonderland | 짧은 인용 | Alice | Alice's Adventures in Wonderland | [열기](https://www.gutenberg.org/files/11/11-h/11-h.htm) |
+| `en-quote-alice-puzzle` | Alice in Wonderland | 짧은 인용 | Alice | Alice's Adventures in Wonderland | [열기](https://www.gutenberg.org/files/11/11-h/11-h.htm) |
+| `en-quote-christmas-bless` | A Christmas Carol | 짧은 인용 | Tiny Tim | A Christmas Carol | [열기](https://www.gutenberg.org/files/46/46-h/46-h.htm) |
+| `en-quote-tale-times` | A Tale of Two Cities | 짧은 인용 | Charles Dickens | A Tale of Two Cities | [열기](https://www.gutenberg.org/files/98/98-h/98-h.htm) |
+| `en-original-paper-boat` | A paper boat | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-slow-walk` | Slow walk | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-last-bus` | The last bus | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-short-pause` | A short pause | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-rhythm` | Different rhythms | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-waiting` | Waiting | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-rain-umbrella` | Rain on the umbrella | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-daily-notes` | Daily notes | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-first-snow` | Fresh snow | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-early-arrival` | Arriving early | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-unspoken` | Unspoken feelings | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-new-leaf` | A new leaf | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-bookshop` | A little bookshop | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-glass-of-water` | A warm glass of water | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-old-letter` | A letter from home | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-evening-street` | The evening street | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-after-rain` | After the rain | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-old-photo` | An old photograph | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-dinner-table` | The dinner table | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-again` | One more try | 직접 작성 | — | 타각 직접 작성 | — |
+| `en-original-practice-note` | A practice note | 직접 작성 | — | 타각 직접 작성 | — |
 
 ## 30초 낱말 도전
 

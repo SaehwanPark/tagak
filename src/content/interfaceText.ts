@@ -18,6 +18,9 @@ export type InterfaceText = Readonly<{
   interfaceLanguage: string;
   practiceLanguage: string;
   practiceLanguageAfterMenu: string;
+  linePracticeSessionLength: string;
+  linePracticeSessionLengthHelp: string;
+  linePracticeSessionLengthOption: (count: number) => string;
   koreanSpeedUnit: string;
   englishSpeedUnit: string;
   speedUnitCpm: (language: Language) => string;
@@ -77,7 +80,7 @@ export type InterfaceText = Readonly<{
   lineSessionCompleted: (count: number) => string;
   lineSessionResult: string;
   lineSessionStatistics: string;
-  lineSessionSampleCount: (count: number) => string;
+  lineSessionSampleCount: (included: number, total: number) => string;
   mean: string;
   standardDeviation: string;
   median: string;
@@ -195,6 +198,9 @@ const ko: InterfaceText = {
   interfaceLanguage: "인터페이스 언어",
   practiceLanguage: "연습 언어",
   practiceLanguageAfterMenu: "연습 중에는 현재 내용을 유지합니다. 언어 변경은 메뉴로 돌아간 뒤 적용하세요.",
+  linePracticeSessionLength: "한 줄 문장 수",
+  linePracticeSessionLengthHelp: "연습할 문장 수입니다. 변경 사항은 다음 세션부터 적용됩니다.",
+  linePracticeSessionLengthOption: (count) => `${count}문장`,
   koreanSpeedUnit: "한국어 속도 단위",
   englishSpeedUnit: "영어 속도 단위",
   speedUnitCpm: (language) => language === "ko" ? "분당 타수 (CPM)" : "분당 글자 수 (CPM)",
@@ -254,11 +260,11 @@ const ko: InterfaceText = {
   lineSessionCompleted: (count) => `${count}문장 완료`,
   lineSessionResult: "한 줄 연습 세션",
   lineSessionStatistics: "세션 속도 통계",
-  lineSessionSampleCount: (count) => `통계에 포함된 속도 ${count}개`,
+  lineSessionSampleCount: (included, total) => `유효한 속도 ${total}개 중 ${included}개로 통계 계산`,
   mean: "평균",
   standardDeviation: "표준편차",
   median: "중간값",
-  interquartileRange: "IQR",
+  interquartileRange: "IQR (P25–P75)",
   returnTo: (destination) => destination === "메뉴" ? "메뉴로 돌아가기" : `${destination}으로 돌아가기`,
   openPractice: "연습으로 돌아가기",
   blockedPracticeInput: "연습 문장은 키보드로 직접 입력하세요.",
@@ -403,6 +409,9 @@ const en: InterfaceText = {
   interfaceLanguage: "Interface language",
   practiceLanguage: "Practice language",
   practiceLanguageAfterMenu: "The current practice stays open. Return to the menu to change the practice language.",
+  linePracticeSessionLength: "Sentences per session",
+  linePracticeSessionLengthHelp: "Changes apply from the next session.",
+  linePracticeSessionLengthOption: (count) => `${count} sentences`,
   koreanSpeedUnit: "Korean speed unit",
   englishSpeedUnit: "English speed unit",
   speedUnitCpm: (language) => language === "ko" ? "Keystrokes/minute (CPM)" : "Characters/minute (CPM)",
@@ -462,11 +471,11 @@ const en: InterfaceText = {
   lineSessionCompleted: (count) => `${count} sentences completed`,
   lineSessionResult: "One-line practice session",
   lineSessionStatistics: "Session speed statistics",
-  lineSessionSampleCount: (count) => `${count} speed samples included`,
+  lineSessionSampleCount: (included, total) => `Statistics use ${included} of ${total} valid speed samples`,
   mean: "Mean",
   standardDeviation: "Standard deviation",
   median: "Median",
-  interquartileRange: "IQR",
+  interquartileRange: "IQR (P25–P75)",
   returnTo: (destination) => `Return to ${destination}`,
   openPractice: "Return to practice",
   blockedPracticeInput: "Type the prompt with your keyboard.",

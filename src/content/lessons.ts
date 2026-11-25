@@ -29,16 +29,29 @@ export type TextActivity = {
 
 export type Activity = TextActivity;
 
-export function trimKoreanLineEnding(lesson: TextLesson): TextLesson {
-  if (lesson.language !== "ko" || lesson.mode !== "line") return lesson;
-  // Korean line drills should end on the final word rather than its punctuation mark.
-  return { ...lesson, text: lesson.text.replace(/\p{P}+$/u, "") };
+export function prepareLineText(text: string, language: Language): string | null {
+  const expectedLetter = language === "ko" ? /\p{Script=Hangul}/u : /\p{Script=Latin}/u;
+  const hasForeignLetter = Array.from(text).some((character) =>
+    /\p{L}/u.test(character) && !expectedLetter.test(character)
+  );
+  if (hasForeignLetter) return null;
+
+  const allowedCharacters = language === "ko"
+    ? /[^\p{Script=Hangul}\p{White_Space}]/gu
+    : /[^\p{Script=Latin}\p{White_Space}]/gu;
+  return text.replace(/\p{P}+/gu, "")
+    .replace(allowedCharacters, " ")
+    .replace(/\p{White_Space}+/gu, " ")
+    .trim();
 }
 
 export function textActivities(lessons: readonly TextLesson[]): TextActivity[] {
-  const valid = lessons.map(trimKoreanLineEnding).filter((lesson) =>
-    lesson.id.trim() && lesson.title.trim() && lesson.text.trim() && !/[\r\n]/.test(lesson.text)
-  );
+  const valid = lessons.flatMap((lesson) => {
+    if (!lesson.id.trim() || !lesson.title.trim() || !lesson.text.trim() || /[\r\n]/.test(lesson.text)) return [];
+    const text = prepareLineText(lesson.text, lesson.language);
+    if (!text || text.split(" ").length < 4) return [];
+    return [{ ...lesson, text }];
+  });
   const languages = ["ko", "en"] as const;
 
   return languages.flatMap<TextActivity>((language) => {

@@ -3,7 +3,6 @@ import {
   challengeEntry,
   completionTime,
   gamesEntry,
-  linePracticeSessionLength,
   settingsEntry,
   veniceEntry,
   usePracticeState,
@@ -55,7 +54,13 @@ export function App() {
   const currentScreen = contentState(state);
   const { shell, screenContent, captureSettingsOrigin } = useScreenFocus(state);
   const appPreferences = useAppPreferences();
-  const { interfaceLanguage, practiceLanguage, completionSound, typingSpeedUnits } = appPreferences.preferences;
+  const {
+    interfaceLanguage,
+    practiceLanguage,
+    completionSound,
+    typingSpeedUnits,
+    linePracticeSessionLength,
+  } = appPreferences.preferences;
   const copy = interfaceText(interfaceLanguage);
   const history = useHistory(pending, acknowledge);
   const textSize = useTextSize();
@@ -157,7 +162,7 @@ export function App() {
             else if (activity.kind === "long-library") dispatch({ type: "open-library", length: "long" });
             else if (activity.kind === "games") dispatch({ type: "open-games" });
             else if (activity.kind === "settings") openSettings();
-            else dispatch({ type: "start", activity, seed: createRunSeed() });
+            else dispatch({ type: "start", activity, seed: createRunSeed(), lineSessionLength: linePracticeSessionLength });
           }}
         />
       )}
@@ -216,7 +221,7 @@ export function App() {
           )}
           previous={currentScreen.previous}
           {...(currentScreen.activity.kind === "line" ? {
-            sessionProgress: copy.lineSessionProgress(currentScreen.completedLineScores.length + 1, linePracticeSessionLength),
+            sessionProgress: copy.lineSessionProgress(currentScreen.completedLineScores.length + 1, currentScreen.lineSessionLength),
           } : {})}
           speedUnit={typingSpeedUnits[currentScreen.lesson.language]}
           copy={copy}
@@ -278,8 +283,12 @@ export function App() {
         <DisplaySettings
           interfaceLanguage={interfaceLanguage}
           practiceLanguage={practiceLanguage}
+          linePracticeSessionLength={linePracticeSessionLength}
           onInterfaceLanguageChange={(language) => { void appPreferences.change({ interfaceLanguage: language }); }}
           onPracticeLanguageChange={(language) => { void appPreferences.change({ practiceLanguage: language }); }}
+          onLinePracticeSessionLengthChange={(length) => {
+            void appPreferences.change({ linePracticeSessionLength: length });
+          }}
           typingSpeedUnits={typingSpeedUnits}
           onTypingSpeedUnitChange={(language, unit) => {
             void appPreferences.change({

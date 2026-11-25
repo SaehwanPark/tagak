@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { appPreferencesKey } from "../../src/storage/appPreferences";
+import { appPreferencesKey, defaultAppPreferences } from "../../src/storage/appPreferences";
 import type { AppPreferences } from "../../src/storage/appPreferences";
 
 /**
@@ -9,9 +9,9 @@ import type { AppPreferences } from "../../src/storage/appPreferences";
 export async function seedPreferences(
   page: Page,
   preferences: Partial<AppPreferences>,
-  version = 2,
+  version = 3,
 ): Promise<void> {
   await page.addInitScript(({ key, stored, schema }) => {
     localStorage.setItem(key, JSON.stringify({ version: schema, preferences: stored }));
-  }, { key: appPreferencesKey, stored: preferences, schema: version });
+  }, { key: appPreferencesKey, stored: { ...defaultAppPreferences, ...preferences }, schema: version });
 }
