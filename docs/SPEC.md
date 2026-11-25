@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.7.0`이다. 다음 버전 후보는 `v0.8.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.8.0`이다. 다음 버전 후보는 `v0.9.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -14,6 +14,14 @@
 현재 진행 중인 사용자 기능 슬라이스는 없다.
 
 ## 완료
+
+- [x] **A37 · 데스크톱 창 내 레이아웃과 내부 스크롤** · `v0.8.0` · 이슈 [#67](https://github.com/SaehwanPark/tagak/issues/67)
+  - `html`·`body`·`#root`와 앱 shell을 viewport 안에 제한하고 masthead와 활성 화면에 높이를 배분했다. 문서 바깥 스크롤 없이 긴 라이브러리·설정·지문·기록·결과를 해당 화면의 내부 영역에서 스크롤한다.
+  - 홈 항목은 기본 창에서 모두 보이고, 작은 창은 필요한 목록만 스크롤한다. 선택된 메뉴·설정 행을 내부 영역에서 reveal하며 PageUp/PageDown은 목록의 가시 높이를 따라 이동한다. 읽기 전용 지문·기록·결과·순위표는 마우스/트랙패드와 방향키·페이지 키로 스크롤한다.
+  - 한 줄·글 연습의 입력과 점수, 도전 조작, 베네치아의 HUD·입력을 고정하고 남은 공간을 지문/게임 보드에 배분한다. 큰 글자, 영어 UI, 종이 테마, resize, 상태 안내와 매우 낮은 browser viewport fallback에서도 필수 조작을 보존한다.
+  - Playwright viewport E2E는 1120×960, 900×700, 760×560, 1280×560 및 320×420 viewport의 가로·세로 문서/shell scroll extent, 긴 목록/설정/지문/기록/베네치아 Top 10 내부 스크롤, 포커스 가시성, 설정·백업 상태 알림, resize 중 게임 상태를 확인한다. `npm run verify` 결과와 실제 macOS/Windows GUI 미검증 항목은 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 기록했다.
+  - `npm run desktop:build`가 macOS `.app`과 DMG를 생성했다. 개발 호스트 컴파일은 통과했지만 CUA가 빌드된 앱 창에 연결하지 못해 실제 Tauri 창 resize·WebKit 내부 스크롤 수동 확인은 하지 못했다. Windows Tauri/WebView2 수동 회귀와 실제 OS IME 재확인도 이번 변경에서 수행하지 않았다.
+  - README·제품 명세·구조 문서·변경 이력과 npm/Cargo/Tauri 버전을 `v0.8.0`으로 맞췄다.
 
 - [x] **A36 · 홈 메뉴와 콘텐츠 정리** · `v0.7.0` · 이슈 [#65](https://github.com/SaehwanPark/tagak/issues/65)
   - 홈 메뉴를 `한 줄`, `짧은 글`, `긴 글`, `게임`, `환경설정` 다섯 항목으로 정리했다. 30초 낱말 도전과 베네치아는 게임 하위 메뉴로 옮겼고 메뉴 종류 태그를 제거했다.

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { modeLabels } from "../domain/history";
 import type { PracticeRecord, RecordedMode } from "../domain/history";
 import { useFocus } from "./useFocus";
+import { handleScrollRegionKeyDown } from "./focusWithinScrollRegion";
 import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
 import { toDisplayedTypingSpeed } from "../domain/typingSpeed";
@@ -91,7 +92,14 @@ export function HistoryView({ records, onClear, onBack, copy, interfaceLanguage,
         </div>
       )}
       {visible.length === 0 ? <p className="lede">{copy.noRecords}</p> : (
-        <ul className="history-list">
+        <ul
+          className="history-list"
+          role="region"
+          aria-label={copy.activityLabel("history", "Recent practice")}
+          tabIndex={0}
+          data-scroll-region
+          onKeyDown={handleScrollRegionKeyDown}
+        >
           {visible.map(({ id, mode, language, completedAt, score }) => {
             const speedUnit = typingSpeedUnits[language];
             const speed = toDisplayedTypingSpeed(

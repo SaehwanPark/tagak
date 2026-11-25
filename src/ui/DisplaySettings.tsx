@@ -10,6 +10,7 @@ import type { AppPreferences } from "../storage/appPreferences";
 import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
 import type { TypingSpeedUnit, TypingSpeedUnits } from "../domain/typingSpeed";
+import { focusWithinScrollRegion } from "./focusWithinScrollRegion";
 
 type DisplaySettingsProps = {
   interfaceLanguage: Language;
@@ -152,7 +153,7 @@ export function DisplaySettings({
     const target = rows.find((row) => row.dataset.settingRow === initialFocusRow) ?? rows[0];
     if (target) {
       setFocusedRow(target.dataset.settingRow ?? "interface-language");
-      target.focus({ preventScroll: true });
+      focusWithinScrollRegion(target);
     }
   }, [initialFocusRow]);
 
@@ -177,7 +178,7 @@ export function DisplaySettings({
     const next = rows[nextIndex];
     if (next) {
       setFocusedRow(next.dataset.settingRow ?? "interface-language");
-      next.focus({ preventScroll: true });
+      focusWithinScrollRegion(next);
     }
   }
 
@@ -186,7 +187,7 @@ export function DisplaySettings({
       <button className="back" type="button" onClick={onBack}>{backLabel}</button>
       <h1 tabIndex={-1}>{copy.settings}</h1>
       <p className="lede">{copy.settingsHelp}</p>
-      <div ref={menu} className="settings-panel settings-page settings-menu" role="group" aria-label={copy.settings}>
+      <div ref={menu} className="settings-panel settings-page settings-menu" role="group" aria-label={copy.settings} data-scroll-region>
         <ChoiceRow<Language>
           id="interface-language"
           label={copy.interfaceLanguage}

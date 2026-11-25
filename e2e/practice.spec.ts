@@ -316,7 +316,15 @@ test("Home, End, and Page Down jump between menu entries and keep the roving foc
   await expect(entries.first()).toBeFocused();
 
   await page.keyboard.press("PageDown");
-  await expect(entries.nth(Math.min(5, count - 1))).toBeFocused();
+  const pageDownIndex = await entries.evaluateAll((buttons) => buttons.findIndex((button) => button === document.activeElement));
+  expect(pageDownIndex).toBeGreaterThan(0);
+  expect(pageDownIndex).toBeLessThan(count);
+  const menuBounds = await page.locator(".activity-menu").boundingBox();
+  const pageDownBounds = await entries.nth(pageDownIndex).boundingBox();
+  expect(menuBounds).not.toBeNull();
+  expect(pageDownBounds).not.toBeNull();
+  expect(pageDownBounds!.y).toBeGreaterThanOrEqual(menuBounds!.y);
+  expect(pageDownBounds!.y + pageDownBounds!.height).toBeLessThanOrEqual(menuBounds!.y + menuBounds!.height);
   await page.keyboard.press("PageUp");
   await expect(entries.first()).toBeFocused();
   await page.keyboard.press("ArrowUp");

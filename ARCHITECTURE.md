@@ -212,6 +212,14 @@ html[data-practice-language="en"][data-practice-font="serif"] { … }
 - `visibilitychange`/`blur`/`focus`/`pageshow`로 탭 복귀 시 마지막 유효 컨트롤에 초점을 되돌립니다(없으면 화면 기본 대상).
 - 설정 메뉴는 roving tabindex로 탭 정지점을 하나만 둡니다.
 
+## Viewport layout and scrolling (A37)
+
+`styles.css` makes `html`, `body`, and `#root` viewport-sized with document overflow disabled. The `.shell` is a centered, capped-height flex column; the masthead and status notice stay at the shell edge while the active screen receives the remaining space. Inactive `.screen-underlay` content is removed from layout with `[hidden]`.
+
+Each screen owns its overflow region. Menus and settings scroll their entry list, passage practice scrolls its five-line context, history scrolls records, results scroll long statistics, and Venice results scroll the score table. Practice controls stay outside these regions. During Venice play the board flexes into space left by the fixed HUD, input, and actions. Under very short browser viewports the active screen itself can scroll inside the shell.
+
+`data-scroll-region` marks areas that must not move an outer scroll container. `focusWithinScrollRegion.ts` focuses menu/settings entries without scrolling the page and adjusts only the nearest marked region. Read-only regions use `handleScrollRegionKeyDown` for arrow, page, Home, and End navigation. `PassageView` reveals the active context line when a submission advances. Layout uses CSS flex constraints and media queries; it does not measure the viewport in JavaScript, scale the full interface, or change practice/game state on resize.
+
 ## 화면 저장과 효과음
 
 - **PNG 저장**: `ui/screenCapture.ts`가 `html-to-image`로 앱 루트를 2배 해상도 PNG로 만듭니다. `data-capture-ignore="true"` 노드(저장 버튼)는 이미지에서 제외합니다. `useScreenCapture`는 macOS `⌘S`와 브라우저의 `Ctrl+S`를 앱 화면 안에서 처리하고 IME 조합 중에는 가로채지 않습니다. WebView2는 `Ctrl+S`를 브라우저 가속키 이벤트로 분리하므로 Windows Tauri 호스트가 해당 키만 앱 이벤트로 전달합니다. Tauri 앱은 네이티브 대화상자에서 선택한 경로에 쓰고 브라우저 경로는 다운로드를 사용합니다.

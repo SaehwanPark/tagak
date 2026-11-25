@@ -6,6 +6,7 @@ import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
 import { Scoreboard } from "./Scoreboard";
 import { useFocus } from "./useFocus";
+import { handleScrollRegionKeyDown } from "./focusWithinScrollRegion";
 
 type ResultViewProps = {
   title: string;
@@ -34,7 +35,7 @@ export function ResultView({
   const formattedStatistic = (value: number | null) => value === null ? "—" : String(Math.round(value));
 
   return (
-    <section className="screen" onKeyDown={(event) => {
+    <section className="screen result-screen" onKeyDown={(event) => {
       if (event.nativeEvent.isComposing || event.repeat) return;
       if (event.key === "Escape") onBack();
       if (event.key === "Enter" && event.target === heading.current) onRetry();
@@ -42,25 +43,34 @@ export function ResultView({
       <h1 ref={heading} tabIndex={-1} aria-describedby="result-title result-hint">{copy.practiceComplete}</h1>
       <p id="result-title" className="lede">{title}</p>
       {progress && <p className="result-progress">{progress}</p>}
-      {sessionStatistics && (
-        <section className="previous-score line-session-statistics" aria-labelledby="line-session-statistics-title">
-          <h2 id="line-session-statistics-title">{copy.lineSessionStatistics} · {copy.speedLabel(speedUnit, language)}</h2>
-          <p className="result-progress">{copy.lineSessionSampleCount(sessionStatistics.sampleCount)}</p>
-          <dl className="scores">
-            <div><dt>{copy.mean}</dt><dd>{formattedStatistic(sessionStatistics.mean)}</dd></div>
-            <div><dt>{copy.standardDeviation}</dt><dd>{formattedStatistic(sessionStatistics.populationStandardDeviation)}</dd></div>
-            <div><dt>{copy.median}</dt><dd>{formattedStatistic(sessionStatistics.median)}</dd></div>
-            <div><dt>{copy.interquartileRange}</dt><dd>{formattedStatistic(sessionStatistics.interquartileRange)}</dd></div>
-          </dl>
-        </section>
-      )}
-      <Scoreboard score={score} label={copy.thisResult} showSpeed={showSpeed} language={language} speedUnit={speedUnit} showTime copy={copy} />
-      {comparison && (
-        <section className="previous-score" aria-labelledby="comparison-title">
-          <h2 id="comparison-title">{copy.sameModePrevious}</h2>
-          <Scoreboard score={comparison} label={copy.previousResult} showSpeed={showSpeed} language={language} speedUnit={speedUnit} showTime copy={copy} />
-        </section>
-      )}
+      <div
+        className="result-details"
+        role="region"
+        aria-label={title}
+        tabIndex={0}
+        data-scroll-region
+        onKeyDown={handleScrollRegionKeyDown}
+      >
+        {sessionStatistics && (
+          <section className="previous-score line-session-statistics" aria-labelledby="line-session-statistics-title">
+            <h2 id="line-session-statistics-title">{copy.lineSessionStatistics} · {copy.speedLabel(speedUnit, language)}</h2>
+            <p className="result-progress">{copy.lineSessionSampleCount(sessionStatistics.sampleCount)}</p>
+            <dl className="scores">
+              <div><dt>{copy.mean}</dt><dd>{formattedStatistic(sessionStatistics.mean)}</dd></div>
+              <div><dt>{copy.standardDeviation}</dt><dd>{formattedStatistic(sessionStatistics.populationStandardDeviation)}</dd></div>
+              <div><dt>{copy.median}</dt><dd>{formattedStatistic(sessionStatistics.median)}</dd></div>
+              <div><dt>{copy.interquartileRange}</dt><dd>{formattedStatistic(sessionStatistics.interquartileRange)}</dd></div>
+            </dl>
+          </section>
+        )}
+        <Scoreboard score={score} label={copy.thisResult} showSpeed={showSpeed} language={language} speedUnit={speedUnit} showTime copy={copy} />
+        {comparison && (
+          <section className="previous-score" aria-labelledby="comparison-title">
+            <h2 id="comparison-title">{copy.sameModePrevious}</h2>
+            <Scoreboard score={comparison} label={copy.previousResult} showSpeed={showSpeed} language={language} speedUnit={speedUnit} showTime copy={copy} />
+          </section>
+        )}
+      </div>
       <div className="result-actions">
         <button type="button" className="button" onClick={onRetry}>{copy.practiceAgain}</button>
         <button type="button" className="button secondary" onClick={onBack}>{copy.returnTo(destination)}</button>

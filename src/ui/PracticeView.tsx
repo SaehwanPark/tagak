@@ -54,7 +54,7 @@ export function PracticeView({
   }
 
   return (
-    <section className="screen">
+    <section className="screen practice-screen">
       <button className="back" type="button" onClick={onBack}>← {backLabel ?? copy.menu}</button>
       <h1 lang={language}>{title}</h1>
       {sessionProgress && <p className="result-progress" aria-live="polite">{sessionProgress}</p>}

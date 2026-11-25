@@ -41,7 +41,7 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
 
   if (state.phase === "ready") {
     return (
-      <section className="screen" onKeyDown={(event) => {
+      <section className="screen challenge-screen" onKeyDown={(event) => {
         if (event.key === "Escape") onBack();
       }}>
         <button className="back" type="button" onClick={onBack}>{copy.backToMenu}</button>
@@ -54,7 +54,7 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
 
   if (state.phase === "finished") {
     return (
-      <section className="screen" onKeyDown={(event) => {
+      <section className="screen challenge-screen" onKeyDown={(event) => {
         if (event.repeat || event.nativeEvent.isComposing) return;
         if (event.key === "Escape") onBack();
         if (event.key === "Enter" && event.target === result.current) start();
@@ -76,7 +76,7 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
 
   const remaining = Math.max(0, challengeDurationMs - (state.now - state.startedAt));
   return (
-    <section className="screen">
+    <section className="screen challenge-screen challenge-running-screen">
       <h1>{copy.challengeTitle}</h1>
       <div className="target challenge-target">
         <div className="target-label">
