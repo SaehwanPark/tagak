@@ -23,6 +23,7 @@ export type PassageProgress = {
 export type PassageSession = {
   lineIndex: number;
   line: PracticeSession;
+  lineScores: readonly TypingScore[];
   passage: PassageProgress;
   bundle: PassageProgress;
   /** The most recently finished bundle, so its speed stays visible like a previous line. */
@@ -32,7 +33,7 @@ export type PassageSession = {
 export type PassageAdvance =
   | { type: "waiting" }
   | { type: "next-line"; session: PassageSession; bundle: TypingScore | null }
-  | { type: "completed"; score: TypingScore; bundle: TypingScore };
+  | { type: "completed"; score: TypingScore; bundle: TypingScore; lineScores: readonly TypingScore[] };
 
 function createProgress(): PassageProgress {
   return { elapsedMs: 0, correctCount: 0, typedCount: 0, keystrokeCount: 0 };
@@ -42,6 +43,7 @@ export function createPassageSession(): PassageSession {
   return {
     lineIndex: 0,
     line: createPracticeSession(),
+    lineScores: [],
     passage: createProgress(),
     bundle: createProgress(),
     lastBundle: null,
@@ -111,6 +113,7 @@ export function submitPassageLine(
   const line = calculateTypingScore(target, session.line, at, language);
   const passage = addLine(session.passage, line);
   const bundle = addLine(session.bundle, line);
+  const lineScores = [...session.lineScores, line];
   const nextIndex = session.lineIndex + 1;
 
   if (nextIndex === lines.length) {
@@ -118,6 +121,7 @@ export function submitPassageLine(
       type: "completed",
       score: progressScore(passage, language),
       bundle: progressScore(bundle, language),
+      lineScores,
     };
   }
 
@@ -128,6 +132,7 @@ export function submitPassageLine(
     session: {
       lineIndex: nextIndex,
       line: createPracticeSession(),
+      lineScores,
       passage,
       bundle: bundleEnds ? createProgress() : bundle,
       lastBundle: finishedBundle ?? session.lastBundle,

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import {
   challengeEntry,
   completionTime,
@@ -30,7 +30,7 @@ import { HistoryView } from "./HistoryView";
 import { PracticeView } from "./PracticeView";
 import { ResultView } from "./ResultView";
 import { ScreenCaptureControl } from "./ScreenCaptureControl";
-import { playCompletionTone } from "./completionSound";
+import { playCompletionTone, playHighScoreTone } from "./completionSound";
 import { createRunSeed } from "./randomSeed";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 
@@ -50,7 +50,7 @@ function activityLanguage(activity: Activity | PassageActivity): Language {
 
 export function App() {
   const practice = usePracticeState();
-  const { state, pending, latest, dispatch, acknowledge } = practice;
+  const { state, pending, pendingSession, latest, dispatch, acknowledge, acknowledgeSession } = practice;
   const currentScreen = contentState(state);
   const { shell, screenContent, captureSettingsOrigin } = useScreenFocus(state);
   const appPreferences = useAppPreferences();
@@ -62,7 +62,7 @@ export function App() {
     linePracticeSessionLength,
   } = appPreferences.preferences;
   const copy = interfaceText(interfaceLanguage);
-  const history = useHistory(pending, acknowledge);
+  const history = useHistory(pending, pendingSession, acknowledge, acknowledgeSession);
   const textSize = useTextSize();
   const colorTheme = useColorTheme();
   const practiceFont = usePracticeFont(practiceLanguage);
@@ -73,7 +73,9 @@ export function App() {
     settingsReturnScreen === "venice" || settingsReturnScreen === "result";
   const settingsNotice = [appPreferences.notice, textSize.notice, colorTheme.notice, practiceFont.notice]
     .filter(Boolean).join(" ");
-  const back = () => dispatch({ type: "return-to-menu" });
+  const back = () => currentScreen.screen === "practice" || currentScreen.screen === "passage"
+    ? dispatch({ type: "return-to-menu", sessionId: crypto.randomUUID(), completedAt: Date.now() })
+    : dispatch({ type: "return-to-menu" });
   const openSettings = () => {
     captureSettingsOrigin();
     dispatch({ type: "open-settings" });
@@ -81,10 +83,29 @@ export function App() {
   const closeSettings = () => dispatch({ type: "close-settings" });
   const onInput = (input: string, at: number) => dispatch({ type: "input-changed", input, at });
   const onSubmit = (at: number, input?: string) => {
-    if (completionSound && shouldPlayForCurrentSubmission(currentScreen, input)) playCompletionTone();
+    const endsPracticeSession = currentScreen.screen === "practice"
+      ? currentScreen.completedLineScores.length + 1 >= currentScreen.lineSessionLength &&
+        hasReachedEnd(currentScreen.lesson.text, input ?? currentScreen.session.input)
+      : currentScreen.screen === "passage"
+        ? currentScreen.session.lineIndex + 1 === currentScreen.activity.lines.length &&
+          submissionEndsBundle(currentScreen.activity.lines, currentScreen.session, input)
+        : false;
+    if (completionSound && !endsPracticeSession && shouldPlayForCurrentSubmission(currentScreen, input)) playCompletionTone();
     dispatch({ type: "submit", ...(input === undefined ? {} : { input }), ...completionTime(at) });
   };
   const notifyCompletion = () => { if (completionSound) playCompletionTone(); };
+  const lastPracticeSessionTone = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (currentScreen.screen !== "result" || !currentScreen.sessionRecord) return;
+    const saved = history.latestSessionSave;
+    if (!saved || saved.id !== currentScreen.sessionRecord.id || (saved.ok && saved.duplicate) ||
+        saved.completion !== "completed" || lastPracticeSessionTone.current === saved.id) return;
+    lastPracticeSessionTone.current = saved.id;
+    if (!completionSound) return;
+    if (saved.ok && saved.decision?.status === "new-record") playHighScoreTone();
+    else playCompletionTone();
+  }, [completionSound, currentScreen, history.latestSessionSave]);
 
   useEffect(() => {
     document.documentElement.lang = interfaceLanguage;
@@ -120,10 +141,21 @@ export function App() {
       : "",
   }));
 
-  const historyMessage = history.notice === "history-save-failed" ? copy.historySaveFailed :
-    history.notice === "history-clear-failed" ? copy.historyClearFailed :
-      history.notice === "history-cleared" ? copy.historyCleared :
-        history.notice === "history-read-failed" ? copy.historyReadFailed : "";
+  const historyMessages: Readonly<Record<string, string>> = {
+    "history-save-failed": copy.historySaveFailed,
+    "session-save-failed": copy.sessionSaveFailed,
+    "history-clear-failed": copy.historyClearFailed,
+    "history-cleared": copy.historyCleared,
+    "high-scores-cleared": copy.highScoresCleared,
+    "history-read-failed": copy.historyReadFailed,
+  };
+  const historyMessage = historyMessages[history.notice] ?? "";
+  const sessionSave = currentScreen.screen === "result" && currentScreen.sessionRecord &&
+    history.latestSessionSave?.id === currentScreen.sessionRecord.id
+    ? history.latestSessionSave
+    : null;
+  const sessionFailureShownInResult = currentScreen.screen === "result" &&
+    sessionSave?.ok === false && history.notice === "session-save-failed";
 
   return (
     <main ref={shell} className="shell" data-text-size={textSize.size}>
@@ -227,7 +259,7 @@ export function App() {
           copy={copy}
           onInput={onInput}
           onSubmit={onSubmit}
-          onFinish={() => dispatch({ type: "finish" })}
+          onFinish={() => dispatch({ type: "finish", sessionId: crypto.randomUUID(), completedAt: Date.now() })}
           onBack={back}
         />
       )}
@@ -246,10 +278,10 @@ export function App() {
 
       {currentScreen.screen === "result" && (
         <ResultView
-          title={currentScreen.lineSessionScores ? copy.lineSessionResult
+          title={currentScreen.lineSessionScores && currentScreen.activity.kind !== "passage" ? copy.lineSessionResult
             : currentScreen.activity.kind === "line" ? copy.previousSentence
               : copy.activityLabel(currentScreen.activity.id, currentScreen.activity.label)}
-          progress={currentScreen.lineSessionScores
+          progress={currentScreen.lineSessionScores && currentScreen.activity.kind !== "passage"
             ? copy.lineSessionCompleted(currentScreen.lineSessionScores.length)
             : undefined}
           {...(currentScreen.lineSessionScores ? { lineSessionScores: currentScreen.lineSessionScores } : {})}
@@ -258,6 +290,11 @@ export function App() {
           language={activityLanguage(currentScreen.activity)}
           speedUnit={typingSpeedUnits[activityLanguage(currentScreen.activity)]}
           comparison={latest ? comparableRecord(latest, history.records)?.score : undefined}
+          sessionRecord={currentScreen.sessionRecord}
+          {...(sessionSave ? {
+            sessionDecision: sessionSave.decision,
+            sessionSaveFailed: !sessionSave.ok,
+          } : {})}
           backLabel={currentScreen.activity.kind === "passage"
             ? currentScreen.activity.length === "short" ? copy.shortPassage : copy.longPassage
             : copy.menu}
@@ -275,7 +312,7 @@ export function App() {
 
       </div>
 
-      {historyMessage && (state.screen !== "settings" || state.view === "history") && (
+      {historyMessage && !sessionFailureShownInResult && (state.screen !== "settings" || state.view === "history") && (
         <p className="storage-notice" role="status">{historyMessage}</p>
       )}
 
@@ -325,7 +362,10 @@ export function App() {
       {state.screen === "settings" && state.view === "history" && (
         <HistoryView
           records={history.records}
+          sessions={history.sessions}
+          highScores={history.highScores}
           onClear={history.reset}
+          onClearHighScores={history.resetHighScores}
           onBack={() => dispatch({ type: "return-to-settings" })}
           copy={copy}
           interfaceLanguage={interfaceLanguage}

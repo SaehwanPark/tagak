@@ -9,9 +9,9 @@ import {
   updatePassageInput,
 } from "../domain/passagePractice";
 import type { PassageSession } from "../domain/passagePractice";
-import { calculateTypingScore, createPracticeSession, hasReachedEnd, reducePracticeSession } from "../domain/typing";
+import { aggregateTypingScores, calculateTypingScore, createPracticeSession, hasReachedEnd, reducePracticeSession } from "../domain/typing";
 import type { PracticeSession, TypingScore } from "../domain/typing";
-import type { PracticeRecord } from "../domain/history";
+import type { PracticeRecord, PracticeSessionRecord } from "../domain/history";
 import { defaultLinePracticeSessionLength } from "../domain/linePracticeSettings";
 import type { LinePracticeSessionLength } from "../domain/linePracticeSettings";
 
@@ -46,6 +46,7 @@ export type PracticeContentState =
       score: TypingScore;
       lineSessionScores?: readonly TypingScore[];
       lineSessionLength?: LinePracticeSessionLength;
+      sessionRecord: PracticeSessionRecord | null;
     };
 
 type SettingsView = "menu" | "history" | "data-transfer";
@@ -53,7 +54,7 @@ export type PracticeState =
   | PracticeContentState
   | { screen: "settings"; returnState: PracticeContentState; view: SettingsView; focusRow: string };
 
-type CompletionTime = { id: string; completedAt: number; at: number };
+type CompletionTime = { id: string; sessionId: string; completedAt: number; at: number };
 export type AppAction =
   | { type: "start"; activity: Activity; seed: number; lineSessionLength?: LinePracticeSessionLength }
   | { type: "start-passage"; activity: PassageActivity }
@@ -68,8 +69,8 @@ export type AppAction =
   | { type: "open-venice" }
   | { type: "input-changed"; input: string; at: number }
   | ({ type: "submit"; input?: string } & CompletionTime)
-  | { type: "finish" }
-  | { type: "return-to-menu" }
+  | { type: "finish"; sessionId?: string; completedAt?: number }
+  | { type: "return-to-menu"; sessionId?: string; completedAt?: number }
   | { type: "retry" }
   | { type: "retry-randomized"; seed: number };
 
@@ -104,6 +105,20 @@ function startPassage(activity: PassageActivity): PracticeState {
   return { screen: "passage", activity, session: createPassageSession() };
 }
 
+function sessionRecord(
+  id: string | undefined,
+  completedAt: number | undefined,
+  mode: PracticeSessionRecord["mode"],
+  language: PracticeSessionRecord["language"],
+  materialIds: readonly string[],
+  lineSessionLength: LinePracticeSessionLength | null,
+  lineScores: readonly TypingScore[],
+  completion: PracticeSessionRecord["completion"],
+): PracticeSessionRecord | null {
+  if (!id || completedAt === undefined || lineScores.length === 0) return null;
+  return { id, completedAt, mode, language, materialIds, lineSessionLength, completion, lineScores };
+}
+
 function reduceTextPractice(
   state: Extract<PracticeState, { screen: "practice" }>,
   action: AppAction,
@@ -112,12 +127,23 @@ function reduceTextPractice(
     return { ...state, session: reducePracticeSession(state.session, action) };
   }
   if (action.type === "finish" && state.previous) {
+    const scores = state.completedLineScores;
     return {
       screen: "result",
       activity: state.activity,
-      score: state.previous,
-      lineSessionScores: state.completedLineScores,
+      score: aggregateTypingScores(scores, state.lesson.language),
+      lineSessionScores: scores,
       lineSessionLength: state.lineSessionLength,
+      sessionRecord: sessionRecord(
+        action.sessionId,
+        action.completedAt,
+        "line",
+        state.lesson.language,
+        state.activity.lessons.slice(0, scores.length).map((lesson) => lesson.id),
+        state.lineSessionLength,
+        scores,
+        "early-exit",
+      ),
     };
   }
   if (action.type !== "submit") return state;
@@ -133,9 +159,19 @@ function reduceTextPractice(
     return {
       screen: "result",
       activity: state.activity,
-      score,
+      score: aggregateTypingScores(completedLineScores, state.lesson.language),
       lineSessionScores: completedLineScores,
       lineSessionLength: state.lineSessionLength,
+      sessionRecord: sessionRecord(
+        action.sessionId,
+        action.completedAt,
+        "line",
+        state.lesson.language,
+        state.activity.lessons.slice(0, completedLineScores.length).map((lesson) => lesson.id),
+        state.lineSessionLength,
+        completedLineScores,
+        "completed",
+      ),
     };
   }
   const index = (state.index + 1) % state.activity.lessons.length;
@@ -162,7 +198,22 @@ function reducePassagePractice(state: Extract<PracticeState, { screen: "passage"
   switch (update.type) {
     case "waiting": return state;
     case "next-line": return { ...state, session: update.session };
-    case "completed": return { screen: "result", activity: state.activity, score: update.score };
+    case "completed": return {
+      screen: "result",
+      activity: state.activity,
+      score: update.score,
+      lineSessionScores: update.lineScores,
+      sessionRecord: sessionRecord(
+        action.sessionId,
+        action.completedAt,
+        state.activity.length,
+        state.activity.language,
+        [state.activity.id],
+        null,
+        update.lineScores,
+        "completed",
+      ),
+    };
   }
 }
 
@@ -244,14 +295,18 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
 type SessionState = {
   screen: PracticeState;
   pending: readonly PracticeRecord[];
+  pendingSessions: readonly PracticeSessionRecord[];
   latest: PracticeRecord | null;
 };
 
-type SessionAction = AppAction | { type: "saved"; id: string };
+type SessionAction = AppAction | { type: "saved"; id: string } | { type: "saved-session"; id: string };
 
 function completedRecord(before: PracticeState, after: PracticeState, action: AppAction): PracticeRecord | null {
   if (action.type !== "submit" || (before.screen !== "practice" && before.screen !== "passage")) return null;
-  const score = after.screen === "result" ? after.score
+  const score = after.screen === "result"
+    ? before.screen === "practice" && after.sessionRecord
+      ? after.sessionRecord.lineScores.at(-1) ?? after.score
+      : after.score
     : before.screen === "practice" && after.screen === "practice" && after.round > before.round
       ? after.previous : null;
   if (!score) return null;
@@ -270,23 +325,67 @@ function reduceSessions(state: SessionState, action: SessionAction): SessionStat
   if (action.type === "saved") {
     return { ...state, pending: state.pending.filter((record) => record.id !== action.id) };
   }
+  if (action.type === "saved-session") {
+    return { ...state, pendingSessions: state.pendingSessions.filter((record) => record.id !== action.id) };
+  }
   const screen = reducePracticeState(state.screen, action);
   const record = completedRecord(state.screen, screen, action);
-  return record
-    ? { screen, pending: [...state.pending, record], latest: record }
-    : { ...state, screen };
+  let savedSession = screen.screen === "result" ? screen.sessionRecord : null;
+  if (action.type === "return-to-menu" && action.sessionId && action.completedAt !== undefined) {
+    if (state.screen.screen === "practice") {
+      const scores = state.screen.completedLineScores;
+      savedSession = sessionRecord(
+        action.sessionId,
+        action.completedAt,
+        "line",
+        state.screen.lesson.language,
+        state.screen.activity.lessons.slice(0, scores.length).map((lesson) => lesson.id),
+        state.screen.lineSessionLength,
+        scores,
+        "early-exit",
+      );
+    } else if (state.screen.screen === "passage") {
+      savedSession = sessionRecord(
+        action.sessionId,
+        action.completedAt,
+        state.screen.activity.length,
+        state.screen.activity.language,
+        [state.screen.activity.id],
+        null,
+        state.screen.session.lineScores,
+        "early-exit",
+      );
+    }
+  }
+  return {
+    ...state,
+    screen,
+    pending: record ? [...state.pending, record] : state.pending,
+    pendingSessions: savedSession ? [...state.pendingSessions, savedSession] : state.pendingSessions,
+    latest: record ?? state.latest,
+  };
 }
 
 export function usePracticeState() {
   const [state, dispatch] = useReducer(reduceSessions, {
     screen: { screen: "menu", selected: null },
     pending: [],
+    pendingSessions: [],
     latest: null,
   });
   const acknowledge = useCallback((id: string) => dispatch({ type: "saved", id }), []);
-  return { state: state.screen, pending: state.pending[0], latest: state.latest, dispatch, acknowledge };
+  const acknowledgeSession = useCallback((id: string) => dispatch({ type: "saved-session", id }), []);
+  return {
+    state: state.screen,
+    pending: state.pending[0],
+    pendingSession: state.pendingSessions[0],
+    latest: state.latest,
+    dispatch,
+    acknowledge,
+    acknowledgeSession,
+  };
 }
 
 export function completionTime(at: number): CompletionTime {
-  return { id: crypto.randomUUID(), completedAt: Date.now(), at };
+  return { id: crypto.randomUUID(), sessionId: crypto.randomUUID(), completedAt: Date.now(), at };
 }

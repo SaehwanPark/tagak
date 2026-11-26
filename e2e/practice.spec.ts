@@ -3,6 +3,9 @@ import { activities } from "../src/content/library";
 import { linePracticeSessionLength } from "../src/app/usePractice";
 import { shuffleWithSeed } from "../src/domain/random";
 import { countKoreanKeystrokes } from "../src/domain/typing";
+import { seedPreferences } from "./helpers/preferences";
+import { stubCompletionTone } from "./helpers/audio";
+import { historyKey } from "../src/storage/historyStorage";
 
 test("a new profile can practice from the build with only loopback access", async ({ page, baseURL }) => {
   await page.route("**/*", (route) => {
@@ -45,6 +48,18 @@ test("a new profile can practice from the build with only loopback access", asyn
   await expect(input).toHaveValue("");
   await input.press("Escape");
   await expect(menu).toBeFocused();
+});
+
+test("leaving before any submitted line does not create a session record", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
+  await page.getByRole("textbox", { name: "따라 입력하기" }).press("Escape");
+  await expect(page.getByRole("button", { name: "한 줄", exact: true })).toBeFocused();
+  const sessions = await page.evaluate(() => {
+    const raw = localStorage.getItem("tagak:history");
+    return raw ? JSON.parse(raw).sessions ?? [] : [];
+  });
+  expect(sessions).toEqual([]);
 });
 
 test("one-line practice shows compact source attribution", async ({ page }) => {
@@ -147,6 +162,99 @@ test("uses the configured sentence count and reports the trimmed quartile range"
   const statistics = page.locator(".line-session-statistics .scores");
   await expect(statistics.locator("dt").last()).toHaveText("IQR (P25–P75)");
   await expect(statistics.locator("dd").last()).toHaveText(/^\d+–\d+$/);
+});
+
+test("high scores update only after a stable session improvement and can be reset alone", async ({ page }) => {
+  await page.clock.install();
+  await seedPreferences(page, { linePracticeSessionLength: 5, completionSound: true });
+  await page.addInitScript(() => {
+    Object.defineProperty(window.crypto, "getRandomValues", {
+      configurable: true,
+      value: (values: Uint32Array) => { values[0] = 23; return values; },
+    });
+  });
+  const tones = await stubCompletionTone(page);
+
+  async function completeSession(delayMs: number) {
+    await page.getByRole("button", { name: "한 줄", exact: true }).click();
+    const input = page.getByRole("textbox", { name: "따라 입력하기" });
+    const target = page.locator("#typing-target");
+    for (let index = 0; index < 5; index += 1) {
+      const prompt = await target.getAttribute("aria-label");
+      expect(prompt).not.toBeNull();
+      await input.fill(prompt!);
+      await page.clock.fastForward(delayMs);
+      await input.press("Enter");
+    }
+    await expect(page.getByRole("heading", { name: "연습 완료" })).toBeVisible();
+  }
+
+  await page.goto("/");
+  await completeSession(10_000);
+  await expect(page.getByText("첫 최고 기록이 등록되었습니다.")).toBeVisible();
+  await expect.poll(tones).toBe(5);
+
+  await page.getByRole("button", { name: "다시 연습" }).click();
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  const target = page.locator("#typing-target");
+  for (let index = 0; index < 5; index += 1) {
+    const prompt = await target.getAttribute("aria-label");
+    expect(prompt).not.toBeNull();
+    await input.fill(prompt!);
+    await page.clock.fastForward(1_200);
+    await input.press("Enter");
+  }
+  await expect(page.getByText(/새로운 최고 기록/)).toBeVisible();
+  await expect.poll(tones).toBe(10);
+  await expect.poll(() => page.evaluate((key) => {
+    const data = JSON.parse(localStorage.getItem(key) ?? "null");
+    return data?.sessions?.length ?? 0;
+  }, historyKey)).toBe(2);
+
+  await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await page.getByRole("button", { name: "최근 연습 기록" }).click();
+  await expect(page.locator(".high-score-list li")).toHaveCount(1);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(2);
+  await page.getByRole("button", { name: "최고 기록 지우기" }).click();
+  const cancel = page.getByRole("button", { name: "취소" });
+  await expect(cancel).toBeFocused();
+  await page.getByRole("button", { name: "최고 기록만 지우기" }).click();
+  await expect(page.getByRole("status")).toContainText("최고 기록을 지웠습니다");
+  await expect(page.locator(".high-score-list li")).toHaveCount(0);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(2);
+  await expect.poll(() => page.evaluate((key) => {
+    const data = JSON.parse(localStorage.getItem(key) ?? "null");
+    return data?.highScores?.length ?? -1;
+  }, historyKey)).toBe(0);
+});
+
+test("English results and history label the first eligible high score", async ({ page }) => {
+  await page.clock.install();
+  await seedPreferences(page, {
+    interfaceLanguage: "en",
+    practiceLanguage: "en",
+    linePracticeSessionLength: 5,
+    completionSound: false,
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: "One-line drills" }).click();
+  const input = page.getByRole("textbox", { name: "Type the prompt" });
+  const target = page.locator("#typing-target");
+  for (let index = 0; index < 5; index += 1) {
+    const prompt = await target.getAttribute("aria-label");
+    expect(prompt).not.toBeNull();
+    await input.fill(prompt!);
+    await page.clock.fastForward(1_200);
+    await input.press("Enter");
+  }
+  await expect(page.getByText("First high score recorded.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Session speed statistics" })).toBeVisible();
+  await page.getByRole("button", { name: "Return to Menu" }).click();
+  await page.getByRole("button", { name: "Settings" }).click();
+  await page.getByRole("button", { name: "Recent practice" }).click();
+  await expect(page.getByRole("heading", { name: "High scores" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Practice sessions" })).toBeVisible();
 });
 
 test("IME composition and its Enter are processed separately from submission", async ({ page }) => {

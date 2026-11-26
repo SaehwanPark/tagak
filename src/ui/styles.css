@@ -297,6 +297,7 @@ kbd:not(:first-child) { margin-inline-start: .55rem; }
 .button.secondary:hover { background: var(--hover); }
 
 .previous-score { border-top: 1px solid var(--line); padding-top: .9rem; }
+.high-score-status { padding: .75rem; border-inline-start: 3px solid var(--accent); background: var(--panel); color: var(--accent); line-height: 1.55; }
 .result-progress { margin: 0 0 .35rem; color: var(--quiet); font: .85rem/1.5 var(--mono); }
 .previous-score h2 { font-size: 1rem; margin: 0; }
 .previous-score .scores { margin-top: .7rem; }
@@ -356,13 +357,16 @@ kbd:not(:first-child) { margin-inline-start: .55rem; }
 }
 .history-toolbar select { padding: .4rem .5rem; }
 .history-list { list-style: none; margin: 0; padding: 0; }
-.history-list {
+.history-content {
   flex: 1 1 0;
   min-block-size: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
 }
+.history-section { min-block-size: 0; padding-top: .75rem; border-top: 1px solid var(--line); }
+.history-section h2 { margin: 0 0 .25rem; font-size: 1rem; }
+.history-list { flex: 0 0 auto; overflow: visible; }
 .history-list li { padding: .75rem 0; border-bottom: 1px solid var(--line); line-height: 1.6; }
 .history-list li > span { color: var(--quiet); font-size: .85rem; }
 .storage-notice { flex: 0 0 auto; max-block-size: 3.5rem; overflow-y: auto; color: var(--accent); padding: .75rem clamp(1rem, 5vw, 3rem); margin: 0; border-top: 1px solid var(--line); }

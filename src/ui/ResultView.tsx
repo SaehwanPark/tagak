@@ -4,6 +4,8 @@ import { toDisplayedTypingSpeed } from "../domain/typingSpeed";
 import { summarizeTypingRates } from "../domain/typingStatistics";
 import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
+import type { PracticeSessionRecord } from "../domain/history";
+import type { HighScoreDecision } from "../domain/sessionHighScore";
 import { Scoreboard } from "./Scoreboard";
 import { useFocus } from "./useFocus";
 import { handleScrollRegionKeyDown } from "./focusWithinScrollRegion";
@@ -13,6 +15,9 @@ type ResultViewProps = {
   progress?: string | undefined;
   score: TypingScore;
   lineSessionScores?: readonly TypingScore[];
+  sessionRecord?: PracticeSessionRecord | null;
+  sessionDecision?: HighScoreDecision | null;
+  sessionSaveFailed?: boolean;
   showSpeed: boolean;
   comparison?: TypingScore | undefined;
   language: Language;
@@ -24,7 +29,8 @@ type ResultViewProps = {
 };
 
 export function ResultView({
-  title, progress, score, lineSessionScores, showSpeed, comparison, language, speedUnit, backLabel, onRetry, onBack, copy,
+  title, progress, score, lineSessionScores, sessionRecord, sessionDecision, sessionSaveFailed = false,
+  showSpeed, comparison, language, speedUnit, backLabel, onRetry, onBack, copy,
 }: ResultViewProps) {
   const heading = useFocus<HTMLHeadingElement>();
   const destination = backLabel ?? copy.menu;
@@ -37,6 +43,44 @@ export function ResultView({
     sessionStatistics?.upperQuartile === null || !sessionStatistics
     ? "—"
     : `${formattedStatistic(sessionStatistics.lowerQuartile)}–${formattedStatistic(sessionStatistics.upperQuartile)}`;
+  const displayRawRate = (value: number) => toDisplayedTypingSpeed(
+    language === "en" ? value : null,
+    language === "ko" ? value : null,
+    language,
+    speedUnit,
+  );
+  const highScoreMessage = (() => {
+    if (!sessionRecord) return null;
+    if (sessionSaveFailed) return copy.sessionSaveFailed;
+    if (!sessionDecision) return null;
+    switch (sessionDecision.status) {
+      case "already-saved": return null;
+      case "first-record": return copy.highScoreFirstRecord;
+      case "new-record": {
+        const current = displayRawRate(sessionDecision.median);
+        const previous = displayRawRate(sessionDecision.previousMedian);
+        return current === null || previous === null ? null : copy.highScoreUpdated(
+          Math.round(current), Math.round(previous), Math.round(sessionDecision.improvement * 100),
+        );
+      }
+      case "kept": {
+        const current = displayRawRate(sessionDecision.median);
+        const previous = displayRawRate(sessionDecision.previousMedian);
+        if (current === null || previous === null) return null;
+        const reason = sessionDecision.reason === "below-improvement"
+          ? copy.highScoreBelowThreshold
+          : copy.highScoreNotSignificant;
+        return `${copy.highScoreKept(Math.round(current), Math.round(previous))}. ${reason}`;
+      }
+      case "ineligible":
+        switch (sessionDecision.reason) {
+          case "early-exit": return copy.highScoreIncompleteReason;
+          case "accuracy": return copy.highScoreAccuracyReason;
+          case "samples": return copy.highScoreSamplesReason(5);
+          case "invalid-rate": return copy.highScoreInvalidRateReason;
+        }
+    }
+  })();
 
   return (
     <section className="screen result-screen" onKeyDown={(event) => {
@@ -55,6 +99,7 @@ export function ResultView({
         data-scroll-region
         onKeyDown={handleScrollRegionKeyDown}
       >
+        {highScoreMessage && <p className="high-score-status" role="status">{highScoreMessage}</p>}
         {sessionStatistics && (
           <section className="previous-score line-session-statistics" aria-labelledby="line-session-statistics-title">
             <h2 id="line-session-statistics-title">{copy.lineSessionStatistics} · {copy.speedLabel(speedUnit, language)}</h2>

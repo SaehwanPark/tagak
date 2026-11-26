@@ -3,16 +3,17 @@ import { summarizeTypingRates } from "./typingStatistics";
 
 describe("typing rate statistics", () => {
   it("drops the fastest and slowest rates in sessions of twenty lines or fewer", () => {
-    expect(summarizeTypingRates([10, 20, 30, 40])).toEqual({
+    const statistics = summarizeTypingRates([10, 20, 30, 40]);
+    expect(statistics).toMatchObject({
       sampleCount: 4,
       includedSampleCount: 2,
-      mean: 25,
-      populationStandardDeviation: 5,
       median: 25,
       lowerQuartile: 20,
       upperQuartile: 30,
       interquartileRange: 10,
     });
+    expect(statistics.mean).toBeCloseTo(25);
+    expect(statistics.populationStandardDeviation).toBeCloseTo(5);
   });
 
   it("excludes the middle value from quartile halves after short-session trimming", () => {
@@ -34,11 +35,11 @@ describe("typing rate statistics", () => {
     expect(statistics).toMatchObject({
       sampleCount: 40,
       includedSampleCount: 36,
-      mean: 20.5,
       median: 20.5,
       lowerQuartile: 11.5,
       upperQuartile: 29.5,
     });
+    expect(statistics.mean).toBeCloseTo(20.5);
   });
 
   it("ignores missing and non-finite speeds and returns empty statistics when none remain", () => {
@@ -74,5 +75,16 @@ describe("typing rate statistics", () => {
       upperQuartile: 85,
       interquartileRange: 0,
     });
+  });
+
+  it("summarizes very large finite rates without overflowing the mean or deviation", () => {
+    expect(summarizeTypingRates([Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE])).toMatchObject({
+      sampleCount: 3,
+      includedSampleCount: 1,
+      mean: Number.MAX_VALUE,
+      populationStandardDeviation: 0,
+      median: Number.MAX_VALUE,
+    });
+    expect(summarizeTypingRates([Number.MAX_VALUE, Number.MAX_VALUE], 40).median).toBe(Number.MAX_VALUE);
   });
 });
