@@ -84,6 +84,8 @@ test("English and paper theme preserve the minimum viewport layout with large te
   await size.click();
   await size.click();
   await page.getByRole("button", { name: /Color theme/ }).click();
+  await page.getByText("Choose a theme directly").click();
+  await page.getByRole("radio", { name: /Paper light/ }).click();
   await page.getByRole("button", { name: "← Menu" }).click();
 
   await expect(page.locator("html")).toHaveAttribute("lang", "en");

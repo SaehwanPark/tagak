@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import {
+  colorThemes,
   defaultColorTheme,
   defaultPracticeFont,
   defaultSize,
@@ -59,6 +60,13 @@ type ChoiceRowProps<Value extends string | number> = SettingRowProps & {
   onChange: (value: Value) => void;
 };
 
+type ThemeChoiceRowProps = SettingRowProps & {
+  value: ColorTheme;
+  options: readonly ColorTheme[];
+  onChange: (value: ColorTheme) => void;
+  copy: InterfaceText;
+};
+
 function cycleOption<Value extends string | number>(
   value: Value,
   options: readonly SettingOption<Value>[],
@@ -98,6 +106,120 @@ function ChoiceRow<Value extends string | number>({
         <span className="setting-row-value">{current?.label ?? value}</span>
       </button>
       {help && <small className="setting-row-help" id={helpId}>{help}</small>}
+    </div>
+  );
+}
+
+function ThemeChoiceRow({ id, label, active, value, options, onChange, onFocus, copy }: ThemeChoiceRowProps) {
+  const picker = useRef<HTMLDetailsElement>(null);
+  const currentIndex = options.indexOf(value);
+  const position = copy.colorThemePosition(currentIndex + 1, options.length);
+
+  function focusTheme(theme: ColorTheme) {
+    window.requestAnimationFrame(() => {
+      const option = picker.current?.querySelector<HTMLButtonElement>(`[data-theme-option="${theme}"]`);
+      if (option) focusWithinScrollRegion(option);
+    });
+  }
+
+  function handlePickerKeyDown(event: KeyboardEvent<HTMLDetailsElement>) {
+    if (event.key !== "Escape" || event.nativeEvent.isComposing) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (picker.current) picker.current.open = false;
+    const row = picker.current?.closest(".theme-choice-row")?.querySelector<HTMLButtonElement>("[data-setting-row]");
+    if (row) focusWithinScrollRegion(row);
+  }
+
+  function handleThemeKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement) || target.getAttribute("role") !== "radio") return;
+
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    event.stopPropagation();
+
+    const radios = Array.from(picker.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]') ?? []);
+    const index = radios.indexOf(target);
+    if (index < 0 || radios.length === 0) return;
+    const columns = 2;
+    let nextIndex = index;
+    if (event.key === "ArrowLeft") nextIndex = (index - 1 + radios.length) % radios.length;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % radios.length;
+    if (event.key === "ArrowUp") nextIndex = (index - columns + radios.length) % radios.length;
+    if (event.key === "ArrowDown") nextIndex = (index + columns) % radios.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = radios.length - 1;
+    const next = radios[nextIndex];
+    const nextTheme = options[nextIndex];
+    if (next && nextTheme) {
+      onChange(nextTheme);
+      focusWithinScrollRegion(next);
+    }
+  }
+
+  return (
+    <div className="setting-row-wrap theme-choice-row">
+      <button
+        type="button"
+        className={`setting-row${active ? " selected" : ""}`}
+        data-setting-row={id}
+        tabIndex={active ? 0 : -1}
+        aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space"
+        onFocus={onFocus}
+        onClick={() => onChange(cycleOption(value, options.map((option) => ({
+          value: option,
+          label: copy.colorThemeName(option),
+        })), 1))}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+            event.preventDefault();
+            onChange(cycleOption(value, options.map((option) => ({
+              value: option,
+              label: copy.colorThemeName(option),
+            })), event.key === "ArrowRight" ? 1 : -1));
+          }
+        }}
+      >
+        <span className="setting-row-label">{label}</span>
+        <span className="theme-current-value">
+          <span className="theme-swatch" data-theme-swatch={value} aria-hidden="true" />
+          <span className="setting-row-value">{copy.colorThemeName(value)}</span>
+          <span className="theme-position">{position}</span>
+        </span>
+      </button>
+      <details ref={picker} className="theme-picker" onKeyDown={handlePickerKeyDown}>
+        <summary>{copy.chooseColorTheme} <span aria-hidden="true">({options.length})</span></summary>
+        <small className="setting-row-help">{copy.themePickerHelp}</small>
+        <div
+          className="theme-options"
+          role="radiogroup"
+          aria-label={copy.chooseColorTheme}
+          data-theme-options
+          onKeyDown={handleThemeKeyDown}
+        >
+          {options.map((option, index) => (
+            <button
+              key={option}
+              type="button"
+              role="radio"
+              aria-checked={option === value}
+              className="theme-option"
+              data-theme-option={option}
+              data-theme-swatch={option}
+              tabIndex={option === value ? 0 : -1}
+              onClick={() => {
+                onChange(option);
+                focusTheme(option);
+              }}
+            >
+              <span className="theme-swatch" aria-hidden="true" />
+              <span>{copy.colorThemeName(option)}</span>
+              <span className="theme-position">{copy.colorThemePosition(index + 1, options.length)}</span>
+            </button>
+          ))}
+        </div>
+      </details>
     </div>
   );
 }
@@ -164,6 +286,7 @@ export function DisplaySettings({
   }, [initialFocusRow]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (event.target instanceof Element && event.target.closest(".theme-picker")) return;
     if (event.key === "Escape" && !event.nativeEvent.isComposing) {
       onBack();
       return;
@@ -278,17 +401,15 @@ export function DisplaySettings({
           onFocus={() => setFocusedRow("reset-size")}
           onClick={() => void onSizeChange(defaultSize, true)}
         />
-        <ChoiceRow<ColorTheme>
+        <ThemeChoiceRow
           id="color-theme"
           label={copy.colorTheme}
           active={focusedRow === "color-theme"}
           value={theme}
-          options={[
-            { value: "terminal", label: copy.terminalTheme },
-            { value: "paper", label: copy.paperTheme },
-          ]}
+          options={Object.keys(colorThemes) as ColorTheme[]}
           onChange={(value) => { void onThemeChange(value); }}
           onFocus={() => setFocusedRow("color-theme")}
+          copy={copy}
         />
         <ActionRow
           id="reset-theme"

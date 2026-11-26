@@ -199,6 +199,8 @@ A16 이전 한국어 기록은 두벌식 타수를 복원할 수 없으므로 �
 
 글자 크기·테마·글꼴은 문서 루트의 `data-*` 속성으로 내려가고, `styles.css`의 CSS 사용자 정의 속성이 실제 색과 글꼴을 결정합니다.
 
+색상 테마는 `settingsStorage.ts`의 `colorThemes` 키를 유효한 저장 ID로 사용합니다. `interfaceText.ts`가 같은 ID에 한국어·영어 이름을 제공하고, `DisplaySettings.tsx`는 순환 컨트롤과 roving tabindex를 쓰는 두 열 라디오 목록을 렌더링합니다. CSS에 14개 팔레트와 스와치 강조색을 둡니다. `terminal`·`paper` ID와 기존 저장 구조를 유지하므로 저장 스키마 변경이 필요하지 않습니다. 자동 대비 테스트는 16개 토큰, 일반 텍스트 4.5:1, 테두리·입력 경계 3:1을 계산합니다. 기존 두 테마의 separator 색은 호환을 위해 유지하며 새 팔레트는 3:1을 만족합니다.
+
 ```
 html[data-color-theme="paper"] { --page: …; --ink: …; }
 html[data-practice-font="serif"] { --practice-font: …; }

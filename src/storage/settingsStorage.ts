@@ -21,8 +21,20 @@ export type TextSize = keyof typeof textSizes;
 export const defaultSize: TextSize = "standard";
 
 export const colorThemes = {
-  terminal: "터미널 야간",
-  paper: "종이 밝음",
+  terminal: { ko: "터미널 야간", en: "Terminal night" },
+  "amber-terminal": { ko: "앰버 터미널", en: "Amber Terminal" },
+  "catppuccin-mocha": { ko: "카푸치노 모카", en: "Catppuccin Mocha" },
+  "tokyo-night": { ko: "도쿄 나이트", en: "Tokyo Night" },
+  nord: { ko: "노르드", en: "Nord" },
+  "gruvbox-dark": { ko: "그루브박스 다크", en: "Gruvbox Dark" },
+  dracula: { ko: "드라큘라", en: "Dracula" },
+  "rose-pine": { ko: "로즈 파인", en: "Rosé Pine" },
+  "slate-mint": { ko: "슬레이트 민트", en: "Slate Mint" },
+  "phosphor-green": { ko: "포스퍼 그린", en: "Phosphor Green" },
+  paper: { ko: "종이 밝음", en: "Paper light" },
+  "solarized-light": { ko: "솔라라이즈드 라이트", en: "Solarized Light" },
+  "catppuccin-latte": { ko: "카푸치노 라떼", en: "Catppuccin Latte" },
+  "nord-light": { ko: "노르드 라이트", en: "Nord Light" },
 } as const;
 
 export type ColorTheme = keyof typeof colorThemes;

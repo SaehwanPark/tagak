@@ -1,5 +1,7 @@
 import type { Language } from "./lessons";
 import type { TypingSpeedUnit } from "../domain/typingSpeed";
+import { colorThemes } from "../storage/settingsStorage";
+import type { ColorTheme } from "../storage/settingsStorage";
 
 export type InterfaceText = Readonly<{
   brand: string;
@@ -38,8 +40,10 @@ export type InterfaceText = Readonly<{
   largestSize: string;
   colorTheme: string;
   resetTheme: string;
-  terminalTheme: string;
-  paperTheme: string;
+  colorThemeName: (theme: ColorTheme) => string;
+  chooseColorTheme: string;
+  colorThemePosition: (current: number, total: number) => string;
+  themePickerHelp: string;
   practiceFont: string;
   resetFont: string;
   gothicFont: string;
@@ -241,8 +245,10 @@ const ko: InterfaceText = {
   largestSize: "아주 크게",
   colorTheme: "색상 테마",
   resetTheme: "기본 색상으로 되돌리기",
-  terminalTheme: "터미널 야간",
-  paperTheme: "종이 밝음",
+  colorThemeName: (theme) => colorThemes[theme].ko,
+  chooseColorTheme: "테마 바로 선택",
+  colorThemePosition: (current, total) => `${current}/${total}`,
+  themePickerHelp: "←/→로 테마를 바꾸거나 목록에서 바로 고르세요. 목록에서는 방향키로 선택하고 Esc로 닫습니다.",
   practiceFont: "연습 글꼴",
   resetFont: "기본 글꼴로 되돌리기",
   gothicFont: "고딕",
@@ -252,7 +258,7 @@ const ko: InterfaceText = {
   soundOn: "켬",
   soundOff: "끔",
   resetSettings: "환경설정을 기본값으로 되돌리기",
-  settingsHelp: "↑/↓로 항목을 이동하고 ←/→ 또는 Enter/Space로 값을 바꾸세요. 초기화 항목은 Enter/Space로 실행합니다. Esc로 이전 화면으로 돌아가며 변경 사항은 이 브라우저에 저장됩니다.",
+  settingsHelp: "↑/↓로 항목을 이동하고 ←/→ 또는 Enter/Space로 값을 바꾸세요. 색상 테마는 목록에서 바로 고를 수도 있습니다. 초기화 항목은 Enter/Space로 실행합니다. Esc로 이전 화면으로 돌아가며 변경 사항은 이 브라우저에 저장됩니다.",
   saveFailed: "설정을 저장하지 못했습니다. 현재 탭에서만 적용됩니다.",
   invalidSettings: "저장된 환경설정을 읽지 못했습니다. 기본값을 사용하며 기존 값은 보존했습니다.",
   chooseShortPassage: "짧은 글 고르기",
@@ -475,8 +481,10 @@ const en: InterfaceText = {
   largestSize: "Largest",
   colorTheme: "Color theme",
   resetTheme: "Reset color theme",
-  terminalTheme: "Terminal night",
-  paperTheme: "Paper light",
+  colorThemeName: (theme) => colorThemes[theme].en,
+  chooseColorTheme: "Choose a theme directly",
+  colorThemePosition: (current, total) => `${current}/${total}`,
+  themePickerHelp: "Use Left/Right to cycle themes, or choose one from the list. Arrow keys select in the list; Escape closes it.",
   practiceFont: "Practice font",
   resetFont: "Reset practice font",
   gothicFont: "Sans-serif",
@@ -486,7 +494,7 @@ const en: InterfaceText = {
   soundOn: "On",
   soundOff: "Off",
   resetSettings: "Reset settings to defaults",
-  settingsHelp: "Use Up/Down to move between settings and Left/Right or Enter/Space to change a value. Enter/Space runs reset actions. Press Escape to return. Changes are saved in this browser.",
+  settingsHelp: "Use Up/Down to move between settings and Left/Right or Enter/Space to change a value. You can also choose a color theme from its list. Enter/Space runs reset actions. Press Escape to return. Changes are saved in this browser.",
   saveFailed: "Settings could not be saved. Changes apply only in this tab.",
   invalidSettings: "Saved settings could not be read. Defaults are in use; the stored value was preserved.",
   chooseShortPassage: "Choose a short passage",

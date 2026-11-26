@@ -44,7 +44,10 @@ test("color theme persists and resets independently from text size", async ({ pa
   await page.getByRole("button", { name: /연습 글자 크기/ }).click();
   await page.getByRole("button", { name: /연습 글자 크기/ }).click();
   await page.getByRole("button", { name: /색상 테마/ }).click();
+  await page.getByText("테마 바로 선택").click();
+  await page.getByRole("radio", { name: /종이 밝음/ }).click();
   await expect(page.locator("html")).toHaveAttribute("data-color-theme", "paper");
+  await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
   await expect(page.locator(".shell")).toHaveCSS("background-color", "rgb(255, 253, 248)");
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), colorThemeKey)).toContain("paper");
 
@@ -53,9 +56,47 @@ test("color theme persists and resets independently from text size", async ({ pa
   await openSettings(page);
   await page.getByRole("button", { name: "기본 색상으로 되돌리기" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-color-theme", "terminal");
+  await expect(page.locator("html")).toHaveCSS("color-scheme", "dark");
   await expect(page.getByRole("button", { name: /연습 글자 크기/ })).toContainText("아주 크게");
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), colorThemeKey)).toBeNull();
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), settingsKey)).toContain("largest");
+});
+
+test("theme list supports direct keyboard choice in English and a small viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 520 });
+  await page.goto("/");
+  await openSettings(page);
+  await page.getByRole("button", { name: /인터페이스 언어/ }).click();
+  await page.getByText("Choose a theme directly").click();
+  await expect(page.getByRole("radio")).toHaveCount(14);
+
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("End");
+  const nordLight = page.getByRole("radio", { name: /Nord Light/ });
+  await expect(nordLight).toBeFocused();
+  await expect(page.locator("html")).toHaveAttribute("data-color-theme", "nord-light");
+  await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
+  await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), colorThemeKey)).toContain("nord-light");
+
+  const menuBox = await page.locator(".settings-menu").boundingBox();
+  const optionBox = await nordLight.boundingBox();
+  expect(menuBox).not.toBeNull();
+  expect(optionBox).not.toBeNull();
+  expect(optionBox!.y).toBeGreaterThanOrEqual(menuBox!.y);
+  expect(optionBox!.y + optionBox!.height).toBeLessThanOrEqual(menuBox!.y + menuBox!.height);
+
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: /Color theme/ })).toBeFocused();
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-color-theme", "nord-light");
+  await page.getByRole("button", { name: "Settings" }).click();
+  const pickerSummary = page.getByText("Choose a theme directly");
+  await pickerSummary.click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
+  await expect(page.getByRole("radio")).toHaveCount(0);
+  await pickerSummary.click();
+  await expect(page.getByRole("radio", { name: /Nord Light/ })).toHaveAttribute("aria-checked", "true");
 });
 
 test("practice fonts are kept separately for Korean and English", async ({ page }) => {
@@ -99,7 +140,7 @@ test("invalid theme data falls back without overwriting it", async ({ page }) =>
   await expect(page.getByRole("status")).toHaveText("저장된 환경설정을 읽지 못했습니다. 기본값을 사용하며 기존 값은 보존했습니다.");
   await page.getByRole("button", { name: /색상 테마/ }).click();
 
-  await expect(page.locator("html")).toHaveAttribute("data-color-theme", "paper");
+  await expect(page.locator("html")).toHaveAttribute("data-color-theme", "amber-terminal");
   await expect(page.getByRole("status")).toHaveText("설정을 저장하지 못했습니다. 현재 탭에서만 적용됩니다.");
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key), colorThemeKey)).toBe("{invalid");
 });

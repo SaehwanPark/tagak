@@ -26,6 +26,8 @@ test("the downloaded PNG uses the active color theme background", async ({ page 
   await page.goto("/");
   await page.getByRole("button", { name: "환경설정" }).click();
   await page.getByRole("button", { name: /색상 테마/ }).click();
+  await page.getByText("테마 바로 선택").click();
+  await page.getByRole("radio", { name: /종이 밝음/ }).click();
   const expectedBackground = await page.locator(".shell").evaluate((root) => getComputedStyle(root).backgroundColor);
 
   const downloadPromise = page.waitForEvent("download");
