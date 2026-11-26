@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.12.1`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.13.0`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -12,12 +12,17 @@
 ## 진행 중
 
 - 현재 구현 중인 사용자 기능 슬라이스가 없다.
-- [ ] **A43 · 14개 컬러 테마 확장 [지금 구현중]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
-  - 기존 `terminal`·`paper` ID, 이름, 기본값, 색과 저장·백업 호환을 유지하면서 다크 10개·라이트 4개 프리셋을 제공한다. 각 프리셋은 기존 CSS 토큰 16개를 정의한다.
-  - 설정에서 한국어·영어 UI, 키보드 순환, 마우스 조작과 테마 목록의 직접 선택·스와치를 제공한다. 작은 창에서 목록 스크롤과 초점 복귀를 확인한다.
-  - 색상 대비 자동 검증, 설정 재실행/초기화, JSON 백업·병합·복원 호환, 베네치아 보드 고정색 및 출처·라이선스 문서를 확인한다.
+- [ ] **C1 · 창 크기 및 위치 복원 [바로 다음에 구현해야 함]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - macOS Tauri 앱에서 창 장식·스케일과 작업 영역을 고려해 초기 크기와 위치를 제한한다. 마지막 정상 크기·위치·최대화 상태 복원과 화면 밖 복귀 보호를 검증한다.
 
 ## 완료
+
+- [x] **A43 · 14개 컬러 테마 확장** · `v0.13.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 기존 `terminal`·`paper` ID, 한국어·영어 이름, 기본값, 팔레트와 로컬 저장·JSON 백업 호환을 유지하고 다크 10개·라이트 4개 테마를 제공한다. 각 팔레트는 기존 CSS 색상 토큰 16개를 모두 정의한다. GPL-3.0 Monkeytype 프로젝트의 Serika Dark·Modern Dolch와 포트 인상을 줄 Retro CRT는 `Amber Terminal`·`Slate Mint`·`Phosphor Green` 독자 팔레트로 바꿨다. 참조 프로젝트와 라이선스는 [테마 크레딧](THEME-CREDITS.md)에 기록했다.
+  - 설정에 한국어·영어 이름, 순서 표시와 색상 스와치를 제공한다. 좌우 순환, 두 열 직접 선택 목록, 목록 방향키, Esc 초점 복귀, 작은 viewport 내부 스크롤을 확인했다. 정확·오타는 색과 밑줄을 함께 사용한다. 베네치아 보드 고정 색은 유지했다.
+  - 자동 대비 검증은 16개 토큰, 텍스트·정오답·강조색의 4.5:1, 새 팔레트 경계·포커스의 3:1 및 라이트 네이티브 색상 스킴을 확인한다. 기존 terminal/paper 색상은 그대로 둔다.
+  - `npm run verify` 통과: Vitest 22개 파일 155개 테스트, 프로덕션 빌드, Playwright E2E 76개. `npm run desktop:build`로 macOS ARM64 앱과 3.30 MiB DMG도 생성했다. 앱 JS 청크 579.57KB로 Vite의 기존 500KB 경고 기준을 넘는다. 네이티브 GUI/WebKit에서 테마를 직접 선택하는 수동 확인은 하지 않았다.
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.13.0`으로 맞췄다.
 
 - [x] **A42 · 하이스코어 계산과 세션 저장 안정화** · `v0.12.1` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 정규근사의 생존 함수는 z가 0 또는 -0이면 0.5를 반환하고 음수는 대칭식으로 계산한다. 이슈 재현 표본은 U=50.5, continuity-corrected z=0, p=0.5를 반환한다. 양/음의 z, 동률, 정확 검정과 `p < 0.05` 경계도 회귀 검증했다.

@@ -4,6 +4,8 @@ import type { DataBackup } from "./dataBackup";
 import { defaultAppPreferences } from "./appPreferences";
 import { historyKey } from "./historyStorage";
 import { veniceStorageKey } from "./veniceStorage";
+import { colorThemeKey, colorThemes } from "./settingsStorage";
+import type { ColorTheme } from "./settingsStorage";
 import type { PracticeHighScore, PracticeRecord, PracticeSessionRecord } from "../domain/history";
 import type { VeniceRun } from "../domain/venice";
 
@@ -214,6 +216,20 @@ describe("portable data backups", () => {
     expect(await restoreDataBackup(backup, "replace")).toEqual({ ok: true });
     const restored = JSON.parse(localStorage.getItem("tagak:preferences") ?? "null");
     expect(restored).toMatchObject({ version: 3, preferences: { linePracticeSessionLength: 75 } });
+  });
+
+  it.each(Object.keys(colorThemes) as ColorTheme[])("round-trips the %s color theme", async (theme) => {
+    const envelope = makeEnvelope();
+    envelope.data.colorTheme = { version: 1, theme };
+    const backup = readBackup(JSON.stringify(envelope));
+
+    expect(backup.data.colorTheme).toBe(theme);
+    expect(await restoreDataBackup(backup, "replace")).toEqual({ ok: true });
+    expect(localStorage.getItem(colorThemeKey)).toContain(`"theme":"${theme}"`);
+
+    localStorage.removeItem(colorThemeKey);
+    expect(await restoreDataBackup(backup, "merge")).toEqual({ ok: true });
+    expect(localStorage.getItem(colorThemeKey)).toContain(`"theme":"${theme}"`);
   });
 
   it("merges unique records without replacing current preferences and repeated imports are idempotent", async () => {
