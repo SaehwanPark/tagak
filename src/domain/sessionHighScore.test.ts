@@ -98,19 +98,19 @@ describe("practice session high-score policy", () => {
     expect(decision.next?.scopeKey).toBe("short:en");
   });
 
-  it("uses the first eligible session, then requires accuracy, sample count, 3%, and significance", () => {
+  it("uses the first eligible session, then requires accuracy, sample count, 0.3%, and significance", () => {
     const previous = firstScore([100, 100, 100, 100, 100]);
     expect(previous.scopeKey).toBe(highScoreScopeKey("line", "ko", 5));
 
-    const belowThreePercent = decidePracticeHighScore(
-      session("below", [102, 102, 102, 102, 102]),
+    const belowThreeTenthsPercent = decidePracticeHighScore(
+      session("below", [100.2, 100.2, 100.2, 100.2, 100.2]),
       previous,
     );
-    expect(belowThreePercent.decision).toMatchObject({ status: "kept", reason: "below-improvement" });
-    expect(belowThreePercent.next).toBe(previous);
+    expect(belowThreeTenthsPercent.decision).toMatchObject({ status: "kept", reason: "below-improvement" });
+    expect(belowThreeTenthsPercent.next).toBe(previous);
 
     const exactThreshold = decidePracticeHighScore(
-      session("threshold", [103, 103, 103, 103, 103]),
+      session("threshold", [100.3, 100.3, 100.3, 100.3, 100.3]),
       previous,
     );
     expect(exactThreshold.decision.status).toBe("new-record");

@@ -6,7 +6,7 @@ import { summarizeTypingRates } from "./typingStatistics";
 export const highScoreRulesVersion = 1;
 export const highScoreMinimumAccuracy = 97;
 export const highScoreMinimumSamples = 5;
-export const highScoreMinimumImprovement = 0.03;
+export const highScoreMinimumImprovement = 0.003;
 export const highScoreSignificanceLevel = 0.05;
 const maxExactAssignments = 100_000;
 
@@ -20,7 +20,14 @@ export type HighScoreDecision =
   | Readonly<{ status: "ineligible"; reason: "early-exit" | "accuracy" | "samples" | "invalid-rate" }>
   | Readonly<{ status: "first-record"; median: number }>
   | Readonly<{ status: "new-record"; median: number; previousMedian: number; improvement: number }>
-  | Readonly<{ status: "kept"; reason: "below-improvement" | "not-significant"; median: number; previousMedian: number; pValue?: number }>
+  | Readonly<{
+      status: "kept";
+      reason: "below-improvement" | "not-significant" | "below-improvement-and-not-significant";
+      median: number;
+      previousMedian: number;
+      improvement: number;
+      pValue: number;
+    }>
   | Readonly<{ status: "already-saved" }>;
 
 export type SessionStatistics = ReturnType<typeof summarizeTypingRates>;
@@ -210,21 +217,23 @@ export function decidePracticeHighScore(
   }
   const next = highScoreFromSession(session, rates);
   if (!previous) return { decision: { status: "first-record", median: currentMedian }, next };
-  if (currentMedian < previous.median * (1 + highScoreMinimumImprovement)) {
-    return {
-      decision: { status: "kept", reason: "below-improvement", median: currentMedian, previousMedian: previous.median },
-      next: previous,
-    };
-  }
-
   const test = mannWhitneyGreater(rates, previous.rawRates);
-  if (test.pValue >= highScoreSignificanceLevel) {
+  const improvement = currentMedian / previous.median - 1;
+  const meetsImprovement = currentMedian >= previous.median * (1 + highScoreMinimumImprovement);
+  const meetsSignificance = test.pValue < highScoreSignificanceLevel;
+  if (!meetsImprovement || !meetsSignificance) {
+    const reason = !meetsImprovement && !meetsSignificance
+      ? "below-improvement-and-not-significant"
+      : meetsImprovement
+        ? "not-significant"
+        : "below-improvement";
     return {
       decision: {
         status: "kept",
-        reason: "not-significant",
+        reason,
         median: currentMedian,
         previousMedian: previous.median,
+        improvement,
         pValue: test.pValue,
       },
       next: previous,
@@ -235,7 +244,7 @@ export function decidePracticeHighScore(
       status: "new-record",
       median: currentMedian,
       previousMedian: previous.median,
-      improvement: currentMedian / previous.median - 1,
+      improvement,
     },
     next,
   };

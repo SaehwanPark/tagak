@@ -49,6 +49,8 @@ export function ResultView({
     language,
     speedUnit,
   );
+  const formatImprovement = (improvement: number) => String(Number((improvement * 100).toFixed(4)));
+  const formatPValue = (pValue: number) => pValue.toFixed(3);
   const highScoreMessage = (() => {
     if (!sessionRecord) return null;
     if (sessionSaveFailed) return copy.sessionSaveFailed;
@@ -60,16 +62,20 @@ export function ResultView({
         const current = displayRawRate(sessionDecision.median);
         const previous = displayRawRate(sessionDecision.previousMedian);
         return current === null || previous === null ? null : copy.highScoreUpdated(
-          Math.round(current), Math.round(previous), Math.round(sessionDecision.improvement * 100),
+          Math.round(current), Math.round(previous), formatImprovement(sessionDecision.improvement),
         );
       }
       case "kept": {
         const current = displayRawRate(sessionDecision.median);
         const previous = displayRawRate(sessionDecision.previousMedian);
         if (current === null || previous === null) return null;
+        const improvement = formatImprovement(sessionDecision.improvement);
+        const pValue = formatPValue(sessionDecision.pValue);
         const reason = sessionDecision.reason === "below-improvement"
-          ? copy.highScoreBelowThreshold
-          : copy.highScoreNotSignificant;
+          ? copy.highScoreBelowThreshold(improvement)
+          : sessionDecision.reason === "not-significant"
+            ? copy.highScoreNotSignificant(improvement, pValue)
+            : copy.highScoreBothFailed(improvement, pValue);
         return `${copy.highScoreKept(Math.round(current), Math.round(previous))}. ${reason}`;
       }
       case "ineligible":
