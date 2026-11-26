@@ -4,7 +4,12 @@ export type PracticeSession = {
   input: string;
   startedAt: number | null;
   completedAt: number | null;
+  excludedDurationMs: number;
+  pausedAt: number | null;
+  pauseReasons: readonly PracticePauseReason[];
 };
+
+export type PracticePauseReason = "settings" | "app-inactive";
 
 export type TypingScore = {
   accuracy: number | null;
@@ -68,6 +73,44 @@ export function createPracticeSession(): PracticeSession {
     input: "",
     startedAt: null,
     completedAt: null,
+    excludedDurationMs: 0,
+    pausedAt: null,
+    pauseReasons: [],
+  };
+}
+
+/** Adds or removes a timing pause without counting overlapping reasons twice. */
+export function setPracticeSessionPause(
+  session: PracticeSession,
+  reason: PracticePauseReason,
+  paused: boolean,
+  at: number,
+): PracticeSession {
+  if (session.startedAt === null || session.completedAt !== null || !Number.isFinite(at)) {
+    return session;
+  }
+
+  const alreadyPausedForReason = session.pauseReasons.includes(reason);
+  if (paused === alreadyPausedForReason) return session;
+
+  const safeAt = Math.max(session.startedAt, session.pausedAt ?? session.startedAt, at);
+  if (paused) {
+    return {
+      ...session,
+      pausedAt: session.pausedAt ?? safeAt,
+      pauseReasons: [...session.pauseReasons, reason],
+    };
+  }
+
+  const pauseReasons = session.pauseReasons.filter((activeReason) => activeReason !== reason);
+  const resumed = pauseReasons.length === 0;
+  return {
+    ...session,
+    excludedDurationMs: session.excludedDurationMs + (
+      resumed && session.pausedAt !== null ? Math.max(0, safeAt - session.pausedAt) : 0
+    ),
+    pausedAt: resumed ? null : session.pausedAt,
+    pauseReasons,
   };
 }
 
@@ -110,10 +153,13 @@ export function calculateTypingScore(
   );
   const typedCount = typedCharacters.length;
   const completedAt = session.completedAt ?? now;
+  const activePauseMs = session.pausedAt === null
+    ? 0
+    : Math.max(0, completedAt - session.pausedAt);
   const elapsedMs =
     session.startedAt === null
       ? null
-      : Math.max(0, completedAt - session.startedAt);
+      : Math.max(0, completedAt - session.startedAt - session.excludedDurationMs - activePauseMs);
   const keystrokeCount = language === "ko" ? countKoreanKeystrokes(session.input) : null;
   return createTypingScore(correctCount, typedCount, elapsedMs, language, keystrokeCount);
 }

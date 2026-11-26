@@ -9,8 +9,8 @@ import {
   updatePassageInput,
 } from "../domain/passagePractice";
 import type { PassageSession } from "../domain/passagePractice";
-import { aggregateTypingScores, calculateTypingScore, createPracticeSession, hasReachedEnd, reducePracticeSession } from "../domain/typing";
-import type { PracticeSession, TypingScore } from "../domain/typing";
+import { aggregateTypingScores, calculateTypingScore, createPracticeSession, hasReachedEnd, reducePracticeSession, setPracticeSessionPause } from "../domain/typing";
+import type { PracticePauseReason, PracticeSession, TypingScore } from "../domain/typing";
 import type { PracticeRecord, PracticeSessionRecord } from "../domain/history";
 import { defaultLinePracticeSessionLength } from "../domain/linePracticeSettings";
 import type { LinePracticeSessionLength } from "../domain/linePracticeSettings";
@@ -60,11 +60,12 @@ export type AppAction =
   | { type: "start-passage"; activity: PassageActivity }
   | { type: "open-library"; length: PassageLength }
   | { type: "open-games" }
-  | { type: "open-settings" }
-  | { type: "open-settings-history" }
+  | { type: "open-settings"; at: number }
+  | { type: "open-settings-history"; at: number }
   | { type: "open-settings-data-transfer" }
   | { type: "return-to-settings" }
-  | { type: "close-settings" }
+  | { type: "close-settings"; at: number }
+  | { type: "app-activity-changed"; active: boolean; at: number }
   | { type: "open-challenge" }
   | { type: "open-venice" }
   | { type: "input-changed"; input: string; at: number }
@@ -119,6 +120,39 @@ function sessionRecord(
   return { id, completedAt, mode, language, materialIds, lineSessionLength, completion, lineScores };
 }
 
+function updateContentTimingPause(
+  state: PracticeContentState,
+  reason: PracticePauseReason,
+  paused: boolean,
+  at: number,
+): PracticeContentState {
+  if (state.screen === "practice") {
+    return { ...state, session: setPracticeSessionPause(state.session, reason, paused, at) };
+  }
+  if (state.screen === "passage") {
+    return {
+      ...state,
+      session: {
+        ...state.session,
+        line: setPracticeSessionPause(state.session.line, reason, paused, at),
+      },
+    };
+  }
+  return state;
+}
+
+function updateTimingPause(
+  state: PracticeState,
+  reason: PracticePauseReason,
+  paused: boolean,
+  at: number,
+): PracticeState {
+  if (state.screen === "settings") {
+    return { ...state, returnState: updateContentTimingPause(state.returnState, reason, paused, at) };
+  }
+  return updateContentTimingPause(state, reason, paused, at);
+}
+
 function reduceTextPractice(
   state: Extract<PracticeState, { screen: "practice" }>,
   action: AppAction,
@@ -150,6 +184,7 @@ function reduceTextPractice(
   const session = action.input === undefined
     ? state.session
     : reducePracticeSession(state.session, { type: "input-changed", input: action.input, at: action.at });
+  if (session.pauseReasons.length > 0) return { ...state, session };
   if (!hasReachedEnd(state.lesson.text, session.input)) return state;
 
   const completed = reducePracticeSession(session, { type: "submitted", at: action.at });
@@ -194,6 +229,7 @@ function reducePassagePractice(state: Extract<PracticeState, { screen: "passage"
   const session = action.input === undefined
     ? state.session
     : updatePassageInput(state.session, action.input, action.at);
+  if (session.line.pauseReasons.length > 0) return { ...state, session };
   const update = submitPassageLine(state.activity.lines, session, action.at, state.activity.language);
   switch (update.type) {
     case "waiting": return state;
@@ -218,16 +254,21 @@ function reducePassagePractice(state: Extract<PracticeState, { screen: "passage"
 }
 
 export function reducePracticeState(state: PracticeState, action: AppAction): PracticeState {
+  if (action.type === "app-activity-changed") {
+    return updateTimingPause(state, "app-inactive", !action.active, action.at);
+  }
   if (action.type === "open-settings") {
     if (state.screen === "settings") {
       return state.view === "menu" ? state : { ...state, view: "menu", focusRow: "interface-language" };
     }
-    const returnState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
+    const selectedState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
+    const returnState = updateContentTimingPause(selectedState, "settings", true, action.at);
     return { screen: "settings", returnState, view: "menu", focusRow: "interface-language" };
   }
   if (action.type === "open-settings-history") {
     if (state.screen === "settings") return { ...state, view: "history", focusRow: "open-history" };
-    const returnState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
+    const selectedState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
+    const returnState = updateContentTimingPause(selectedState, "settings", true, action.at);
     return { screen: "settings", returnState, view: "history", focusRow: "open-history" };
   }
   if (action.type === "open-settings-data-transfer") {
@@ -241,7 +282,9 @@ export function reducePracticeState(state: PracticeState, action: AppAction): Pr
       : state;
   }
   if (action.type === "close-settings") {
-    return state.screen === "settings" && state.view === "menu" ? state.returnState : state;
+    return state.screen === "settings" && state.view === "menu"
+      ? updateContentTimingPause(state.returnState, "settings", false, action.at)
+      : state;
   }
   if (action.type === "open-library") return { screen: "library", length: action.length, selected: null };
   if (action.type === "open-games") return { screen: "games", selected: null };

@@ -1,1 +1,1 @@
-{"main-window":{"identifier":"main-window","description":"Tagak main window can read and write files selected in native dialogs.","local":true,"windows":["main"],"permissions":["dialog:allow-open","dialog:allow-save","fs:allow-read-text-file","fs:allow-write-file"]}}
+{"main-window":{"identifier":"main-window","description":"Tagak main window can exit the app and read or write files selected in native dialogs.","local":true,"windows":["main"],"permissions":["core:app:allow-exit","dialog:allow-open","dialog:allow-save","fs:allow-read-text-file","fs:allow-write-file"]}}

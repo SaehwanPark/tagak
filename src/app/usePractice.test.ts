@@ -146,7 +146,7 @@ describe("home navigation", () => {
   it("opens history and data transfer from settings and restores the selected row", () => {
     const settings = reducePracticeState(
       { screen: "menu", selected: null },
-      { type: "open-settings" },
+      { type: "open-settings", at: 100 },
     );
     expect(settings).toMatchObject({
       screen: "settings",
@@ -154,7 +154,7 @@ describe("home navigation", () => {
       view: "menu",
     });
 
-    const history = reducePracticeState(settings, { type: "open-settings-history" });
+    const history = reducePracticeState(settings, { type: "open-settings-history", at: 200 });
     expect(history).toMatchObject({ screen: "settings", view: "history", focusRow: "open-history" });
     const settingsAfterHistory = reducePracticeState(history, { type: "return-to-settings" });
     expect(settingsAfterHistory).toMatchObject({ screen: "settings", view: "menu", focusRow: "open-history" });
@@ -163,24 +163,82 @@ describe("home navigation", () => {
     expect(backup).toMatchObject({ screen: "settings", view: "data-transfer", focusRow: "open-data-transfer" });
     const settingsAfterBackup = reducePracticeState(backup, { type: "return-to-settings" });
     expect(settingsAfterBackup).toMatchObject({ screen: "settings", view: "menu", focusRow: "open-data-transfer" });
-    expect(reducePracticeState(settingsAfterBackup, { type: "close-settings" }))
+    expect(reducePracticeState(settingsAfterBackup, { type: "close-settings", at: 300 }))
       .toEqual({ screen: "menu", selected: settingsEntry.id });
   });
 
   it("returns to the active game after opening settings from play", () => {
     const game = { screen: "challenge" } as const;
-    const settings = reducePracticeState(game, { type: "open-settings" });
+    const settings = reducePracticeState(game, { type: "open-settings", at: 1 });
     expect(settings).toMatchObject({ screen: "settings", returnState: game });
-    expect(reducePracticeState(settings, { type: "close-settings" })).toEqual(game);
+    expect(reducePracticeState(settings, { type: "close-settings", at: 2 })).toEqual(game);
   });
 
   it("opens history directly from practice and lets settings switch back to its menu", () => {
     const practice = startLines();
-    const history = reducePracticeState(practice, { type: "open-settings-history" });
+    const history = reducePracticeState(practice, { type: "open-settings-history", at: 1 });
     expect(history).toMatchObject({ screen: "settings", returnState: practice, view: "history" });
 
-    const settings = reducePracticeState(history, { type: "open-settings" });
+    const settings = reducePracticeState(history, { type: "open-settings", at: 2 });
     expect(settings).toMatchObject({ screen: "settings", returnState: practice, view: "menu" });
-    expect(reducePracticeState(settings, { type: "close-settings" })).toEqual(practice);
+    expect(reducePracticeState(settings, { type: "close-settings", at: 3 })).toEqual(practice);
+  });
+
+  it("excludes overlapping settings and inactive time from one-line speed", () => {
+    const started = startLines();
+    const typed = reducePracticeState(started, {
+      type: "input-changed",
+      input: started.lesson.text,
+      at: 1_000,
+    });
+    const inactive = reducePracticeState(typed, { type: "app-activity-changed", active: false, at: 2_000 });
+    const settings = reducePracticeState(inactive, { type: "open-settings", at: 3_000 });
+    const focused = reducePracticeState(settings, { type: "app-activity-changed", active: true, at: 12_000 });
+    const resumed = reducePracticeState(focused, { type: "close-settings", at: 14_000 });
+    const submitted = reducePracticeState(resumed, {
+      type: "submit",
+      input: started.lesson.text,
+      ...completionTime(17_000),
+    });
+
+    expect(submitted.screen).toBe("practice");
+    if (submitted.screen !== "practice") return;
+    expect(submitted.previous?.elapsedMs).toBe(4_000);
+  });
+
+  it("keeps final input edits but does not submit while the app is inactive", () => {
+    const started = startLines();
+    const typed = reducePracticeState(started, {
+      type: "input-changed",
+      input: started.lesson.text.slice(0, -1),
+      at: 1_000,
+    });
+    const inactive = reducePracticeState(typed, { type: "app-activity-changed", active: false, at: 2_000 });
+    const attemptedSubmit = reducePracticeState(inactive, {
+      type: "submit",
+      input: started.lesson.text,
+      ...completionTime(3_000),
+    });
+
+    expect(attemptedSubmit).toMatchObject({ screen: "practice", session: { input: started.lesson.text } });
+    if (attemptedSubmit.screen !== "practice") throw new Error("expected practice to stay active");
+    expect(attemptedSubmit.session.completedAt).toBeNull();
+    expect(attemptedSubmit.completedLineScores).toHaveLength(0);
+  });
+
+  it("excludes inactive time from each passage line without counting reading gaps", () => {
+    const activity = passagesFor("ko", "short")[0];
+    if (!activity) throw new Error("expected a short passage");
+    const started = reducePracticeState({ screen: "menu", selected: null }, { type: "start-passage", activity });
+    if (started.screen !== "passage") throw new Error("expected a passage");
+    const firstLine = activity.lines[0] ?? "";
+    const typed = reducePracticeState(started, { type: "input-changed", input: firstLine, at: 1_000 });
+    const inactive = reducePracticeState(typed, { type: "app-activity-changed", active: false, at: 2_000 });
+    const resumed = reducePracticeState(inactive, { type: "app-activity-changed", active: true, at: 12_000 });
+    const nextLine = reducePracticeState(resumed, { type: "submit", ...completionTime(15_000) });
+
+    expect(nextLine.screen).toBe("passage");
+    if (nextLine.screen !== "passage") return;
+    expect(nextLine.session.lineScores[0]?.elapsedMs).toBe(4_000);
   });
 });

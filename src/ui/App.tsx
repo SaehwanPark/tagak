@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { isTauri } from "@tauri-apps/api/core";
 import {
   challengeEntry,
@@ -39,6 +39,7 @@ import { appShortcutFor } from "./appShortcuts";
 import { HelpDialog } from "./HelpDialog";
 import { PracticeExitDialog } from "./PracticeExitDialog";
 import { shouldConfirmPracticeExit } from "../app/practiceExitGuard";
+import { useAppActivity } from "./useAppActivity";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
 const DataTransferView = lazy(() => import("./DataTransferView").then(({ DataTransferView: view }) => ({ default: view })));
@@ -57,6 +58,7 @@ function activityLanguage(activity: Activity | PassageActivity): Language {
 export function App() {
   const practice = usePracticeState();
   const { state, pending, pendingSession, latest, dispatch, acknowledge, acknowledgeSession } = practice;
+  const { active: appActive, isActive: isAppActive } = useAppActivity();
   const currentScreen = contentState(state);
   const { shell, screenContent, captureSettingsOrigin } = useScreenFocus(state);
   const appPreferences = useAppPreferences();
@@ -78,6 +80,10 @@ export function App() {
   const [practiceExitOpen, setPracticeExitOpen] = useState(false);
   const practiceExitReturnFocus = useRef<HTMLElement | null>(null);
   const desktopApp = isTauri();
+
+  useLayoutEffect(() => {
+    dispatch({ type: "app-activity-changed", active: appActive, at: performance.now() });
+  }, [appActive, dispatch]);
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
     settingsReturnScreen === "challenge" ||
@@ -107,19 +113,29 @@ export function App() {
   };
   const openSettings = () => {
     if (state.screen !== "settings") captureSettingsOrigin();
-    dispatch({ type: "open-settings" });
+    dispatch({ type: "open-settings", at: performance.now() });
   };
   const openHistory = () => {
     if (state.screen !== "settings") captureSettingsOrigin();
-    dispatch({ type: "open-settings-history" });
+    dispatch({ type: "open-settings-history", at: performance.now() });
   };
   const openHelp = () => {
     helpReturnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setHelpOpen(true);
   };
-  const closeSettings = () => dispatch({ type: "close-settings" });
-  const onInput = (input: string, at: number) => dispatch({ type: "input-changed", input, at });
+  const closeSettings = () => dispatch({ type: "close-settings", at: performance.now() });
+  const onInput = (input: string, at: number) => {
+    dispatch({ type: "input-changed", input, at });
+    if (!isAppActive()) dispatch({ type: "app-activity-changed", active: false, at });
+  };
   const onSubmit = (at: number, input?: string) => {
+    if (!isAppActive()) {
+      if (input !== undefined) dispatch({ type: "input-changed", input, at });
+      dispatch({ type: "app-activity-changed", active: false, at });
+      return;
+    }
+    const timingPaused = (currentScreen.screen === "practice" && currentScreen.session.pauseReasons.length > 0)
+      || (currentScreen.screen === "passage" && currentScreen.session.line.pauseReasons.length > 0);
     const endsPracticeSession = currentScreen.screen === "practice"
       ? currentScreen.completedLineScores.length + 1 >= currentScreen.lineSessionLength &&
         hasReachedEnd(currentScreen.lesson.text, input ?? currentScreen.session.input)
@@ -127,7 +143,9 @@ export function App() {
         ? currentScreen.session.lineIndex + 1 === currentScreen.activity.lines.length &&
           submissionEndsBundle(currentScreen.activity.lines, currentScreen.session, input)
         : false;
-    if (completionSound && !endsPracticeSession && shouldPlayForCurrentSubmission(currentScreen, input)) playCompletionTone();
+    if (!timingPaused && completionSound && !endsPracticeSession && shouldPlayForCurrentSubmission(currentScreen, input)) {
+      playCompletionTone();
+    }
     dispatch({ type: "submit", ...(input === undefined ? {} : { input }), ...completionTime(at) });
   };
   const notifyCompletion = () => { if (completionSound) playCompletionTone(); };
@@ -288,7 +306,14 @@ export function App() {
         />
       )}
 
-      {currentScreen.screen === "challenge" && <ChallengeView onBack={back} copy={copy} onWordComplete={notifyCompletion} />}
+      {currentScreen.screen === "challenge" && <ChallengeView
+        onBack={back}
+        copy={copy}
+        onWordComplete={notifyCompletion}
+        appActive={appActive}
+        isAppActive={isAppActive}
+        settingsOpen={state.screen === "settings"}
+      />}
       {currentScreen.screen === "venice" && (
         <Suspense fallback={<section className="screen" aria-busy="true" />}>
           <VeniceView
@@ -416,7 +441,7 @@ export function App() {
           onFontChange={practiceFont.change}
           completionSound={completionSound}
           onCompletionSoundChange={(enabled) => { void appPreferences.change({ completionSound: enabled }); }}
-          onOpenHistory={() => dispatch({ type: "open-settings-history" })}
+          onOpenHistory={() => dispatch({ type: "open-settings-history", at: performance.now() })}
           onOpenDataTransfer={() => dispatch({ type: "open-settings-data-transfer" })}
           onReset={() => {
             void Promise.all([

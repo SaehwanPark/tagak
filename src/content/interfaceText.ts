@@ -150,6 +150,8 @@ export type InterfaceText = Readonly<{
   accuracyValue: (value: number) => string;
   challengeTitle: string;
   challengeInstruction: string;
+  challengePauseNotice: string;
+  challengePaused: string;
   challengeStart: string;
   challengeResult: string;
   timeEnded: string;
@@ -375,6 +377,8 @@ const ko: InterfaceText = {
   accuracyValue: (value) => `정확도 ${value}%`,
   challengeTitle: "30초 낱말 도전",
   challengeInstruction: "한글 낱말을 그대로 입력하고 Enter를 누르세요. 30초 동안 맞힌 낱말 수를 셉니다.",
+  challengePauseNotice: "환경설정 화면을 열거나 앱 창이 비활성 상태가 되면 제한 시간이 멈춥니다.",
+  challengePaused: "도전 시간이 멈췄습니다. 앱으로 돌아오면 이어집니다.",
   challengeStart: "도전 시작",
   challengeResult: "도전 결과",
   timeEnded: "시간이 끝났습니다.",
@@ -631,6 +635,8 @@ const en: InterfaceText = {
   accuracyValue: (value) => `Accuracy ${value}%`,
   challengeTitle: "30-second word challenge",
   challengeInstruction: "Type each Korean word and press Enter. Count how many you solve in 30 seconds.",
+  challengePauseNotice: "The timer pauses while settings are open or the app window is inactive.",
+  challengePaused: "The challenge is paused. It will resume when you return to the app.",
   challengeStart: "Start challenge",
   challengeResult: "Challenge result",
   timeEnded: "Time is up.",

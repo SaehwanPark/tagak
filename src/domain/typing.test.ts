@@ -7,6 +7,7 @@ import {
   insertSpaceAtSelection,
   normalizeInput,
   reducePracticeSession,
+  setPracticeSessionPause,
   splitCharacters,
 } from "./typing";
 
@@ -117,6 +118,33 @@ describe("practice sessions", () => {
     });
   });
 
+  it("subtracts overlapping settings and inactive time but retains idle thinking time", () => {
+    const typed = reducePracticeSession(createPracticeSession(), {
+      type: "input-changed",
+      input: "hello",
+      at: 1_000,
+    });
+    const settingsPaused = setPracticeSessionPause(typed, "settings", true, 2_000);
+    const bothPaused = setPracticeSessionPause(settingsPaused, "app-inactive", true, 3_000);
+    const appReturned = setPracticeSessionPause(bothPaused, "app-inactive", false, 12_000);
+    const resumed = setPracticeSessionPause(appReturned, "settings", false, 14_000);
+
+    expect(setPracticeSessionPause(resumed, "settings", false, 15_000)).toBe(resumed);
+    expect(calculateTypingScore("hello", resumed, 17_000, "en").elapsedMs).toBe(4_000);
+  });
+
+  it("clamps an out-of-order resume to the pause start", () => {
+    const typed = reducePracticeSession(createPracticeSession(), {
+      type: "input-changed",
+      input: "hello",
+      at: 1_000,
+    });
+    const paused = setPracticeSessionPause(typed, "app-inactive", true, 2_000);
+    const resumed = setPracticeSessionPause(paused, "app-inactive", false, 1_500);
+
+    expect(calculateTypingScore("hello", resumed, 4_000, "en").elapsedMs).toBe(3_000);
+  });
+
   it("does not finish before all target graphemes are typed", () => {
     expect(hasReachedEnd("한글!", "한글")).toBe(false);
     expect(hasReachedEnd("한글!", "한글!")).toBe(true);
@@ -139,6 +167,9 @@ describe("practice sessions", () => {
         input: "한글",
         startedAt: 1_000,
         completedAt: null,
+        excludedDurationMs: 0,
+        pausedAt: null,
+        pauseReasons: [],
       },
       { type: "submitted", at: 4_000 },
     );

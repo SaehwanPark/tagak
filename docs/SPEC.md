@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.16.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.17.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,9 +11,16 @@
 
 ## 진행 중
 
-현재 구현 중인 기능 슬라이스는 없다.
+- [ ] **C5 · 하이스코어 피드백 [바로 다음에 구현해야 함]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
 
 ## 완료
+
+- [x] **C4 · 인터럽트와 측정** · `v0.17.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 한 줄·짧은 글·긴 글의 타수 계산에서 환경설정과 앱/창 비활성 구간만 제외한다. 입력 없이 생각하거나 읽은 시간은 포함하며, 글의 줄 전환 대기 시간 제외 계약을 유지한다. pause 이유가 겹쳐도 첫 pause부터 마지막 resume까지 한 번만 뺀다.
+  - 30초 도전은 환경설정과 앱/창 비활성 구간에서 멈추고 복귀 후 남은 시간부터 이어진다. 제한 시간이 멈췄다는 안내를 보여준다. `performance.now()`와 멱등 pause 이유로 중복·역순 시각을 처리하고, 만료 경계는 결과를 확정한다. 베네치아의 기존 일시정지는 유지한다.
+  - `npm run verify` 통과: Vitest 24개 파일 169개 테스트, 프로덕션 빌드, Playwright E2E 85개. 앱 JS 청크는 592.96KB로 Vite의 500KB 경고 기준을 넘는다. E2E는 설정·비활성 구간 겹침, 복귀, 중복 blur/visibility, pause 안내, IME 합성 종료, 도전 만료, 비활성 중 제출 방지를 확인했다.
+  - `npm run desktop:build`가 macOS ARM64 DMG(3.32 MiB)를 생성했다. v0.17.0 DMG 앱의 30초 도전을 설정·기록 화면에서 약 7초 기다린 뒤 복귀해 타이머가 멈췄다가 이어지는 것을 확인했다. 실제 OS IME, 네이티브 창 비활성 전환, Windows Tauri 앱은 이번 슬라이스에서 직접 확인하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.17.0`으로 맞췄다.
 
 - [x] **C3 · 세션 종료 보호** · `v0.16.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 한 줄·짧은 글·긴 글에서 완료한 줄이 있거나 현재 제시문의 문자소 10개 이상 입력했으면 Esc/뒤로를 누를 때 확인한다. 제시문이 10문자소보다 짧으면 전체 길이를 기준으로 삼고, 입력이 기준보다 적으면 즉시 이전 화면으로 간다.

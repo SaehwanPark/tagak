@@ -62,6 +62,44 @@ test("leaving before any submitted line does not create a session record", async
   expect(sessions).toEqual([]);
 });
 
+test("typing time excludes settings and app inactivity but counts idle time", async ({ page }) => {
+  await page.clock.install();
+  await page.goto("/");
+  await page.getByRole("button", { name: "한 줄", exact: true }).click();
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  const prompt = await page.locator("#typing-target").getAttribute("aria-label");
+  expect(prompt).not.toBeNull();
+  await input.fill(prompt!);
+  await page.clock.fastForward(4_000);
+
+  await page.locator(".settings-shortcut").click();
+  await expect(page.getByRole("heading", { name: "환경설정" })).toBeVisible();
+  await page.clock.fastForward(20_000);
+  await page.getByRole("button", { name: "← 뒤로" }).click();
+  await expect(input).toHaveValue(prompt!);
+  await page.clock.fastForward(2_000);
+
+  await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+  await page.keyboard.press("Enter");
+  await expect(input).toHaveValue(prompt!);
+  const recordsWhileInactive = await page.evaluate((key) => {
+    const data = JSON.parse(localStorage.getItem(key) ?? "null");
+    return data?.records ?? [];
+  }, historyKey);
+  expect(recordsWhileInactive).toEqual([]);
+  await page.clock.fastForward(20_000);
+  await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await page.clock.fastForward(2_000);
+  await input.press("Enter");
+
+  const elapsedMs = () => page.evaluate((key) => {
+    const data = JSON.parse(localStorage.getItem(key) ?? "null");
+    return data?.records?.[0]?.score?.elapsedMs ?? null;
+  }, historyKey);
+  await expect.poll(elapsedMs).toBeGreaterThan(7_000);
+  expect(await elapsedMs()).toBeLessThan(10_000);
+});
+
 test("one-line practice shows compact source attribution", async ({ page }) => {
   const koreanLines = activities.find((activity) => activity.id === "ko-line");
   if (koreanLines?.kind !== "line") throw new Error("Korean one-line content is unavailable");
