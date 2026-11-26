@@ -6,6 +6,18 @@
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-26
+
+### Fixed
+
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): Mann–Whitney 정규근사에서 continuity-corrected z가 0일 때 무한 재귀하던 오류를 고쳤습니다. 이 재현 표본의 p값은 0.5입니다.
+- 하이스코어 판정 계산이 실패해도 완료 세션을 저장하고 기존 최고 기록을 유지합니다. 결과 화면은 판정 실패와 실제 저장 실패를 구분합니다.
+
+### Verified
+
+- `src/domain/sessionHighScore.test.ts`와 `src/storage/practiceSessionStorage.test.ts`에서 12개 테스트 통과.
+- `npm run build` 통과. 앱 JS 청크는 575.49KB로 기존 500KB 경고 기준을 넘습니다.
+
 ## [0.12.0] - 2026-11-26
 
 ### Changed
