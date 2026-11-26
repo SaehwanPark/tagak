@@ -11,7 +11,7 @@
 | Intel Mac | 이번 배포 대상 아님 | — |
 | Linux 데스크톱 앱 | 지원하지 않음 | — |
 
-현재 안정 릴리즈가 게시되기 전에는 Releases 페이지에 설치 파일이 없을 수 있습니다. macOS 앱은 Apple Silicon DMG, Windows 앱은 x64 per-user NSIS 설치 파일로 배포합니다. 서명·공증 상태와 SHA-256 체크섬은 릴리즈 페이지에 함께 표시합니다.
+최신 설치 파일은 GitHub Releases에서 받을 수 있습니다. macOS 앱은 Apple Silicon DMG, Windows 앱은 x64 per-user NSIS 설치 파일로 배포합니다. 서명·공증 상태와 SHA-256 체크섬은 각 릴리즈 페이지에 표시합니다.
 
 ## 빠른 시작
 
@@ -24,7 +24,7 @@
 
 타각은 계정·서버·공개 순위·원격 측정을 사용하지 않으며, 설치 후 오프라인에서 실행됩니다. 환경설정과 연습 기록은 앱의 로컬 저장소에만 남습니다. 기기를 바꾸거나 앱을 다시 설치하기 전에 환경설정의 **데이터 백업·가져오기**에서 JSON 백업을 저장하세요. 업데이트는 새 설치 파일을 받아 설치하는 방식이며, 같은 앱 ID와 저장소를 유지합니다.
 
-현재 버전은 `v0.19.0`입니다. 개발 기준 환경은 **macOS 14+ Apple Silicon Tauri 앱(WebKit)** 이며 Windows 11 x64 Tauri 앱도 설치·오프라인 실행·한국어 IME·저장 흐름을 확인했습니다. 상세 증거와 미확인 범위는 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)를 참고하세요.
+현재 버전은 `v1.0.0`입니다. 개발 기준 환경은 **macOS 14+ Apple Silicon Tauri 앱(WebKit)** 이며 Windows 11 x64 Tauri 앱도 설치·오프라인 실행·한국어 IME·저장 흐름을 확인했습니다. 상세 증거와 미확인 범위는 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)를 참고하세요.
 
 ## 화면 미리보기
 

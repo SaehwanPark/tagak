@@ -104,6 +104,19 @@ jobs:
           mkdir -p release-assets
           cp "$asset" release-assets/
 
+      - name: Inspect macOS bundle signature and Gatekeeper assessment
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          app="src-tauri/target/release/bundle/macos/Tagak.app"
+          test -d "$app"
+          codesign -dv --verbose=4 "$app" 2>&1 || true
+          set +e
+          spctl -a -vv "$app" 2>&1
+          assessment_status=$?
+          set -e
+          echo "Gatekeeper assessment exit status: $assessment_status"
+
       - name: Build Windows x64 per-user NSIS installer
         if: runner.os == 'Windows'
         run: npm run desktop:build:windows
@@ -117,6 +130,21 @@ jobs:
           if (-not (Test-Path $asset)) { throw "Expected installer not found: $asset" }
           New-Item -ItemType Directory -Path release-assets -Force | Out-Null
           Copy-Item $asset release-assets/
+
+      - name: Inspect Windows Authenticode signature status
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version"
+          $asset = "release-assets/Tagak_${version}_x64-setup.exe"
+          if (-not (Test-Path $asset)) { throw "Expected installer not found: $asset" }
+          $signature = Get-AuthenticodeSignature -FilePath $asset
+          Write-Output "Authenticode status: $($signature.Status)"
+          if ($signature.SignerCertificate) {
+            Write-Output "Signer subject: $($signature.SignerCertificate.Subject)"
+          } else {
+            Write-Output "Signer certificate: none"
+          }
 
       - name: Upload platform package
         uses: actions/upload-artifact@v7

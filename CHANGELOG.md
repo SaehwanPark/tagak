@@ -6,9 +6,17 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-26
+
 ### Added
 
-- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): macOS ARM64 DMG와 Windows x64 per-user NSIS 설치 파일을 검증·생성하고, 버전 태그에서 체크섬과 한국어 설치 안내를 포함한 정식 GitHub Release를 게시하는 Actions workflow를 추가했습니다.
+- 타각의 첫 정식 공개 버전입니다. macOS 14+ Apple Silicon DMG와 Windows 11 x64 현재 사용자용 NSIS 설치 파일을 제공합니다.
+- 한 줄·짧은 글·긴 글 연습, 30초 낱말 도전, 베네치아 게임, 14개 색상 테마, 한국어·영어 UI, 로컬 기록과 JSON 백업·복원을 포함합니다.
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): 같은 태그 커밋의 macOS·Windows 패키지를 검증하고 SHA-256 목록 및 한국어 안내와 함께 정식 GitHub Release에 게시하는 Actions workflow를 추가했습니다.
+
+### Changed
+
+- 설치·지원 범위·빠른 시작·실제 화면 스크린샷과 콘텐츠 권리·제3자 고지를 README와 앱 설정에 정리했습니다. 허가 근거가 확인되지 않은 현대 작품 인용 26개를 독자 문장으로 교체했습니다.
 
 ## [0.19.0] - 2026-11-26
 
