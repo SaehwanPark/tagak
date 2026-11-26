@@ -9,13 +9,14 @@ type ActivityMenuProps<Entry extends MenuEntry> = {
   title: string;
   selected: string | null;
   home?: boolean;
+  showQuitHint?: boolean;
   onStart: (activity: Entry) => void;
   onBack?: () => void;
   copy: InterfaceText;
 };
 
 export function ActivityMenu<Entry extends MenuEntry>({
-  activities, title, selected, home = false, onStart, onBack, copy,
+  activities, title, selected, home = false, showQuitHint = false, onStart, onBack, copy,
 }: ActivityMenuProps<Entry>) {
   const list = useRef<HTMLDivElement>(null);
 
@@ -64,7 +65,7 @@ export function ActivityMenu<Entry extends MenuEntry>({
 
   return (
     <section className={home ? "screen home-menu-screen" : "screen"} onKeyDown={(event) => {
-      if (event.key === "Escape" && !event.nativeEvent.isComposing) onBack?.();
+      if (!home && event.key === "Escape" && !event.nativeEvent.isComposing) onBack?.();
     }}>
       {onBack && <button className="back" type="button" onClick={onBack}>{copy.backToMenu}</button>}
       <h1>{title}</h1>
@@ -88,7 +89,10 @@ export function ActivityMenu<Entry extends MenuEntry>({
           </button>
         ))}
       </div>
-      <p className="keys"><kbd>↑</kbd> <kbd>↓</kbd> {copy.select} <kbd>Home</kbd> <kbd>End</kbd> {copy.firstLast} <kbd>Enter</kbd> {copy.start}</p>
+      <p className="keys">
+        <kbd>↑</kbd> <kbd>↓</kbd> {copy.select} <kbd>Home</kbd> <kbd>End</kbd> {copy.firstLast} <kbd>Enter</kbd> {copy.start}
+        {showQuitHint && <> <kbd>Esc</kbd> {copy.quitApp}</>}
+      </p>
     </section>
   );
 }

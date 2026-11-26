@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.10.0`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.11.0`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -14,6 +14,11 @@
 현재 구현 중인 사용자 기능 슬라이스가 없다. 다음 슬라이스는 선행 작업과 완료 조건을 정한 뒤 지정한다.
 
 ## 완료
+
+- [x] **A40 · 데스크톱 홈에서 `Esc`로 앱 종료** · `v0.11.0`
+  - macOS·Windows Tauri 앱에서 홈 화면의 `Esc`를 누르면 앱 종료 API를 호출하고, 데스크톱 앱에서만 한국어·영어 안내를 표시한다. 종료 API는 `core:app:allow-exit` 권한으로 제한했다.
+  - 브라우저 홈의 `Esc`는 기존처럼 동작하지 않는다. 게임·라이브러리·연습·설정·결과 화면의 기존 `Esc` 동작은 유지한다. 반복 키와 IME 조합 중에는 홈 종료를 요청하지 않는다.
+  - `git diff --check` 통과. 테스트·프로덕션 빌드·실제 macOS/Windows 앱 실행은 수행하지 않았다.
 
 - [x] **A39 · 연습 세션 하이스코어와 통계적 갱신 보상** · `v0.10.0` · 이슈 [#71](https://github.com/SaehwanPark/tagak/issues/71)
   - 한 줄·짧은 글·긴 글의 제출 줄별 점수로 정확도와 세션 통계를 계산하고 최근 100회 이력을 저장한다. 줄별 기존 기록과 세션 기록은 분리하며 입력 원문은 저장하지 않는다.

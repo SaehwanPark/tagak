@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useRef } from "react";
+import { isTauri } from "@tauri-apps/api/core";
 import {
   challengeEntry,
   completionTime,
@@ -13,6 +14,7 @@ import { useTextSize } from "../app/useTextSize";
 import { useColorTheme } from "../app/useColorTheme";
 import { usePracticeFont } from "../app/usePracticeFont";
 import { useScreenCapture } from "../app/useScreenCapture";
+import { quitDesktopApp } from "../platform/appLifecycle";
 import { activities } from "../content/library";
 import type { Activity, Language } from "../content/lessons";
 import { longPassageEntry, passagesFor, shortPassageEntry } from "../content/passages";
@@ -67,6 +69,7 @@ export function App() {
   const colorTheme = useColorTheme();
   const practiceFont = usePracticeFont(practiceLanguage);
   const screenCapture = useScreenCapture(shell);
+  const desktopApp = isTauri();
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
     settingsReturnScreen === "challenge" ||
@@ -158,7 +161,17 @@ export function App() {
     sessionSave?.ok === false && history.notice === "session-save-failed";
 
   return (
-    <main ref={shell} className="shell" data-text-size={textSize.size}>
+    <main
+      ref={shell}
+      className="shell"
+      data-text-size={textSize.size}
+      onKeyDown={(event) => {
+        if (state.screen !== "menu" || !desktopApp || event.key !== "Escape" || event.defaultPrevented ||
+          event.repeat || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
+        event.preventDefault();
+        quitDesktopApp();
+      }}
+    >
       <header className="masthead">
         <span className="brand"><span aria-hidden="true">▰</span> {copy.brand}</span>
         <div className="masthead-actions">
@@ -188,6 +201,7 @@ export function App() {
           activities={mainActivities}
           selected={currentScreen.selected}
           home
+          showQuitHint={desktopApp}
           copy={copy}
           onStart={(activity) => {
             if (activity.kind === "short-library") dispatch({ type: "open-library", length: "short" });
