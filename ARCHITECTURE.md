@@ -10,7 +10,7 @@
 ## 한눈에 보는 구조
 
 ```
-키보드·IME → 확정된 입력과 시각 → 순수 상태 전이 → 화면 갱신 → 기록 저장 / 완료 효과음
+키보드·IME → 확정된 입력과 시각 → 순수 상태 전이 → 화면 갱신 → 줄별 기록·세션/하이스코어 저장 → 완료 효과음
              (ui/TypingInput)      (domain/*)         (app/usePractice)   (storage/*, ui/completionSound)
 ```
 
@@ -34,6 +34,7 @@ src/
 │   ├── typing.ts           # 세션·채점·한글 타수·문자소 분할·실시간 정확도
 │   ├── typingSpeed.ts      # cpm/wpm 단위 변환
 │   ├── typingStatistics.ts # 이상치 제외 세션 속도 분포 통계
+│   ├── sessionHighScore.ts # 세션 정확도·하이스코어 자격·Mann–Whitney 검정
 │   ├── linePracticeSettings.ts # 허용 세션 문장 수와 기본값
 │   ├── textLayout.ts       # 5줄 묶음, 폭 기준 줄바꿈
 │   ├── passagePractice.ts  # 글 연습 진행, 묶음/글 전체 누적, 묶음 종료 판정
@@ -52,12 +53,12 @@ src/
 ├── storage/
 │   ├── appPreferences.ts   # 언어·완료 효과음·속도 단위·한 줄 세션 수 (v3)
 │   ├── settingsStorage.ts  # 글자 크기 / 테마 / 언어별 글꼴
-│   ├── historyStorage.ts   # 최근 기록 (v3, 구버전·제거 모드 읽기 호환)
+│   ├── historyStorage.ts   # 줄별 기록·세션·하이스코어 (v4, 구버전 읽기 호환)
 │   ├── veniceStorage.ts    # 베네치아 최근 30회·Top 10 (독립 v1 스키마)
 │   ├── dataBackup.ts       # JSON 검증, 충돌 병합, 제한·복구를 갖춘 가져오기/내보내기
 │   └── storageEvents.ts    # 현재 창의 설정·기록 상태 갱신 알림
 ├── app/
-│   ├── usePractice.ts      # 화면 전환 reducer + 완료 기록 큐
+│   ├── usePractice.ts      # 화면 전환 reducer + 줄별 기록·세션 큐
 │   ├── useHistory.ts       # 기록 저장·동기화·초기화
 │   ├── useAppPreferences.ts
 │   ├── useTextSize.ts
@@ -94,6 +95,10 @@ src/
 - 영어: `charactersPerMinute`
 
 표시 단위(cpm/wpm)는 점수에 저장하지 않고 `typingSpeed.ts`에서 변환합니다. 기록에는 원시 값이 남으므로 단위를 바꿔도 과거 기록을 다시 계산할 수 있습니다.
+
+`PracticeSessionRecord`는 한 줄·짧은 글·긴 글의 완료 또는 조기 종료를 줄별 점수와 자료 ID로 묶습니다. 입력 원문은 보관하지 않습니다. `sessionHighScore.ts`는 전체 입력 문자 수로 가중 정확도를 계산하고, 속도 통계에는 짧은 세션의 최고·최저 제외와 장기 세션의 양 끝 5% 제외 규칙을 적용합니다. 표시 통계는 선택한 CPM/WPM 단위를 따르며 하이스코어 판정은 원시 CPM 표본을 씁니다.
+
+하이스코어 자격은 정상 완료, 정확도 97% 이상, 유효 표본 5개 이상, 양수인 유한 중간값입니다. 첫 자격 세션은 기록하고, 이후 갱신에는 이전 중간값보다 3% 이상 빠른 결과와 단측 Mann–Whitney `p < .05`를 모두 요구합니다. 작은 표본은 동점을 포함한 정확 순열 검정을, 조합 수가 큰 표본은 동점 보정·연속성 보정 정규 근사를 사용합니다. 화면에는 판정 이유만 알리고 p값은 노출하지 않습니다.
 
 ### 실시간 정확도 vs 제출 시점 속도
 
@@ -159,9 +164,9 @@ src/
 
 - 화면 상태: `menu` · `games` · `library` · `challenge` · `venice` · `practice` · `passage` · `result` (+ `settings`가 메뉴·기록·데이터 이전 하위 화면을 감쌈)
 - 이벤트: `start`, `open-games`, `open-settings-history`, `open-settings-data-transfer`, `input-changed`, `submit`, `retry`, `return-to-menu` 등
-- 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 완료 기록을 큐(`pending`)에 넣고, `useHistory`가 저장한 뒤 `acknowledge`로 큐에서 빼냅니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
+- 부수 효과는 reducer 밖에서 처리합니다. `reduceSessions`가 줄별 완료 기록은 `pending`, 세션 요약은 `pendingSessions`에 넣고, `useHistory`가 각각 저장한 뒤 큐에서 빼냅니다. 세션과 하이스코어는 `historyStorage.ts`의 같은 잠금·같은 쓰기에서 함께 반영됩니다. 저장에 실패하면 세션 메모리에 남겨 현재 탭에서 결과를 계속 볼 수 있게 합니다.
 
-`reduceTextPractice`는 한 줄 문장 완료 점수를 세션 메모리에 모아 설정한 5·10·20·30·50·75·100문장에서 세션 결과로 끝내며, 조기 종료는 완료한 점수만 요약합니다. 문장별 완료 기록은 저장 큐에서 각각 처리합니다. `ResultView`는 세션 속도를 현재 속도 단위로 바꾸고 `typingStatistics.ts`의 순수 함수로 이상치를 제외한 평균·모집단 표준편차·중간값·P25–P75 범위를 계산합니다. `reducePassagePractice`는 `submitPassageLine`의 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮기기만 합니다.
+`reduceTextPractice`는 한 줄 문장 점수를 설정한 5·10·20·30·50·75·100문장까지 모읍니다. 한 줄은 정상 완료, 글 연습은 완료 또는 제출한 줄이 있는 조기 종료 때 세션 결과를 저장합니다. 세션이 없는 한 줄 화면 이탈은 기록하지 않습니다. 줄별 기존 기록은 계속 별도로 저장합니다. `reducePassagePractice`는 제출 점수를 글 세션에 추가하면서 `submitPassageLine` 결과(`waiting` / `next-line` / `completed`)를 화면 상태로 옮깁니다. `ResultView`는 제출 점수의 집계 결과와 세션 통계를 보여주며, 표시 단위로 변환한 속도에 `typingStatistics.ts`의 이상치 제외 통계를 적용합니다.
 
 ## 저장 계층
 
@@ -175,18 +180,18 @@ src/
 | `tagak:display` | 글자 크기 | v1 |
 | `tagak:color-theme` | 색상 테마 | v1 |
 | `tagak:practice-font` | 한국어/영어별 글꼴 | v2, v1(공통 글꼴)을 두 언어에 복사 |
-| `tagak:history` | 최근 기록(최대 100) | v3, v1·v2 읽기 지원, `sentence`→`line`, `article`→`long` 변환 |
+| `tagak:history` | 최근 줄별 기록(최대 100), 세션(최대 100), 모드·언어별 하이스코어 (한 줄은 문장 수별) | v4, v1–v3는 세션/하이스코어 없이 읽기 지원; `sentence`→`line`, `article`→`long` 변환 |
 | `tagak:venice:records` | 베네치아 최근 플레이(최대 30), 하이스코어 Top 10 | 별도 규칙 버전 1; 손상·호환 불가 데이터는 보존 |
 
 `RecordedMode`와 기록 화면의 레이블은 예전 저장·백업과 호환되도록 `position`·`word`도 읽습니다. 현재 시작 가능한 연습 모드는 `line`, `short`, `long`입니다.
 
 각 항목의 `tagak:migration:*` 표식은 이미 처리했거나 초기화한 이전 키를 다시 가져오지 않게 합니다. 표식은 연습 데이터와 분리되어 있으며 사용자 기록으로 노출되지 않습니다.
 
-`tagak-data-backup` v1은 설정 네 가지, 최근 100회 연습 기록, 베네치아 최근 30회와 Top 10을 담습니다. 현재 입력 중인 문장은 저장되지 않으므로 백업에도 들어가지 않습니다. 가져오기 전에 모든 데이터의 기존 버전형 디코더를 적용하며, 손상·미지원 파일은 거부합니다. 저장 데이터가 있으면 병합·전체 교체·취소를 고르게 합니다. 병합은 기존 설정을 우선하고 기록 ID 중복은 현재 데이터를 보존하며 각 목록의 제한을 유지합니다.
+`tagak-data-backup` v1은 설정 네 가지, 최근 100회 줄별 기록, 최근 100회 세션, 모드·언어별 하이스코어, 베네치아 최근 30회와 Top 10을 담습니다. 백업 내부 일반 이력은 v4이며 v1–v3 이력 백업도 계속 읽고 세션·하이스코어를 빈 목록으로 채웁니다. 현재 입력 중인 문장은 저장되지 않으므로 백업에도 들어가지 않습니다. 가져오기 전에 모든 데이터의 버전형 디코더를 적용하며, 손상·미지원 파일은 거부합니다. 저장 데이터가 있으면 병합·전체 교체·취소를 고르게 합니다. 병합은 기존 설정과 같은 스코프의 최고 기록을 우선하고 ID가 겹치는 기록·세션도 현재 값을 보존하며 각 목록의 제한을 유지합니다.
 
 가져오기는 현재 키와 이전 키의 Web Locks를 고정 순서로 잡고 베네치아 기록 잠금도 잡습니다. 쓰기 뒤 값을 다시 확인하고 실패하면 기록한 이전 키를 복원합니다. 브라우저와 앱은 서로 다른 origin을 쓰므로 이 파일이 명시적 이전 경계입니다. Tauri 파일 접근은 사용자가 네이티브 대화상자에서 선택한 경로에 한정합니다.
 
-설정과 일반 연습 기록 쓰기는 `navigator.locks.request`로 직렬화합니다. 여러 탭이 동시에 완료해도 기록이 유실되지 않습니다. 잠금을 쓸 수 없으면 저장 실패로 처리하고 연습은 계속됩니다. 탭 간 동기화는 `storage` 이벤트로 읽기 상태만 갱신합니다. 베네치아 저장소의 잠금 및 실패 규칙은 위 A30 절을 따릅니다.
+설정과 일반 연습 기록·세션·하이스코어 쓰기는 `navigator.locks.request`로 직렬화합니다. 세션 중복 검사는 같은 잠금 안에서 하며 세션 이력과 최고 기록 변경은 한 번의 저장으로 묶습니다. 최고 기록만 초기화하면 줄별 기록과 세션은 보존하고, 전체 기록 초기화는 모두 지웁니다. 여러 탭이 동시에 완료해도 기록이 유실되지 않습니다. 잠금을 쓸 수 없으면 저장 실패로 처리하고 연습은 계속됩니다. 탭 간 동기화는 `storage` 이벤트로 읽기 상태만 갱신합니다. 베네치아 저장소의 잠금 및 실패 규칙은 위 A30 절을 따릅니다.
 
 A16 이전 한국어 기록은 두벌식 타수를 복원할 수 없으므로 정확도·시간은 남기고 CPM만 `null`로 감춥니다(`decodeRecord`).
 
