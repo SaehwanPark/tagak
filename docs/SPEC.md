@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.13.0`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.14.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -12,10 +12,15 @@
 ## 진행 중
 
 - 현재 구현 중인 사용자 기능 슬라이스가 없다.
-- [ ] **C1 · 창 크기 및 위치 복원 [진행 중]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
-  - macOS Tauri 앱에서 창 장식·스케일과 작업 영역을 고려해 초기 크기와 위치를 제한한다. 마지막 정상 크기·위치·최대화 상태 복원과 화면 밖 복귀 보호를 검증한다.
 
 ## 완료
+
+- [x] **C1 · 창 크기 및 위치 복원** · `v0.14.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - Tauri 창은 기본 1120×960 논리 픽셀로 열고 현재 모니터의 작업 영역과 창 장식을 고려해 크기를 제한한다. 최소 크기는 고정 760×560에서 320×420으로 낮추고, 연결된 화면 중 작은 작업 영역에 맞춰 동적으로 줄인다.
+  - 마지막 일반 창의 논리 크기, 모니터 이름, 작업 영역 내 상대 위치, 최대화 여부를 앱 설정 디렉터리의 `window-state.json`에 저장한다. 크기·DPI 변경 시 새 작업 영역에 맞춰 복원하고, 모니터가 분리되거나 JSON이 손상·호환되지 않으면 주 모니터의 안전한 기본 창으로 연다. 최대화 중에도 마지막 일반 크기와 위치를 보존한다.
+  - 브라우저 경로와 WebView 저장소 식별자는 변경하지 않는다. 기존 화면 내부 스크롤과 포커스 reveal 동작은 그대로 유지한다.
+  - Rust 단위 테스트 6개 통과. `npm run verify` 통과: Vitest 22개 파일 155개 테스트, 프로덕션 빌드, Playwright E2E 76개. `npm run desktop:build`가 macOS ARM64 DMG(3.31 MiB)를 생성했다. DMG 앱을 열어 창의 크기·위치를 조절하고 종료·재실행 뒤 복원되는 것을 확인했으며 Zoom 상태도 저장·복원했다. 다른 물리 모니터 분리, 실제 DPI/해상도 변경, Windows 네이티브 수동 확인은 미수행이며 [플랫폼 검증표](PLATFORM-VERIFICATION.md)에 남겼다.
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.14.0`으로 맞췄다.
 
 - [x] **A43 · 14개 컬러 테마 확장** · `v0.13.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 기존 `terminal`·`paper` ID, 한국어·영어 이름, 기본값, 팔레트와 로컬 저장·JSON 백업 호환을 유지하고 다크 10개·라이트 4개 테마를 제공한다. 각 팔레트는 기존 CSS 색상 토큰 16개를 모두 정의한다. GPL-3.0 Monkeytype 프로젝트의 Serika Dark·Modern Dolch와 포트 인상을 줄 Retro CRT는 `Amber Terminal`·`Slate Mint`·`Phosphor Green` 독자 팔레트로 바꿨다. 참조 프로젝트와 라이선스는 [테마 크레딧](THEME-CREDITS.md)에 기록했다.
