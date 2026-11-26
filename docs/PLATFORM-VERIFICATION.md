@@ -29,6 +29,14 @@ Playwright의 `CompositionEvent` 테스트는 앱이 합성 IME 이벤트 순서
 - Windows artifact `Tagak_0.19.0_x64-setup.exe`는 2,418,489 bytes이고 PE32/NSIS 설치 프로그램으로 식별됐다. Actions에서 빌드와 업로드는 통과했으나 실제 Windows 11 호스트에서 설치·실행하거나 Authenticode 상태를 확인한 것은 아니다. 최종 산출물에서 서명 상태를 확인하고 릴리즈 노트에 실제 결과를 적는다.
 - 이 검증은 최종 버전 정렬·태그 기반 정식 게시 경로를 실행하지 않았다. 최종 릴리즈에서 태그가 현재 `main` HEAD와 버전에 일치하는지, 첨부 자산·체크섬·노트와 공개 Release 상태를 다시 확인한다. 두 runner는 [GitHub-hosted runner labels](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)에 따라 macOS ARM64와 Windows x64를 제공한다.
 
+## F · v1.0.0 릴리즈 후보
+
+- 2026-11-26 macOS 호스트에서 `npm ci --include=dev`와 `npm run verify`를 통과했다: Vitest 25개 파일 176개 테스트, 프로덕션 웹 빌드, Playwright E2E 86개. JS 청크는 583.19KB로 Vite의 500KB 경고 기준을 넘는다.
+- `npm run desktop:build`에서 macOS ARM64 `Tagak_1.0.0_aarch64.dmg`(3.32 MiB)를 생성했고 `hdiutil verify`에서 체크섬이 유효했다. DMG 앱의 `codesign -dv --verbose=4` 결과는 `Signature=adhoc`, `TeamIdentifier=not set`, `Sealed Resources=none`이었다. `spctl -a -vv`는 `code has no resources but signature indicates they must be present`와 종료 코드 1을 반환했다. 이 결과를 근거로 릴리즈 노트는 macOS 경고·실행 제한 가능성을 안내한다.
+- PR [#86 Actions run 45856909968](https://github.com/SaehwanPark/tagak/actions/runs/45856909968)의 macOS ARM64와 Windows x64 테스트·패키지 생성이 통과했다. PR이므로 정식 게시 job은 건너뛰었다. 다운로드한 macOS DMG(3,482,422 bytes)의 `hdiutil verify`가 유효함을 확인했고, 포함 앱의 ad-hoc 서명과 `spctl` 종료 코드 1을 다시 관찰했다.
+- 같은 run의 Windows x64 artifact(2,417,081 bytes)는 PE32/NSIS 설치 파일로 확인됐다. workflow의 `Get-AuthenticodeSignature` 결과는 `NotSigned`, 인증서 없음이다. Windows 11 실기기 GUI 설치와 v1.0.0의 실제 OS IME는 수행하지 않았으며 브라우저 합성 조합 테스트를 실제 OS 입력 검증으로 확대하지 않는다.
+- 최종 `v1.0.0` tag job은 두 플랫폼 패키지·테스트가 모두 성공한 현재 `main` 커밋에서 정식 Release를 게시한다. 공개 페이지, 태그·커밋 일치, 자산·체크섬은 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)의 완료 댓글에 기록한다.
+
 ## A37 · 데스크톱 창 내 레이아웃과 내부 스크롤
 
 - 2026-11-24 macOS 호스트에서 `npm run verify`를 통과했다: Vitest 18개 파일 103개 테스트, 프로덕션 빌드, Playwright E2E 69개. Playwright Chromium은 1120×960, 900×700, 760×560, 1280×560 및 320×420 viewport에서 가로·세로 문서 바깥 스크롤, 내부 목록 스크롤과 포커스 reveal, 영어 UI·종이 테마·큰 글자, 백업 오류 알림, 지문·기록·베네치아 Top 10 키보드/포인터 스크롤, 연습·도전 필수 조작, 창 크기 변경 중 베네치아 보드 상태를 확인했다. 프로덕션 앱 JS 청크는 524.45KB로 Vite의 500KB 경고 기준을 넘는다.

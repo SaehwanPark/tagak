@@ -18,6 +18,13 @@
 
 - 설치·지원 범위·빠른 시작·실제 화면 스크린샷과 콘텐츠 권리·제3자 고지를 README와 앱 설정에 정리했습니다. 허가 근거가 확인되지 않은 현대 작품 인용 26개를 독자 문장으로 교체했습니다.
 
+### Verified
+
+- `npm ci --include=dev`와 `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 웹 빌드, Playwright E2E 86개. 앱 JS 청크는 583.19KB로 Vite의 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build`에서 macOS ARM64 `Tagak_1.0.0_aarch64.dmg`(3.32 MiB)를 생성했고 `hdiutil verify`가 유효한 체크섬을 확인했습니다.
+- PR [#86 Actions run 45856909968](https://github.com/SaehwanPark/tagak/actions/runs/45856909968)에서 두 플랫폼의 단위·E2E 테스트와 패키지 빌드가 통과했습니다. 다운로드한 macOS DMG(3,482,422 bytes)는 `hdiutil verify`를 통과했고, 앱은 ad-hoc 서명(`TeamIdentifier` 없음)이었습니다. `spctl` 평가는 `code has no resources but signature indicates they must be present`와 종료 코드 1을 반환했습니다.
+- Windows x64 후보(2,417,081 bytes)는 PE32/NSIS 설치 파일로 식별됐고 `Get-AuthenticodeSignature`는 `NotSigned`, 인증서 없음으로 반환했습니다. 실제 OS IME와 Windows 11 실기기 GUI 설치는 v1.0.0 후보에서 수동 확인하지 않았습니다.
+
 ## [0.19.0] - 2026-11-26
 
 ### Changed
