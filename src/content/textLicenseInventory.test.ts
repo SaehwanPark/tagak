@@ -10,9 +10,11 @@ import { textLicenseMarkdown } from "./textLicenseInventory";
 
 it("keeps TEXT-LICENSES.md aligned with the practice-text assets", () => {
   // Regenerate with `npm run text-licenses:update` when this fails.
-  expect(documented).toBe(textLicenseMarkdown());
-  expect(documented).toContain("발췌; 연습용 문단·화면 줄바꿈");
-  expect(documented).toContain("발췌; 화면 줄바꿈");
+  const normalizedDocumented = documented.replace(/\r\n/g, "\n");
+
+  expect(normalizedDocumented).toBe(textLicenseMarkdown());
+  expect(normalizedDocumented).toContain("발췌; 연습용 문단·화면 줄바꿈");
+  expect(normalizedDocumented).toContain("발췌; 화면 줄바꿈");
 });
 
 it("does not silently drop a passage asset from the license inventory", () => {

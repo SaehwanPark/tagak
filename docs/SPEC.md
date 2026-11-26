@@ -19,6 +19,12 @@
   - `npm run desktop:build` 통과: macOS ARM64 `Tagak_0.19.0_aarch64.dmg` 3.32 MiB 생성. 마운트한 DMG 앱을 실행해 환경설정에서 `tauri://localhost/THIRD-PARTY-NOTICES.html`을 열고 CC BY-SA 글, 법률 출처, JavaScript 7개, Rust 247개 의존성 목록을 확인했다. 실제 OS IME와 Windows 패키지는 이번 D1 검증 범위에 포함하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
   - README·프로젝트/실행 명세·변경 이력과 npm/Cargo/Tauri 버전을 `v0.19.0`으로 맞췄다.
 
+- [x] **D2 · 네이티브 릴리즈 자동화** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76) · PR [#85](https://github.com/SaehwanPark/tagak/pull/85)
+  - PR에서 npm ci --include=dev, 단위 테스트·프로덕션 웹 빌드·Playwright E2E, macOS ARM64 DMG와 Windows x64 현재 사용자용 NSIS 패키지를 검증한다.
+  - vMAJOR.MINOR.PATCH 태그를 확인하고, 같은 태그 커밋에서 나온 macOS·Windows 자산만 정식 Release에 올린다. contents: write는 게시 job에만 부여하고 SHA-256 목록과 CHANGELOG.md의 버전별 노트를 첨부한다.
+  - Apple Developer ID·공증·Windows 코드 서명 자격 증명은 사용하지 않는다. 공개 빌드의 보안 경고와 체크섬 확인은 릴리즈 노트에 알린다.
+  - PR Actions [run 45847973680](https://github.com/SaehwanPark/tagak/actions/runs/45847973680)에서 macOS ARM64와 Windows x64 검증·패키지 빌드가 모두 통과했다. 각각 Vitest 176개와 Playwright E2E 86개를 실행했고, DMG 3,483,269 bytes와 NSIS 설치 파일 2,418,489 bytes가 artifact로 생성됐다. DMG 체크섬 검증은 통과했으며, Windows 설치 프로그램은 PE32/NSIS 형식으로 확인했다. 실제 Windows 11 설치 GUI와 최종 태그 Release 게시 흐름은 최종 릴리즈에서 다시 확인한다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+
 - [x] **C4 · 인터럽트와 측정** · `v0.17.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 한 줄·짧은 글·긴 글의 타수 계산에서 환경설정과 앱/창 비활성 구간만 제외한다. 입력 없이 생각하거나 읽은 시간은 포함하며, 글의 줄 전환 대기 시간 제외 계약을 유지한다. pause 이유가 겹쳐도 첫 pause부터 마지막 resume까지 한 번만 뺀다.
   - 30초 도전은 환경설정과 앱/창 비활성 구간에서 멈추고 복귀 후 남은 시간부터 이어진다. 제한 시간이 멈췄다는 안내를 보여준다. `performance.now()`와 멱등 pause 이유로 중복·역순 시각을 처리하고, 만료 경계는 결과를 확정한다. 베네치아의 기존 일시정지는 유지한다.

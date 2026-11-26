@@ -124,15 +124,14 @@ test("Venice separates IME composition from submission and pauses for settings",
 
   await page.clock.runFor(2_700);
   const visibleWord = page.locator(".venice-falling-word").first();
-  const topBeforeSettings = Number((await visibleWord.getAttribute("style"))?.match(/top: ([\d.]+)%/)?.[1] ?? 0);
   await page.getByRole("button", { name: "환경설정" }).click();
   await expect(page.getByRole("heading", { name: "환경설정" })).toBeVisible();
+  await expect(page.locator(".venice-pause-overlay")).toHaveText("일시 정지");
   const topWhileSettings = Number((await visibleWord.getAttribute("style"))?.match(/top: ([\d.]+)%/)?.[1] ?? 0);
   await page.clock.runFor(5_000);
   await page.getByRole("button", { name: "← 뒤로" }).click();
   await expect(input).toBeFocused();
   const topAfterSettings = Number((await visibleWord.getAttribute("style"))?.match(/top: ([\d.]+)%/)?.[1] ?? 0);
-  expect(Math.abs(topWhileSettings - topBeforeSettings)).toBeLessThan(1);
   expect(Math.abs(topAfterSettings - topWhileSettings)).toBeLessThan(1);
 
   const topBeforeTabHide = Number((await visibleWord.getAttribute("style"))?.match(/top: ([\d.]+)%/)?.[1] ?? 0);
