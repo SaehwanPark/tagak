@@ -7,7 +7,7 @@ import {
 } from "./settingsStorage";
 import type { ColorTheme, PracticeFonts, TextSize } from "./settingsStorage";
 import { decodeHistory, historyVersion } from "./historyStorage";
-import type { PracticeRecord } from "../domain/history";
+import type { PracticeHighScore, PracticeRecord, PracticeSessionRecord } from "../domain/history";
 import { recentRecords } from "../domain/history";
 import {
   rankVeniceTopScores,
@@ -52,6 +52,8 @@ export type BackupData = Readonly<{
   colorTheme: ColorTheme;
   practiceFonts: PracticeFonts;
   history: readonly PracticeRecord[];
+  sessions: readonly PracticeSessionRecord[];
+  highScores: readonly PracticeHighScore[];
   venice: Readonly<{ recentRuns: readonly VeniceRun[]; topScores: readonly VeniceRun[] }>;
 }>;
 
@@ -75,9 +77,16 @@ function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 function stableData(data: BackupData): BackupData {
+  const sessions = Array.from(new Map(data.sessions.map((session) => [session.id, session])).values())
+    .sort((left, right) => right.completedAt - left.completedAt || left.id.localeCompare(right.id))
+    .slice(0, 100);
+  const highScores = Array.from(new Map(data.highScores.map((score) => [score.scopeKey, score])).values())
+    .sort((left, right) => left.scopeKey.localeCompare(right.scopeKey));
   return {
     ...data,
     history: recentRecords(data.history),
+    sessions,
+    highScores,
     venice: {
       recentRuns: [...data.venice.recentRuns]
         .sort((left, right) => left.completedAt - right.completedAt || left.id.localeCompare(right.id))
@@ -98,7 +107,12 @@ function serializeData(data: BackupData): string {
       textSize: { version: 1, size: normalized.textSize },
       colorTheme: { version: 1, theme: normalized.colorTheme },
       practiceFonts: { version: 2, fonts: normalized.practiceFonts },
-      history: { version: historyVersion, records: normalized.history },
+      history: {
+        version: historyVersion,
+        records: normalized.history,
+        sessions: normalized.sessions,
+        highScores: normalized.highScores,
+      },
       venice: {
         version: veniceStorageVersion,
         rulesVersion: veniceRulesVersion,
@@ -124,6 +138,8 @@ function readStoredData(): BackupData | null {
     colorTheme,
     practiceFonts,
     history: history.records,
+    sessions: history.sessions,
+    highScores: history.highScores,
     venice: venice.records,
   });
 }
@@ -185,6 +201,8 @@ function decodeBackupData(value: unknown): BackupData | null {
     colorTheme,
     practiceFonts,
     history: history.records,
+    sessions: history.sessions,
+    highScores: history.highScores,
     venice: venice.records,
   });
 }
@@ -220,6 +238,10 @@ export function hasStoredData(): boolean {
 function mergeData(existing: BackupData, imported: BackupData, stored: ReadonlySet<StorageEntry>): BackupData {
   const historyById = new Map(imported.history.map((record) => [record.id, record]));
   for (const record of existing.history) historyById.set(record.id, record);
+  const sessionsById = new Map(imported.sessions.map((session) => [session.id, session]));
+  for (const session of existing.sessions) sessionsById.set(session.id, session);
+  const highScoresByScope = new Map(imported.highScores.map((score) => [score.scopeKey, score]));
+  for (const score of existing.highScores) highScoresByScope.set(score.scopeKey, score);
 
   const recentById = new Map(imported.venice.recentRuns.map((run) => [run.id, run]));
   for (const run of existing.venice.recentRuns) recentById.set(run.id, run);
@@ -232,6 +254,8 @@ function mergeData(existing: BackupData, imported: BackupData, stored: ReadonlyS
     colorTheme: stored.has("colorTheme") ? existing.colorTheme : imported.colorTheme,
     practiceFonts: stored.has("practiceFont") ? existing.practiceFonts : imported.practiceFonts,
     history: Array.from(historyById.values()),
+    sessions: Array.from(sessionsById.values()),
+    highScores: Array.from(highScoresByScope.values()),
     venice: {
       recentRuns: Array.from(recentById.values()),
       topScores: Array.from(topById.values()),
@@ -246,7 +270,12 @@ function serializeStorage(data: BackupData): Readonly<Record<(typeof dataKeys)[n
     [storageKeys.display]: JSON.stringify({ version: 1, size: normalized.textSize }),
     [storageKeys.colorTheme]: JSON.stringify({ version: 1, theme: normalized.colorTheme }),
     [storageKeys.practiceFont]: JSON.stringify({ version: 2, fonts: normalized.practiceFonts }),
-    [storageKeys.history]: JSON.stringify({ version: historyVersion, records: normalized.history }),
+    [storageKeys.history]: JSON.stringify({
+      version: historyVersion,
+      records: normalized.history,
+      sessions: normalized.sessions,
+      highScores: normalized.highScores,
+    }),
     [veniceStorageKey]: JSON.stringify({
       version: veniceStorageVersion,
       rulesVersion: veniceRulesVersion,

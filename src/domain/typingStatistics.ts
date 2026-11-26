@@ -13,7 +13,7 @@ function median(sortedValues: readonly number[]): number | null {
   if (sortedValues.length === 0) return null;
   const middle = Math.floor(sortedValues.length / 2);
   return sortedValues.length % 2 === 0
-    ? ((sortedValues[middle - 1] ?? 0) + (sortedValues[middle] ?? 0)) / 2
+    ? (sortedValues[middle - 1] ?? 0) / 2 + (sortedValues[middle] ?? 0) / 2
     : sortedValues[middle] ?? null;
 }
 
@@ -44,8 +44,16 @@ export function summarizeTypingRates(
     };
   }
 
-  const mean = includedValues.reduce((total, value) => total + value, 0) / includedSampleCount;
-  const variance = includedValues.reduce((total, value) => total + (value - mean) ** 2, 0) / includedSampleCount;
+  const scale = Math.max(...includedValues.map((value) => Math.abs(value)));
+  const normalizedMean = scale === 0
+    ? 0
+    : includedValues.reduce((total, value) => total + value / scale, 0) / includedSampleCount;
+  const mean = scale * normalizedMean;
+  const normalizedVariance = scale === 0 ? 0 : includedValues.reduce(
+    (total, value) => total + (value / scale - normalizedMean) ** 2,
+    0,
+  ) / includedSampleCount;
+  const populationStandardDeviation = scale * Math.sqrt(normalizedVariance);
   const middle = Math.floor(includedSampleCount / 2);
   const lowerHalf = includedSampleCount === 1 ? includedValues : includedValues.slice(0, middle);
   const upperHalf = includedSampleCount === 1 ? includedValues : includedValues.slice(Math.ceil(includedSampleCount / 2));
@@ -56,7 +64,9 @@ export function summarizeTypingRates(
     sampleCount,
     includedSampleCount,
     mean,
-    populationStandardDeviation: Math.sqrt(variance),
+    populationStandardDeviation: Number.isFinite(populationStandardDeviation)
+      ? populationStandardDeviation
+      : Number.MAX_VALUE,
     median: median(includedValues),
     lowerQuartile,
     upperQuartile,

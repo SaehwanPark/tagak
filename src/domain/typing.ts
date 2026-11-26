@@ -143,6 +143,21 @@ export function createTypingScore(
   };
 }
 
+export function aggregateTypingScores(
+  scores: readonly TypingScore[],
+  language: Language,
+): TypingScore {
+  const correctCount = scores.reduce((total, score) => total + score.correctCount, 0);
+  const typedCount = scores.reduce((total, score) => total + score.typedCount, 0);
+  const elapsedMs = scores.some((score) => score.elapsedMs !== null)
+    ? scores.reduce((total, score) => total + (score.elapsedMs ?? 0), 0)
+    : null;
+  const keystrokeCount = language === "ko"
+    ? scores.reduce((total, score) => total + (score.keystrokeCount ?? 0), 0)
+    : null;
+  return createTypingScore(correctCount, typedCount, elapsedMs, language, keystrokeCount);
+}
+
 export function hasReachedEnd(target: string, input: string): boolean {
   return splitCharacters(input).length >= splitCharacters(target).length;
 }

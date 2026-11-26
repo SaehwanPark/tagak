@@ -4,7 +4,7 @@ import type { DataBackup } from "./dataBackup";
 import { defaultAppPreferences } from "./appPreferences";
 import { historyKey } from "./historyStorage";
 import { veniceStorageKey } from "./veniceStorage";
-import type { PracticeRecord } from "../domain/history";
+import type { PracticeHighScore, PracticeRecord, PracticeSessionRecord } from "../domain/history";
 import type { VeniceRun } from "../domain/venice";
 
 let failNextWriteTo: string | null = null;
@@ -156,6 +156,47 @@ describe("portable data backups", () => {
       }],
     };
     expect(readBackup(JSON.stringify(old)).data.history[0]?.mode).toBe("line");
+    expect(readBackup(JSON.stringify(old)).data.sessions).toEqual([]);
+    expect(readBackup(JSON.stringify(old)).data.highScores).toEqual([]);
+  });
+
+  it("round-trips session samples and high-score winners in a versioned backup", async () => {
+    const row = makeRecord("session-row", 10).score;
+    const session: PracticeSessionRecord = {
+      id: "session-1",
+      completedAt: 20,
+      mode: "line",
+      language: "ko",
+      materialIds: ["lesson-1", "lesson-2", "lesson-3", "lesson-4", "lesson-5"],
+      lineSessionLength: 5,
+      completion: "completed",
+      lineScores: [row, row, row, row, row],
+    };
+    const highScore: PracticeHighScore = {
+      rulesVersion: 1,
+      scopeKey: "line:ko:5",
+      sessionId: session.id,
+      completedAt: session.completedAt,
+      mode: "line",
+      language: "ko",
+      lineSessionLength: 5,
+      rawRates: [60, 60, 60, 60, 60],
+      median: 60,
+    };
+    const envelope = makeEnvelope();
+    envelope.data.history = {
+      version: 4,
+      records: [],
+      sessions: [session],
+      highScores: [highScore],
+    };
+    const backup = readBackup(JSON.stringify(envelope));
+    expect(backup.data.sessions).toEqual([session]);
+    expect(backup.data.highScores).toEqual([highScore]);
+
+    expect(await restoreDataBackup(backup, "replace")).toEqual({ ok: true });
+    const restored = JSON.parse(localStorage.getItem(historyKey) ?? "null");
+    expect(restored).toMatchObject({ version: 4, sessions: [session], highScores: [highScore] });
   });
 
   it("exports and restores the configured line session length", async () => {

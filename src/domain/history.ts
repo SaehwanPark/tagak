@@ -1,5 +1,6 @@
 import type { Language } from "../content/lessons";
 import type { TypingScore } from "./typing";
+import type { LinePracticeSessionLength } from "./linePracticeSettings";
 
 export type RecordedMode = "position" | "word" | "line" | "short" | "long";
 
@@ -10,6 +11,29 @@ export type PracticeRecord = {
   mode: RecordedMode;
   language: Language;
   score: TypingScore;
+};
+
+export type PracticeSessionRecord = {
+  id: string;
+  completedAt: number;
+  mode: Extract<RecordedMode, "line" | "short" | "long">;
+  language: Language;
+  materialIds: readonly string[];
+  lineSessionLength: LinePracticeSessionLength | null;
+  completion: "completed" | "early-exit";
+  lineScores: readonly TypingScore[];
+};
+
+export type PracticeHighScore = {
+  rulesVersion: 1;
+  scopeKey: string;
+  sessionId: string;
+  completedAt: number;
+  mode: PracticeSessionRecord["mode"];
+  language: Language;
+  lineSessionLength: LinePracticeSessionLength | null;
+  rawRates: readonly number[];
+  median: number;
 };
 
 export const recordLimit = 100;

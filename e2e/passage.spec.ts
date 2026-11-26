@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { passagesFor } from "../src/content/passages";
 import { seedPreferences } from "./helpers/preferences";
 import { stubCompletionTone } from "./helpers/audio";
+import { historyKey } from "../src/storage/historyStorage";
 
 test("short passage lines advance in five-line pages and return to the selected passage", async ({ page }) => {
   const passage = passagesFor("ko", "short")[0]!;
@@ -23,10 +24,41 @@ test("short passage lines advance in five-line pages and return to the selected 
   }
   await expect(page.getByRole("heading", { name: "연습 완료" })).toBeFocused();
   await expect(page.getByText("100%")).toBeVisible();
+  await expect(page.locator(".line-session-statistics")).toBeVisible();
+  await expect.poll(() => page.evaluate((key) => {
+    const stored = JSON.parse(localStorage.getItem(key) ?? "null");
+    return stored?.sessions?.length ?? 0;
+  }, historyKey)).toBe(1);
+  const sessionData = await page.evaluate((key) => {
+    const stored = JSON.parse(localStorage.getItem(key) ?? "null");
+    return stored.sessions[0];
+  }, historyKey);
+  expect(sessionData).toMatchObject({ mode: "short", completion: "completed", lineScores: Array(passage.lines.length).fill(expect.any(Object)) });
   await page.keyboard.press("Escape");
   await expect(entry).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(library).toBeFocused();
+});
+
+test("a passage exited after submitted lines stays in session history without a high score", async ({ page }) => {
+  const passage = passagesFor("ko", "short")[0]!;
+  await page.clock.install();
+  await page.goto("/");
+  await page.getByRole("button", { name: "짧은 글" }).click();
+  await page.getByRole("button", { name: /새벽 강변/ }).click();
+  const input = page.getByRole("textbox", { name: "따라 입력하기" });
+  await input.fill(passage.lines[0]!);
+  await page.clock.fastForward(1_200);
+  await input.press("Space");
+  await input.press("Escape");
+  await expect(page.getByRole("heading", { name: "짧은 글 고르기" })).toBeVisible();
+  await expect.poll(() => page.evaluate((key) => {
+    const stored = JSON.parse(localStorage.getItem(key) ?? "null");
+    return stored?.sessions?.length ?? 0;
+  }, historyKey)).toBe(1);
+  const stored = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) ?? "null"), historyKey);
+  expect(stored.sessions[0]).toMatchObject({ mode: "short", completion: "early-exit", lineScores: [expect.any(Object)] });
+  expect(stored.highScores).toEqual([]);
 });
 
 test("long passages expose five-line pages and their genre and size", async ({ page }) => {

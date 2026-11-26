@@ -178,8 +178,8 @@ test("A12 preferences migrate and English WPM stays consistent in results and hi
   await page.getByRole("button", { name: "Return to Menu" }).click();
   await page.getByRole("button", { name: "Settings" }).click();
   await page.getByRole("button", { name: "Recent practice" }).click();
-  await expect(page.getByRole("listitem")).toHaveCount(2);
-  await expect(page.getByRole("listitem").first()).toContainText("words/min");
+  await expect(page.locator(".practice-record-list li")).toHaveCount(2);
+  await expect(page.locator(".practice-record-list li").first()).toContainText("words/min");
 });
 
 test("completion sound plays only after submitting a practice item", async ({ page }) => {

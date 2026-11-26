@@ -66,7 +66,8 @@ test("simultaneous completions persist across tabs and can be compared and clear
   await expect(page.getByRole("heading", { name: "같은 모드의 이전 기록" })).toBeVisible();
   await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
   await openHistory(page);
-  await expect(page.getByRole("listitem")).toHaveCount(3);
+  await expect(page.locator(".practice-record-list li")).toHaveCount(3);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(3);
   await page.getByRole("combobox").selectOption("long");
   await expect(page.getByText("표시할 연습 기록이 없습니다.")).toBeVisible();
   await page.getByRole("button", { name: "기록 지우기", exact: true }).click();
@@ -91,20 +92,22 @@ test("history clear confirmation starts on Cancel and restores the clear button"
   await page.keyboard.press("Escape");
   await expect(page.getByRole("alertdialog")).toHaveCount(0);
   await expect(clearButton).toBeFocused();
-  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.locator(".practice-record-list li")).toHaveCount(1);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(1);
 
   await clearButton.click();
   await expect(cancel).toBeFocused();
   await cancel.click();
   await expect(clearButton).toBeFocused();
-  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.locator(".practice-record-list li")).toHaveCount(1);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(1);
 });
 
 test("unreadable data is preserved and a session still completes", async ({ page }) => {
   await page.goto("/");
   await page.evaluate((key) => localStorage.setItem(key, "unreadable"), historyKey);
   await finishLine(page);
-  await expect(page.getByRole("status")).toContainText("이번 기록은 저장하지 못했습니다");
+  await expect(page.getByRole("status")).toContainText("저장하지 못했습니다");
   await expect(page.getByText("100%")).toBeVisible();
   expect(await page.evaluate((key) => localStorage.getItem(key), historyKey)).toBe("unreadable");
 });
@@ -114,10 +117,12 @@ test("a failed write leaves the score available in the current page", async ({ p
     Storage.prototype.setItem = () => { throw new DOMException("Storage is full", "QuotaExceededError"); };
   });
   await finishLine(page);
-  await expect(page.getByRole("status")).toContainText("이번 기록은 저장하지 못했습니다");
+  await expect(page.getByText("세션 기록을 저장하지 못했습니다. 기존 최고 기록은 그대로 유지됩니다.")).toHaveCount(1);
+  await expect(page.getByRole("status")).toContainText("저장하지 못했습니다");
   await page.getByRole("button", { name: "메뉴로 돌아가기" }).click();
   await openHistory(page);
-  await expect(page.getByRole("listitem")).toHaveCount(1);
+  await expect(page.locator(".practice-record-list li")).toHaveCount(1);
+  await expect(page.locator(".practice-session-list li")).toHaveCount(1);
   await page.reload();
   await openHistory(page);
   await expect(page.getByText("표시할 연습 기록이 없습니다.")).toBeVisible();

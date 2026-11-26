@@ -85,6 +85,15 @@ export type InterfaceText = Readonly<{
   standardDeviation: string;
   median: string;
   interquartileRange: string;
+  highScoreFirstRecord: string;
+  highScoreUpdated: (current: number, previous: number, improvementPercent: number) => string;
+  highScoreKept: (current: number, previous: number) => string;
+  highScoreBelowThreshold: string;
+  highScoreNotSignificant: string;
+  highScoreAccuracyReason: string;
+  highScoreSamplesReason: (count: number) => string;
+  highScoreIncompleteReason: string;
+  highScoreInvalidRateReason: string;
   returnTo: (destination: string) => string;
   openPractice: string;
   blockedPracticeInput: string;
@@ -100,6 +109,17 @@ export type InterfaceText = Readonly<{
   historyClearFailed: string;
   historyCleared: string;
   historyReadFailed: string;
+  sessionSaveFailed: string;
+  highScoresCleared: string;
+  sessionHistoryTitle: string;
+  highScoresTitle: string;
+  clearHighScores: string;
+  confirmClearHighScores: string;
+  clearHighScoresAction: string;
+  sessionCompleted: string;
+  sessionEndedEarly: string;
+  sessionSamples: (count: number) => string;
+  highScoreScope: (mode: string, language: string, lineSessionLength: number | null) => string;
   accuracyValue: (value: number) => string;
   challengeTitle: string;
   challengeInstruction: string;
@@ -224,7 +244,7 @@ const ko: InterfaceText = {
   gothicFont: "고딕",
   serifFont: "명조",
   completionSound: "효과음",
-  completionSoundHelp: "연습 완료와 베네치아의 입력·정답·피격·종료 때 재생합니다. 기본은 끔입니다.",
+  completionSoundHelp: "연습 완료·최고 기록 갱신과 베네치아의 입력·정답·피격·종료 때 재생합니다. 기본은 끔입니다.",
   soundOn: "켬",
   soundOff: "끔",
   resetSettings: "환경설정을 기본값으로 되돌리기",
@@ -265,6 +285,15 @@ const ko: InterfaceText = {
   standardDeviation: "표준편차",
   median: "중간값",
   interquartileRange: "IQR (P25–P75)",
+  highScoreFirstRecord: "첫 최고 기록이 등록되었습니다.",
+  highScoreUpdated: (current, previous, improvementPercent) => `🏆 새로운 최고 기록! 중간값 ${current} (이전 ${previous}, ${improvementPercent}% 향상)`,
+  highScoreKept: (current, previous) => `현재 중간값 ${current} · 최고 기록 ${previous}`,
+  highScoreBelowThreshold: "중간값 향상이 3%에 미치지 않아 최고 기록을 유지했습니다.",
+  highScoreNotSignificant: "속도 차이가 안정적인 갱신 기준에 미치지 않아 최고 기록을 유지했습니다.",
+  highScoreAccuracyReason: "세션 정확도 97% 이상일 때 최고 기록에 도전할 수 있습니다.",
+  highScoreSamplesReason: (count) => `유효한 속도 표본이 ${count}개 이상 필요합니다.`,
+  highScoreIncompleteReason: "세션을 끝까지 완료하지 않아 최고 기록을 갱신하지 않았습니다.",
+  highScoreInvalidRateReason: "유효한 속도 값이 없어 최고 기록을 갱신하지 않았습니다.",
   returnTo: (destination) => destination === "메뉴" ? "메뉴로 돌아가기" : `${destination}으로 돌아가기`,
   openPractice: "연습으로 돌아가기",
   blockedPracticeInput: "연습 문장은 키보드로 직접 입력하세요.",
@@ -273,13 +302,24 @@ const ko: InterfaceText = {
   practiceKind: "연습 종류",
   all: "전체",
   clearHistory: "기록 지우기",
-  confirmClearHistory: "이 브라우저에 저장한 연습 기록을 지울까요?",
+  confirmClearHistory: "이 브라우저에 저장한 연습 기록, 세션 이력과 최고 기록을 모두 지울까요?",
   clearAllHistory: "전체 기록 지우기",
   cancel: "취소",
   historySaveFailed: "이번 기록은 저장하지 못했습니다. 앱을 닫기 전까지 볼 수 있습니다.",
   historyClearFailed: "기록을 지우지 못했습니다. 브라우저의 저장 설정을 확인하세요.",
-  historyCleared: "최근 연습 기록을 지웠습니다.",
+  historyCleared: "연습 기록, 세션 이력과 최고 기록을 지웠습니다.",
   historyReadFailed: "저장된 기록을 읽을 수 없습니다. 현재 연습은 계속할 수 있습니다.",
+  sessionSaveFailed: "세션 기록을 저장하지 못했습니다. 기존 최고 기록은 그대로 유지됩니다.",
+  highScoresCleared: "최고 기록을 지웠습니다.",
+  sessionHistoryTitle: "연습 세션 기록",
+  highScoresTitle: "최고 기록",
+  clearHighScores: "최고 기록 지우기",
+  confirmClearHighScores: "최고 기록만 지울까요? 연습 기록은 그대로 보존됩니다.",
+  clearHighScoresAction: "최고 기록만 지우기",
+  sessionCompleted: "완료",
+  sessionEndedEarly: "조기 종료",
+  sessionSamples: (count) => `속도 표본 ${count}개`,
+  highScoreScope: (mode, language, length) => `${mode} · ${language}${length === null ? "" : ` · ${length}문장`}`,
   accuracyValue: (value) => `정확도 ${value}%`,
   challengeTitle: "30초 낱말 도전",
   challengeInstruction: "한글 낱말을 그대로 입력하고 Enter를 누르세요. 30초 동안 맞힌 낱말 수를 셉니다.",
@@ -435,7 +475,7 @@ const en: InterfaceText = {
   gothicFont: "Sans-serif",
   serifFont: "Serif",
   completionSound: "Sound effects",
-  completionSoundHelp: "Plays for completed practice items and Venice typing, hits, damage, and game over. Off by default.",
+  completionSoundHelp: "Plays for practice completion, a new high score, and Venice typing, hits, damage, and game over. Off by default.",
   soundOn: "On",
   soundOff: "Off",
   resetSettings: "Reset settings to defaults",
@@ -476,6 +516,15 @@ const en: InterfaceText = {
   standardDeviation: "Standard deviation",
   median: "Median",
   interquartileRange: "IQR (P25–P75)",
+  highScoreFirstRecord: "First high score recorded.",
+  highScoreUpdated: (current, previous, improvementPercent) => `🏆 New high score! Median ${current} (previous ${previous}, up ${improvementPercent}%)`,
+  highScoreKept: (current, previous) => `Current median ${current} · high score ${previous}`,
+  highScoreBelowThreshold: "The median improvement was below 3%, so the high score stays.",
+  highScoreNotSignificant: "The speed difference did not meet the stable update rule, so the high score stays.",
+  highScoreAccuracyReason: "Reach at least 97% session accuracy to qualify for a high score.",
+  highScoreSamplesReason: (count) => `At least ${count} valid speed samples are required.`,
+  highScoreIncompleteReason: "The session was not completed, so the high score was not updated.",
+  highScoreInvalidRateReason: "No valid speed value was available for a high score update.",
   returnTo: (destination) => `Return to ${destination}`,
   openPractice: "Return to practice",
   blockedPracticeInput: "Type the prompt with your keyboard.",
@@ -484,13 +533,24 @@ const en: InterfaceText = {
   practiceKind: "Practice type",
   all: "All",
   clearHistory: "Clear history",
-  confirmClearHistory: "Clear the practice records saved in this browser?",
+  confirmClearHistory: "Clear practice records, session history, and high scores saved in this browser?",
   clearAllHistory: "Clear all records",
   cancel: "Cancel",
   historySaveFailed: "This result could not be saved. It remains available until you close the app.",
   historyClearFailed: "Could not clear records. Check this browser's storage settings.",
-  historyCleared: "Recent practice records were cleared.",
+  historyCleared: "Practice records, session history, and high scores were cleared.",
   historyReadFailed: "Saved records could not be read. You can continue practicing.",
+  sessionSaveFailed: "The session could not be saved. Your existing high score is unchanged.",
+  highScoresCleared: "High scores were cleared.",
+  sessionHistoryTitle: "Practice sessions",
+  highScoresTitle: "High scores",
+  clearHighScores: "Clear high scores",
+  confirmClearHighScores: "Clear only high scores? Practice history will be kept.",
+  clearHighScoresAction: "Clear high scores only",
+  sessionCompleted: "Completed",
+  sessionEndedEarly: "Ended early",
+  sessionSamples: (count) => `${count} speed samples`,
+  highScoreScope: (mode, language, length) => `${mode} · ${language}${length === null ? "" : ` · ${length} lines`}`,
   accuracyValue: (value) => `Accuracy ${value}%`,
   challengeTitle: "30-second word challenge",
   challengeInstruction: "Type each Korean word and press Enter. Count how many you solve in 30 seconds.",
