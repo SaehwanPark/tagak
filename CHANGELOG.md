@@ -6,9 +6,24 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-26
+
 ### Added
 
-- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): macOS ARM64 DMG와 Windows x64 per-user NSIS 설치 파일을 검증·생성하고, 버전 태그에서 체크섬과 한국어 설치 안내를 포함한 정식 GitHub Release를 게시하는 Actions workflow를 추가했습니다.
+- 타각의 첫 정식 공개 버전입니다. macOS 14+ Apple Silicon DMG와 Windows 11 x64 현재 사용자용 NSIS 설치 파일을 제공합니다.
+- 한 줄·짧은 글·긴 글 연습, 30초 낱말 도전, 베네치아 게임, 14개 색상 테마, 한국어·영어 UI, 로컬 기록과 JSON 백업·복원을 포함합니다.
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): 같은 태그 커밋의 macOS·Windows 패키지를 검증하고 SHA-256 목록 및 한국어 안내와 함께 정식 GitHub Release에 게시하는 Actions workflow를 추가했습니다.
+
+### Changed
+
+- 설치·지원 범위·빠른 시작·실제 화면 스크린샷과 콘텐츠 권리·제3자 고지를 README와 앱 설정에 정리했습니다. 허가 근거가 확인되지 않은 현대 작품 인용 26개를 독자 문장으로 교체했습니다.
+
+### Verified
+
+- `npm ci --include=dev`와 `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 웹 빌드, Playwright E2E 86개. 앱 JS 청크는 583.19KB로 Vite의 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build`에서 macOS ARM64 `Tagak_1.0.0_aarch64.dmg`(3.32 MiB)를 생성했고 `hdiutil verify`가 유효한 체크섬을 확인했습니다.
+- PR [#86 Actions run 45856909968](https://github.com/SaehwanPark/tagak/actions/runs/45856909968)에서 두 플랫폼의 단위·E2E 테스트와 패키지 빌드가 통과했습니다. 다운로드한 macOS DMG(3,482,422 bytes)는 `hdiutil verify`를 통과했고, 앱은 ad-hoc 서명(`TeamIdentifier` 없음)이었습니다. `spctl` 평가는 `code has no resources but signature indicates they must be present`와 종료 코드 1을 반환했습니다.
+- Windows x64 후보(2,417,081 bytes)는 PE32/NSIS 설치 파일로 식별됐고 `Get-AuthenticodeSignature`는 `NotSigned`, 인증서 없음으로 반환했습니다. 실제 OS IME와 Windows 11 실기기 GUI 설치는 v1.0.0 후보에서 수동 확인하지 않았습니다.
 
 ## [0.19.0] - 2026-11-26
 

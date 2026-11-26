@@ -62,6 +62,8 @@ npm run notices:update          # 오프라인 의존성·콘텐츠 고지 갱�
 
 `vMAJOR.MINOR.PATCH` 태그를 푸시하거나 같은 태그를 선택해 workflow dispatch를 실행하면 두 플랫폼 빌드가 모두 성공한 뒤 정식 GitHub Release를 게시한다. 태그, checkout 커밋, package.json·lockfile·Tauri·Cargo 버전의 일치를 확인하고, 자산을 동일 커밋에서 만든 뒤 SHA-256 목록과 CHANGELOG.md의 버전별 노트를 첨부한다. 기존 릴리즈를 덮어쓰지 않는다. 빌드 job은 `contents: read`, 릴리즈 job만 `contents: write` 권한을 받는다.
 
+빌드 job 로그에는 생성한 앱/설치 파일의 실제 서명 상태와 macOS Gatekeeper 평가를 기록한다. 이 정보는 인증서가 없을 때도 릴리즈 자산의 확인 가능한 상태를 남기기 위한 것이다.
+
 Apple Developer ID 인증서, Windows 코드 서명 인증서, 공증 자격 증명은 사용하지 않는다. 공개 빌드에는 Apple Developer ID 서명·공증과 Windows 코드 서명이 없으며, 릴리즈 노트에 운영체제 보안 경고 가능성과 체크섬 확인 방법을 표시한다.
 
 CI와 플랫폼 검증의 현재 범위는 [플랫폼 검증표](PLATFORM-VERIFICATION.md), 제품 구조는 [ARCHITECTURE.md](../ARCHITECTURE.md)에 있습니다.
