@@ -112,6 +112,7 @@ export type InterfaceText = Readonly<{
   historyCleared: string;
   historyReadFailed: string;
   sessionSaveFailed: string;
+  highScoreDecisionFailed: string;
   highScoresCleared: string;
   sessionHistoryTitle: string;
   highScoresTitle: string;
@@ -314,6 +315,7 @@ const ko: InterfaceText = {
   historyCleared: "연습 기록, 세션 이력과 최고 기록을 지웠습니다.",
   historyReadFailed: "저장된 기록을 읽을 수 없습니다. 현재 연습은 계속할 수 있습니다.",
   sessionSaveFailed: "세션 기록을 저장하지 못했습니다. 기존 최고 기록은 그대로 유지됩니다.",
+  highScoreDecisionFailed: "세션은 저장했지만 최고 기록을 계산하지 못했습니다. 기존 최고 기록은 그대로 유지됩니다.",
   highScoresCleared: "최고 기록을 지웠습니다.",
   sessionHistoryTitle: "연습 세션 기록",
   highScoresTitle: "최고 기록",
@@ -547,6 +549,7 @@ const en: InterfaceText = {
   historyCleared: "Practice records, session history, and high scores were cleared.",
   historyReadFailed: "Saved records could not be read. You can continue practicing.",
   sessionSaveFailed: "The session could not be saved. Your existing high score is unchanged.",
+  highScoreDecisionFailed: "The session was saved, but its high score could not be evaluated. Your existing high score is unchanged.",
   highScoresCleared: "High scores were cleared.",
   sessionHistoryTitle: "Practice sessions",
   highScoresTitle: "High scores",

@@ -17,6 +17,7 @@ type ResultViewProps = {
   lineSessionScores?: readonly TypingScore[];
   sessionRecord?: PracticeSessionRecord | null;
   sessionDecision?: HighScoreDecision | null;
+  highScoreDecisionFailed?: boolean;
   sessionSaveFailed?: boolean;
   showSpeed: boolean;
   comparison?: TypingScore | undefined;
@@ -29,7 +30,8 @@ type ResultViewProps = {
 };
 
 export function ResultView({
-  title, progress, score, lineSessionScores, sessionRecord, sessionDecision, sessionSaveFailed = false,
+  title, progress, score, lineSessionScores, sessionRecord, sessionDecision,
+  highScoreDecisionFailed = false, sessionSaveFailed = false,
   showSpeed, comparison, language, speedUnit, backLabel, onRetry, onBack, copy,
 }: ResultViewProps) {
   const heading = useFocus<HTMLHeadingElement>();
@@ -54,6 +56,7 @@ export function ResultView({
   const highScoreMessage = (() => {
     if (!sessionRecord) return null;
     if (sessionSaveFailed) return copy.sessionSaveFailed;
+    if (highScoreDecisionFailed) return copy.highScoreDecisionFailed;
     if (!sessionDecision) return null;
     switch (sessionDecision.status) {
       case "already-saved": return null;

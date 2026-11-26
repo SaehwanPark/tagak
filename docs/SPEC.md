@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.12.0`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.12.1`이다. 다음 버전 후보는 아직 정하지 않았다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,9 +11,16 @@
 
 ## 진행 중
 
-현재 구현 중인 사용자 기능 슬라이스가 없다. 다음 슬라이스는 선행 작업과 완료 조건을 정한 뒤 지정한다.
+- 현재 구현 중인 사용자 기능 슬라이스가 없다.
+- [ ] **A43 · 14개 컬러 테마 확장 [바로 다음에 구현해야 함]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
 
 ## 완료
+
+- [x] **A42 · 하이스코어 계산과 세션 저장 안정화** · `v0.12.1` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 정규근사의 생존 함수는 z가 0 또는 -0이면 0.5를 반환하고 음수는 대칭식으로 계산한다. 이슈 재현 표본은 U=50.5, continuity-corrected z=0, p=0.5를 반환한다. 양/음의 z, 동률, 정확 검정과 `p < 0.05` 경계도 회귀 검증했다.
+  - 하이스코어 판정 예외와 실제 저장 실패를 분리했다. 판정 실패 시 기존 기록을 보존하고 정상 완료 세션을 저장하며, 결과 화면에서 저장 실패와 다른 안내를 표시한다. 원자적 단일 쓰기·잠금·중복 방지는 유지한다.
+  - `npx vitest run src/domain/sessionHighScore.test.ts src/storage/practiceSessionStorage.test.ts` 통과: 2개 파일 12개 테스트. `npm run build` 통과; 앱 JS 청크 575.49KB로 Vite의 기존 500KB 경고 기준을 넘는다.
+  - 제품 명세·구조 문서·README·변경 이력과 npm/Cargo/Tauri 버전을 `v0.12.1`로 맞췄다.
 
 - [x] **A41 · 최고 기록 갱신 조건 완화** · `v0.12.0` · 이슈 [#74](https://github.com/SaehwanPark/tagak/issues/74)
   - 기존 하이스코어 갱신에 필요한 원시 CPM 중간값 향상 폭을 3%에서 0.3%로 낮췄다. 정상 완료, 전체 정확도 97%, 유효 속도 표본 5개, `p < 0.05` 조건은 유지한다.

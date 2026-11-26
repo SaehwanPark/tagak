@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { PracticeSessionRecord } from "../domain/history";
 import type { TypingScore } from "../domain/typing";
+import * as sessionHighScore from "../domain/sessionHighScore";
 import { clearHighScores, historyKey, readHistory, savePracticeSession } from "./historyStorage";
 
 let failNextHistoryWrite = false;
@@ -75,7 +76,10 @@ describe("practice session storage", () => {
     vi.stubGlobal("navigator", { locks: locks() });
   });
 
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   it("migrates old history without deriving session records from individual rows", () => {
     localStorage.setItem(historyKey, JSON.stringify({ version: 3, records: [] }));
@@ -105,7 +109,7 @@ describe("practice session storage", () => {
     expect(prior.highScores[0]?.sessionId).toBe("session-10");
 
     const update = await savePracticeSession(session("session-12", [100.3, 100.3, 100.3, 100.3, 100.3]));
-    expect(update.ok && update.decision.status).toBe("new-record");
+    expect(update.ok && update.decision?.status).toBe("new-record");
     const saved = readHistory();
     if (!saved.ok) throw new Error("Expected readable history");
     expect(saved.sessions).toHaveLength(3);
@@ -124,5 +128,27 @@ describe("practice session storage", () => {
     if (!cleared.ok) throw new Error("Expected readable history");
     expect(cleared.sessions).toHaveLength(1);
     expect(cleared.highScores).toEqual([]);
+  });
+
+  it("saves a completed session when high-score adjudication fails without changing the prior high score", async () => {
+    const first = await savePracticeSession(session("session-10", [100, 100, 100, 100, 100]));
+    if (!first.ok) throw new Error("Expected the first session to be saved");
+    const priorHighScores = first.history.highScores;
+    vi.spyOn(sessionHighScore, "decidePracticeHighScore").mockImplementation(() => {
+      throw new Error("high-score evaluation failed");
+    });
+
+    const saved = await savePracticeSession(session("session-11", [103, 103, 103, 103, 103]));
+
+    expect(saved).toMatchObject({
+      ok: true,
+      decision: null,
+      highScoreDecisionFailed: true,
+      duplicate: false,
+    });
+    const history = readHistory();
+    if (!history.ok) throw new Error("Expected saved session history to remain readable");
+    expect(history.sessions.map((entry) => entry.id)).toEqual(["session-11", "session-10"]);
+    expect(history.highScores).toEqual(priorHighScores);
   });
 });

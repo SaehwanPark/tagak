@@ -307,6 +307,7 @@ export function App() {
           sessionRecord={currentScreen.sessionRecord}
           {...(sessionSave ? {
             sessionDecision: sessionSave.decision,
+            highScoreDecisionFailed: sessionSave.highScoreDecisionFailed,
             sessionSaveFailed: !sessionSave.ok,
           } : {})}
           backLabel={currentScreen.activity.kind === "passage"
