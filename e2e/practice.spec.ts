@@ -425,6 +425,7 @@ test("Space submits a completed Korean or English one-line prompt", async ({ pag
   await expect(koreanTarget).not.toHaveAttribute("aria-label", koreanPrompt!);
 
   await page.getByRole("button", { name: "← 메뉴" }).click();
+  await page.getByRole("button", { name: "연습 종료" }).click();
   await page.getByRole("button", { name: "환경설정" }).click();
   await page.getByRole("button", { name: /연습 언어/ }).click();
   await page.getByRole("button", { name: "← 메뉴" }).click();

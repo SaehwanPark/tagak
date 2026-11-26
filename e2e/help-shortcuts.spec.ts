@@ -26,6 +26,7 @@ test("home help is optional, keyboard accessible, and restores focus", async ({ 
 test("help stays inside a small viewport and its reading region scrolls by keyboard", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 420 });
   await page.goto("/");
+  await expect(page.getByRole("button", { name: "한 줄", exact: true })).toBeFocused();
   await page.keyboard.press("?");
 
   const dialog = page.getByRole("dialog", { name: "키보드 사용 안내" });
