@@ -60,224 +60,52 @@
     "text": "밤기차 창밖으로 멀리 마을의 불빛이 하나둘 흘러갔습니다."
   },
   {
-    "id": "ko-quote-slamdunk-left",
-    "title": "애니메이션 명대사",
-    "text": "왼손은 거들 뿐.",
-    "source": "quote",
-    "credit": {
-      "author": "강백호",
-      "source": "《슬램덩크》",
-      "url": "https://www.youtube.com/watch?v=rD-mTNjXaZI"
-    }
-  },
-  {
     "id": "ko-quote-slamdunk-give-up",
-    "title": "애니메이션 명대사",
-    "text": "포기하면 거기서 시합 종료야.",
-    "source": "quote",
-    "credit": {
-      "author": "안 선생님",
-      "source": "《슬램덩크》",
-      "url": "https://sekihi.net/ko-kr/stones/6942"
-    }
+    "title": "꾸준한 연습",
+    "text": "작은 연습을 매일 이어가면 손끝이 리듬을 기억합니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-one-piece",
-    "title": "애니메이션 명대사",
-    "text": "나는 루피, 해적왕이 될 거야!",
-    "source": "quote",
-    "credit": {
-      "author": "몽키 D. 루피",
-      "source": "《원피스》 1화",
-      "url": "https://tv.apple.com/kr/episode/%E1%84%82%E1%85%A1%E1%84%82%E1%85%B3%E1%86%AB%E1%84%8B%E1%85%A3-%E1%84%85%E1%85%AE%E1%84%91%E1%85%B5-%E1%84%92%E1%85%A2%E1%84%8C%E1%85%A5%E1%86%A8%E1%84%8B%E1%85%AA%E1%86%BC%E1%84%8B%E1%85%B5-%E1%84%83%E1%85%AC%E1%86%AF-%E1%84%80%E1%85%A5%E1%84%8B%E1%85%A3/umc.cmc.3i6gftpoqek3o947i6nlnjzg6?showId=umc.cmc.2jf3h5bibsseewr9bh0rg5kcl"
-    }
+    "title": "다음 한 걸음",
+    "text": "오늘 익힌 한 글자가 내일의 속도를 조금씩 바꿉니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-pokemon",
-    "title": "애니메이션 명대사",
-    "text": "피카츄, 넌 내가 싫어? 난 네가 좋아!",
-    "source": "quote",
-    "credit": {
-      "author": "한지우",
-      "source": "《극장판 포켓몬스터: 너로 정했다!》",
-      "url": "https://new.pokemonkorea.co.kr/animation/34"
-    }
-  },
-  {
-    "id": "ko-quote-conan",
-    "title": "애니메이션 명대사",
-    "text": "진실은 언제나 하나!",
-    "source": "quote",
-    "credit": {
-      "author": "에도가와 코난",
-      "source": "《명탐정 코난》",
-      "url": "https://artplex.co.kr/campaigns/detective-conan_2026jan.html"
-    }
-  },
-  {
-    "id": "ko-quote-demon-slayer",
-    "title": "애니메이션 명대사",
-    "text": "마음을 불태워라!",
-    "source": "quote",
-    "credit": {
-      "author": "렌고쿠 쿄쥬로",
-      "source": "《귀멸의 칼날: 무한열차편》",
-      "url": "https://tv.apple.com/kr/episode/%E1%84%86%E1%85%A1%E1%84%8B%E1%85%B3%E1%86%B7%E1%84%8B%E1%85%B3%E1%86%AF-%E1%84%87%E1%85%AE%E1%86%AF%E1%84%90%E1%85%A2%E1%84%8B%E1%85%AF%E1%84%85%E1%85%A1/umc.cmc.3k1fhmt282os5xbxiaqmbksv2?showId=umc.cmc.1lfa5s90fe9hsizlhvvkcpxiq"
-    }
+    "title": "따뜻한 응원",
+    "text": "따뜻한 응원 한마디가 바쁜 하루를 가볍게 만듭니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-naruto",
-    "title": "애니메이션 명대사",
-    "text": "난 절대 포기하지 않아!",
-    "source": "quote",
-    "credit": {
-      "author": "우즈마키 나루토",
-      "source": "《나루토》",
-      "url": "https://jyucom.tistory.com/entry/%EB%82%98%EB%A3%A8%ED%86%A0-%EC%95%A0%EB%8B%88-%ED%8C%AC%EC%9D%B4%EB%9D%BC%EB%A9%B4-%EA%BC%AD-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%EB%AA%A8%EB%93%A0-%EA%B2%83"
-    }
-  },
-  {
-    "id": "ko-quote-my-hero",
-    "title": "애니메이션 명대사",
-    "text": "내가 왔다!",
-    "source": "quote",
-    "credit": {
-      "author": "올마이트",
-      "source": "《나의 히어로 아카데미아》",
-      "url": "https://note.com/hazumu_rhythm/n/n59bbdbde6e8f?hl=ko"
-    }
-  },
-  {
-    "id": "ko-quote-fullmetal",
-    "title": "애니메이션 명대사",
-    "text": "등가교환의 법칙.",
-    "source": "quote",
-    "credit": {
-      "author": "에드워드 엘릭",
-      "source": "《강철의 연금술사》",
-      "url": "https://en.wikiquote.org/wiki/Fullmetal_Alchemist"
-    }
+    "title": "천천히 다음 글자",
+    "text": "막히는 순간에도 다음 글자를 천천히 떠올려 봅니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-toy-story",
-    "title": "애니메이션 명대사",
-    "text": "무한한 공간 저 너머로!",
-    "source": "quote",
-    "credit": {
-      "author": "버즈 라이트이어",
-      "source": "《토이 스토리》",
-      "url": "https://news.disney.com/ultimate-list-toy-story-quotes"
-    }
+    "title": "한 걸음부터",
+    "text": "멀리 가고 싶다면 지금 한 걸음부터 시작합니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-zelda",
-    "title": "게임 명대사",
-    "text": "혼자 가면 위험해! 이걸 가져가!",
-    "source": "quote",
-    "credit": {
-      "author": "노인 · 한국어 번역",
-      "source": "《젤다의 전설》",
-      "url": "https://zelda.nintendo.com/breath-of-the-wild/assets/pdfs/ExplorersGuide.pdf"
-    }
-  },
-  {
-    "id": "ko-quote-portal",
-    "title": "게임 명대사",
-    "text": "케이크는 거짓말이다.",
-    "source": "quote",
-    "credit": {
-      "author": "벽의 낙서 · 한국어 번역",
-      "source": "《포털》",
-      "url": "https://en.wikipedia.org/wiki/The_cake_is_a_lie"
-    }
+    "title": "여행 준비",
+    "text": "여행을 떠나기 전에 필요한 도구를 꼼꼼히 챙깁니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-skyrim",
-    "title": "게임 명대사",
-    "text": "그러다 무릎에 화살을 맞았지.",
-    "source": "quote",
-    "credit": {
-      "author": "경비병",
-      "source": "《엘더스크롤 V: 스카이림》",
-      "url": "https://elderscrolls.bethesda.net/ko-KR/news/6KNyeH7wG4FOFIEev8VaX1/how-an-arrow-in-the-knee-made-its-way-to-skyrim"
-    }
-  },
-  {
-    "id": "ko-quote-overwatch",
-    "title": "게임 명대사",
-    "text": "영웅은 죽지 않아요!",
-    "source": "quote",
-    "credit": {
-      "author": "메르시",
-      "source": "《오버워치》",
-      "url": "https://overwatch.blizzard.com/ko-kr/news/23223599/take-flight-in-mercy-s-recall-challenge/"
-    }
+    "title": "낯선 길",
+    "text": "낯선 길을 지나면 새로운 풍경이 눈앞에 펼쳐집니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-diablo",
-    "title": "게임 명대사",
-    "text": "잠시 머물다 이야기를 듣게.",
-    "source": "quote",
-    "credit": {
-      "author": "데커드 케인 · 한국어 번역",
-      "source": "《디아블로》",
-      "url": "https://en.wikiquote.org/wiki/Diablo"
-    }
-  },
-  {
-    "id": "ko-quote-starcraft",
-    "title": "게임 명대사",
-    "text": "수정탑이 더 필요합니다.",
-    "source": "quote",
-    "credit": {
-      "author": "프로토스 사령관",
-      "source": "《스타크래프트》",
-      "url": "https://starcraft.fandom.com/wiki/Pylon"
-    }
-  },
-  {
-    "id": "ko-quote-metal-gear",
-    "title": "게임 명대사",
-    "text": "오래 기다렸지?",
-    "source": "quote",
-    "credit": {
-      "author": "솔리드 스네이크 · 한국어 번역",
-      "source": "《메탈 기어 솔리드 2》",
-      "url": "https://quotegeek.com/games/metal-gear-solid-2-sons-of-liberty/kept-you-waiting-huh/"
-    }
-  },
-  {
-    "id": "ko-quote-bioshock",
-    "title": "게임 명대사",
-    "text": "부탁 하나 들어주시겠습니까?",
-    "source": "quote",
-    "credit": {
-      "author": "아틀라스 · 한국어 번역",
-      "source": "《바이오쇼크》",
-      "url": "https://en.wikiquote.org/wiki/BioShock"
-    }
-  },
-  {
-    "id": "ko-quote-ace-attorney",
-    "title": "게임 명대사",
-    "text": "이의 있습니다!",
-    "source": "quote",
-    "credit": {
-      "author": "나루호도 류이치",
-      "source": "《역전재판》",
-      "url": "https://news.capcomusa.com/lets/browse/ace-attorney-101-with-phoenix-wright-and-maya-fey"
-    }
-  },
-  {
-    "id": "ko-quote-street-fighter",
-    "title": "게임 명대사",
-    "text": "파동권!",
-    "source": "quote",
-    "credit": {
-      "author": "류",
-      "source": "《스트리트 파이터》",
-      "url": "https://www.streetfighter.com/6/character/ryu"
-    }
+    "title": "잠깐의 쉼",
+    "text": "잠깐 쉬어 가며 오늘의 이야기를 천천히 돌아봅니다",
+    "source": "original"
   },
   {
     "id": "ko-saying-proverb-01",
@@ -324,42 +152,9 @@
     }
   },
   {
-    "id": "ko-saying-proverb-05",
-    "title": "한국 격언·속담",
-    "text": "티끌 모아 태산",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-06",
     "title": "한국 격언·속담",
     "text": "천 리 길도 한 걸음부터",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-07",
-    "title": "한국 격언·속담",
-    "text": "백지장도 맞들면 낫다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-08",
-    "title": "한국 격언·속담",
-    "text": "원숭이도 나무에서 떨어진다",
     "source": "traditional",
     "credit": {
       "author": "구전",
@@ -390,17 +185,6 @@
     }
   },
   {
-    "id": "ko-saying-proverb-11",
-    "title": "한국 격언·속담",
-    "text": "등잔 밑이 어둡다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-12",
     "title": "한국 격언·속담",
     "text": "고래 싸움에 새우 등 터진다",
@@ -412,31 +196,9 @@
     }
   },
   {
-    "id": "ko-saying-proverb-13",
-    "title": "한국 격언·속담",
-    "text": "가는 날이 장날이다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-14",
     "title": "한국 격언·속담",
     "text": "말 한마디에 천 냥 빚 갚는다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-15",
-    "title": "한국 격언·속담",
-    "text": "급할수록 돌아가라",
     "source": "traditional",
     "credit": {
       "author": "구전",
@@ -489,53 +251,9 @@
     }
   },
   {
-    "id": "ko-saying-proverb-20",
-    "title": "한국 격언·속담",
-    "text": "꿩 대신 닭",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-21",
-    "title": "한국 격언·속담",
-    "text": "공든 탑이 무너지랴",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-22",
-    "title": "한국 격언·속담",
-    "text": "백문이 불여일견",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-23",
     "title": "한국 격언·속담",
     "text": "서당 개 삼 년이면 풍월을 읊는다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-24",
-    "title": "한국 격언·속담",
-    "text": "시작이 반이다",
     "source": "traditional",
     "credit": {
       "author": "구전",
@@ -566,17 +284,6 @@
     }
   },
   {
-    "id": "ko-saying-proverb-27",
-    "title": "한국 격언·속담",
-    "text": "원수는 외나무다리에서 만난다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-28",
     "title": "한국 격언·속담",
     "text": "가는 정이 있어야 오는 정이 있다",
@@ -599,17 +306,6 @@
     }
   },
   {
-    "id": "ko-saying-proverb-30",
-    "title": "한국 격언·속담",
-    "text": "작은 고추가 맵다",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
     "id": "ko-saying-proverb-31",
     "title": "한국 격언·속담",
     "text": "낫 놓고 기역 자도 모른다",
@@ -618,50 +314,6 @@
       "author": "구전",
       "source": "위키낱말사전 · 한국어 속담",
       "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-proverb-32",
-    "title": "한국 격언·속담",
-    "text": "우물 안 개구리",
-    "source": "traditional",
-    "credit": {
-      "author": "구전",
-      "source": "위키낱말사전 · 한국어 속담",
-      "url": "https://ko.wiktionary.org/wiki/%EB%B6%84%EB%A5%98:%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%86%8D%EB%8B%B4"
-    }
-  },
-  {
-    "id": "ko-saying-bacon",
-    "title": "한국 격언·속담",
-    "text": "아는 것이 힘이다",
-    "source": "traditional",
-    "credit": {
-      "author": "프랜시스 베이컨",
-      "source": "격언 · 지식은 힘이다",
-      "url": "https://en.wikipedia.org/wiki/Knowledge_is_power"
-    }
-  },
-  {
-    "id": "ko-saying-franklin",
-    "title": "한국 격언·속담",
-    "text": "시간은 금이다",
-    "source": "traditional",
-    "credit": {
-      "author": "벤저민 프랭클린",
-      "source": "《젊은 상인에게 주는 조언》",
-      "url": "https://en.wikipedia.org/wiki/Benjamin_Franklin"
-    }
-  },
-  {
-    "id": "ko-saying-delphi",
-    "title": "한국 격언·속담",
-    "text": "너 자신을 알라",
-    "source": "traditional",
-    "credit": {
-      "author": "델포이 격언",
-      "source": "고대 그리스 격언",
-      "url": "https://en.wikipedia.org/wiki/Know_thyself"
     }
   },
   {
@@ -691,231 +343,353 @@
     "title": "전승 속담",
     "text": "고생 끝에 낙이 온다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-34",
     "title": "전승 속담",
     "text": "길고 짧은 것은 대봐야 안다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-35",
     "title": "전승 속담",
     "text": "까마귀 날자 배 떨어진다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-36",
     "title": "전승 속담",
     "text": "비 온 뒤에 땅이 굳어진다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-37",
     "title": "전승 속담",
     "text": "떡 줄 사람은 생각도 않는데",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-38",
     "title": "전승 속담",
     "text": "똥 묻은 개가 겨 묻은 개 나무란다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-39",
     "title": "전승 속담",
     "text": "말 속에 뜻이 있고 뼈가 있다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-40",
     "title": "전승 속담",
     "text": "남의 손의 떡은 더 커 보인다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-41",
     "title": "전승 속담",
     "text": "사공이 많으면 배가 산으로 간다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-42",
     "title": "전승 속담",
     "text": "발 없는 말이 천리 간다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-43",
     "title": "전승 속담",
     "text": "벼는 익을수록 고개를 숙인다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-44",
     "title": "전승 속담",
     "text": "입은 비뚤어졌어도 말은 바로 하랬다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-45",
     "title": "전승 속담",
     "text": "자라 보고 놀란 가슴 솥뚜껑 보고 놀란다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-46",
     "title": "전승 속담",
     "text": "열 손가락 깨물어 안 아픈 손가락 없다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-47",
     "title": "전승 속담",
     "text": "오르지 못할 나무는 쳐다보지도 마라",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-48",
     "title": "전승 속담",
     "text": "우물을 파도 한 우물을 파라",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-49",
     "title": "전승 속담",
     "text": "종로에서 뺨 맞고 한강에서 화풀이한다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-50",
     "title": "전승 속담",
     "text": "하나를 보고 열을 안다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-51",
     "title": "전승 속담",
     "text": "열 길 물속은 알아도 한 길 사람 속은 모른다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-52",
     "title": "전승 속담",
     "text": "윗물이 맑아야 아랫물이 맑다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-53",
     "title": "전승 속담",
     "text": "아니 땐 굴뚝에 연기 나랴",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-54",
     "title": "전승 속담",
     "text": "한 번 엎지른 물은 다시 주워 담지 못한다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-55",
     "title": "전승 속담",
     "text": "호랑이 굴에 가야 호랑이 새끼를 잡는다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-56",
     "title": "전승 속담",
     "text": "좋은 일에는 남이요 궂은 일에는 일가라",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-57",
     "title": "전승 속담",
     "text": "미운 아이 떡 하나 더 준다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-58",
     "title": "전승 속담",
     "text": "입에 쓴 약이 몸에 좋다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-59",
     "title": "전승 속담",
     "text": "도둑이 제 발 저리다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-60",
     "title": "전승 속담",
     "text": "떡 본 김에 제사 지낸다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-61",
     "title": "전승 속담",
     "text": "병 주고 약 준다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-62",
     "title": "전승 속담",
     "text": "닭 잡아먹고 오리발 내민다",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-proverb-63",
     "title": "전승 속담",
     "text": "모르면 약이요 아는 게 병",
     "source": "traditional",
-    "credit": { "author": "국립국어원", "source": "한국어교육 어휘 내용 개발 2단계", "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf" }
+    "credit": {
+      "author": "국립국어원",
+      "source": "한국어교육 어휘 내용 개발 2단계",
+      "url": "https://www.korean.go.kr/common/download.do?book_seq=268&c_file_name=9d14b893-1074-464c-8479-a9f58fdc9204_0.pdf&downGubun=bookDataView&file_path=bookData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4%EC%A7%84%ED%9D%A5-01-13.pdf"
+    }
   },
   {
     "id": "ko-quote-hong-gildong-01",
-    "title": "고전 소설 명대사",
-    "text": "아버지를 아버지라고 부르지 못 하고 형을 형이라고 못하니 어찌 사람이라 하겠습니까",
-    "source": "quote",
-    "credit": { "author": "홍길동", "source": "《홍길동전》 현대어 발췌", "url": "https://contents.history.go.kr/data/pdf/eh/eh_r0314_0010.pdf" }
+    "title": "오래 기다린 말",
+    "text": "하고 싶은 말을 마음껏 나누는 날을 오래 기다렸습니다",
+    "source": "original"
   },
   {
     "id": "ko-quote-hong-gildong-02",
-    "title": "고전 소설 명대사",
-    "text": "아무리 하찮은 사람도 아버지를 아버지라 부르고 형을 형이라 부르는데",
-    "source": "quote",
-    "credit": { "author": "홍길동", "source": "《홍길동전》 현대어 발췌", "url": "https://contents.history.go.kr/data/pdf/eh/eh_r0314_0010.pdf" }
+    "title": "저녁의 이름",
+    "text": "가족과 이름을 편하게 부를 수 있는 저녁이 좋았습니다",
+    "source": "original"
   },
   {
     "id": "ko-original-dawn-kitchen",

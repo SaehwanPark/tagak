@@ -214,6 +214,7 @@ export type InterfaceText = Readonly<{
   screenCaptureUnsupported: string;
   dataTransferTitle: string;
   dataTransferDescription: string;
+  thirdPartyNotices: string;
   backupExport: string;
   backupImport: string;
   backupContents: string;
@@ -465,6 +466,7 @@ const ko: InterfaceText = {
   screenCaptureUnsupported: "이 브라우저에서는 화면 저장을 지원하지 않습니다.",
   dataTransferTitle: "데이터 백업·가져오기",
   dataTransferDescription: "환경설정, 최근 연습 기록, 베네치아 기록을 로컬 JSON 파일로 옮깁니다. 입력 중인 내용은 포함하지 않습니다.",
+  thirdPartyNotices: "저작권·제3자 고지",
   backupExport: "백업 내보내기",
   backupImport: "백업 가져오기",
   backupContents: "JSON 백업에는 환경설정과 저장된 기록만 포함됩니다.",
@@ -728,6 +730,7 @@ const en: InterfaceText = {
   screenCaptureUnsupported: "Screen capture is not supported in this browser.",
   dataTransferTitle: "Back up and restore data",
   dataTransferDescription: "Move settings, recent practice records, and Venice records in a local JSON file. Text currently being typed is never included.",
+  thirdPartyNotices: "Copyright and third-party notices",
   backupExport: "Export backup",
   backupImport: "Import backup",
   backupContents: "The JSON backup includes saved settings and records only.",

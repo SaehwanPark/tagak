@@ -31,146 +31,63 @@
   },
   {
     "id": "en-quote-gone-with-the-wind",
-    "title": "Movie quotes",
-    "text": "Frankly, my dear, I don't give a damn.",
-    "source": "quote",
-    "credit": {
-      "author": "Rhett Butler",
-      "source": "Gone with the Wind",
-      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
-    }
+    "title": "A quiet room",
+    "text": "A quiet room can hold the clearest thought",
+    "source": "original"
   },
   {
     "id": "en-quote-casablanca",
-    "title": "Movie quotes",
-    "text": "Here's looking at you, kid.",
-    "source": "quote",
-    "credit": {
-      "author": "Rick Blaine",
-      "source": "Casablanca",
-      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
-    }
+    "title": "The train",
+    "text": "The train arrived just as the rain began",
+    "source": "original"
   },
   {
     "id": "en-quote-star-wars",
-    "title": "Movie quotes",
-    "text": "May the Force be with you.",
-    "source": "quote",
-    "credit": {
-      "author": "A farewell",
-      "source": "Star Wars",
-      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
-    }
-  },
-  {
-    "id": "en-quote-terminator",
-    "title": "Movie quotes",
-    "text": "I'll be back.",
-    "source": "quote",
-    "credit": {
-      "author": "The Terminator",
-      "source": "The Terminator",
-      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
-    }
-  },
-  {
-    "id": "en-quote-et",
-    "title": "Movie quotes",
-    "text": "E.T. phone home.",
-    "source": "quote",
-    "credit": {
-      "author": "E.T.",
-      "source": "E.T. the Extra-Terrestrial",
-      "url": "https://www.afi.com/afis-100-years-100-movie-quotes/"
-    }
+    "title": "Evening walk",
+    "text": "We kept walking until the stars appeared",
+    "source": "original"
   },
   {
     "id": "en-quote-a-few-good-men",
-    "title": "Movie quotes",
-    "text": "You can't handle the truth!",
-    "source": "quote",
-    "credit": {
-      "author": "Nathan R. Jessep",
-      "source": "A Few Good Men",
-      "url": "https://quotations.pro/people/nathan-jessup/quote/you-cant-handle-the-truth"
-    }
-  },
-  {
-    "id": "en-quote-dark-knight",
-    "title": "Movie quotes",
-    "text": "Why so serious?",
-    "source": "quote",
-    "credit": {
-      "author": "The Joker",
-      "source": "The Dark Knight",
-      "url": "https://www.acmi.net.au/stories-and-ideas/the-dark-knight-why-so-serious/"
-    }
+    "title": "A careful answer",
+    "text": "A difficult question deserves a careful answer",
+    "source": "original"
   },
   {
     "id": "en-quote-sixth-sense",
-    "title": "Movie quotes",
-    "text": "I see dead people.",
-    "source": "quote",
-    "credit": {
-      "author": "Cole Sear",
-      "source": "The Sixth Sense",
-      "url": "https://catalog.afi.com/Film/55204-THE-SIXTH-SENSE"
-    }
+    "title": "Behind the curtain",
+    "text": "I noticed a light moving behind the curtain",
+    "source": "original"
   },
   {
     "id": "en-quote-jerry-maguire",
-    "title": "Movie quotes",
-    "text": "You had me at hello.",
-    "source": "quote",
-    "credit": {
-      "author": "Dorothy Boyd",
-      "source": "Jerry Maguire",
-      "url": "https://en.wikiquote.org/wiki/Jerry_Maguire"
-    }
+    "title": "A kind word",
+    "text": "The first kind word made the morning easier",
+    "source": "original"
   },
   {
     "id": "en-quote-dirty-dancing",
-    "title": "Movie quotes",
-    "text": "Nobody puts Baby in a corner.",
-    "source": "quote",
-    "credit": {
-      "author": "Johnny Castle",
-      "source": "Dirty Dancing",
-      "url": "https://en.wikiquote.org/wiki/Dirty_Dancing"
-    }
+    "title": "Learning the steps",
+    "text": "We learned each step by listening to the rhythm",
+    "source": "original"
   },
   {
     "id": "en-quote-jaws",
-    "title": "Movie quotes",
-    "text": "You're gonna need a bigger boat.",
-    "source": "quote",
-    "credit": {
-      "author": "Martin Brody",
-      "source": "Jaws",
-      "url": "https://www.tcm.com/articles/615785/trivia-jaws-trivia-and-fun-facts-about-jaws"
-    }
+    "title": "Beyond the harbor",
+    "text": "A larger boat waited beyond the harbor wall",
+    "source": "original"
   },
   {
     "id": "en-quote-toy-story",
-    "title": "Movie quotes",
-    "text": "To infinity and beyond!",
-    "source": "quote",
-    "credit": {
-      "author": "Buzz Lightyear",
-      "source": "Toy Story",
-      "url": "https://news.disney.com/ultimate-list-toy-story-quotes"
-    }
+    "title": "Paper rocket",
+    "text": "A paper rocket drifted past the open window",
+    "source": "original"
   },
   {
     "id": "en-quote-wizard-of-oz",
-    "title": "Movie quotes",
-    "text": "There's no place like home.",
-    "source": "quote",
-    "credit": {
-      "author": "Dorothy Gale",
-      "source": "The Wizard of Oz",
-      "url": "https://www.youtube.com/watch?v=NFWMBE-mQEc"
-    }
+    "title": "The road home",
+    "text": "The road home crossed a field after the rain",
+    "source": "original"
   },
   {
     "id": "en-saying-proverb-01",
@@ -187,17 +104,6 @@
     "id": "en-saying-proverb-02",
     "title": "English proverbs & sayings",
     "text": "Better late than never.",
-    "source": "traditional",
-    "credit": {
-      "author": "Traditional",
-      "source": "English proverb",
-      "url": "https://en.wiktionary.org/wiki/Category:English_proverbs"
-    }
-  },
-  {
-    "id": "en-saying-proverb-03",
-    "title": "English proverbs & sayings",
-    "text": "Practice makes perfect.",
     "source": "traditional",
     "credit": {
       "author": "Traditional",
@@ -514,39 +420,6 @@
     }
   },
   {
-    "id": "en-saying-bacon",
-    "title": "English proverbs & sayings",
-    "text": "Knowledge is power.",
-    "source": "traditional",
-    "credit": {
-      "author": "Francis Bacon",
-      "source": "Meditationes Sacrae",
-      "url": "https://en.wikipedia.org/wiki/Knowledge_is_power"
-    }
-  },
-  {
-    "id": "en-saying-franklin",
-    "title": "English proverbs & sayings",
-    "text": "Time is money.",
-    "source": "traditional",
-    "credit": {
-      "author": "Benjamin Franklin",
-      "source": "Advice to a Young Tradesman",
-      "url": "https://en.wikipedia.org/wiki/Benjamin_Franklin"
-    }
-  },
-  {
-    "id": "en-saying-delphi",
-    "title": "English proverbs & sayings",
-    "text": "Know thyself.",
-    "source": "traditional",
-    "credit": {
-      "author": "Delphic maxim",
-      "source": "Ancient Greek aphorism",
-      "url": "https://en.wikipedia.org/wiki/Know_thyself"
-    }
-  },
-  {
     "id": "en-saying-descartes",
     "title": "English proverbs & sayings",
     "text": "I think, therefore I am.",
@@ -573,217 +446,311 @@
     "title": "English proverbs",
     "text": "A bad workman always blames his tools",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-32",
     "title": "English proverbs",
     "text": "A bird in the hand is worth two in the bush",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-33",
     "title": "English proverbs",
     "text": "A chain is only as strong as its weakest link",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-34",
     "title": "English proverbs",
     "text": "A friend in need is a friend indeed",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-35",
     "title": "English proverbs",
     "text": "A watched pot never boils",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-36",
     "title": "English proverbs",
     "text": "All roads lead to Rome",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-37",
     "title": "English proverbs",
     "text": "An apple a day keeps the doctor away",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-38",
     "title": "English proverbs",
     "text": "Beggars cannot be choosers",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-39",
     "title": "English proverbs",
     "text": "Blood is thicker than water",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-40",
     "title": "English proverbs",
     "text": "Do not judge a book by its cover",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-41",
     "title": "English proverbs",
     "text": "Good things come to those who wait",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-42",
     "title": "English proverbs",
     "text": "It takes two to tango",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-43",
     "title": "English proverbs",
     "text": "Laughter is the best medicine",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-44",
     "title": "English proverbs",
     "text": "Look after the pennies and the pounds look after themselves",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-45",
     "title": "English proverbs",
     "text": "No news is good news",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-46",
     "title": "English proverbs",
     "text": "Nothing ventured nothing gained",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-47",
     "title": "English proverbs",
     "text": "One swallow does not make a summer",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-48",
     "title": "English proverbs",
     "text": "People who live in glass houses should not throw stones",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-49",
     "title": "English proverbs",
     "text": "The best things in life are free",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-50",
     "title": "English proverbs",
     "text": "The proof of the pudding is in the eating",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-51",
     "title": "English proverbs",
     "text": "There is no smoke without fire",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-52",
     "title": "English proverbs",
     "text": "Too many cooks spoil the broth",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-53",
     "title": "English proverbs",
     "text": "You can lead a horse to water but you cannot make it drink",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-54",
     "title": "English proverbs",
     "text": "When the going gets tough the tough get going",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-proverb-55",
     "title": "English proverbs",
     "text": "You cannot make an omelette without breaking eggs",
     "source": "traditional",
-    "credit": { "author": "Traditional English proverb", "source": "Oxford Dictionary of Proverbs", "url": "https://doi.org/10.1093/acref/9780198734901.001.0001" }
+    "credit": {
+      "author": "Traditional English proverb",
+      "source": "Oxford Dictionary of Proverbs",
+      "url": "https://doi.org/10.1093/acref/9780198734901.001.0001"
+    }
   },
   {
     "id": "en-quote-hamlet-brevity",
-    "title": "Hamlet",
-    "text": "Brevity is the soul of wit",
-    "source": "quote",
-    "credit": { "author": "William Shakespeare", "source": "Hamlet", "url": "https://www.gutenberg.org/ebooks/100" }
+    "title": "Short notes",
+    "text": "Short notes can preserve a long afternoon",
+    "source": "original"
   },
   {
     "id": "en-quote-hamlet-joint",
-    "title": "Hamlet",
-    "text": "The time is out of joint",
-    "source": "quote",
-    "credit": { "author": "William Shakespeare", "source": "Hamlet", "url": "https://www.gutenberg.org/ebooks/100" }
+    "title": "Old clocks",
+    "text": "Old clocks pause before the hour turns",
+    "source": "original"
   },
   {
     "id": "en-quote-alice-book",
-    "title": "Alice in Wonderland",
-    "text": "There ought to be a book written about me",
-    "source": "quote",
-    "credit": { "author": "Alice", "source": "Alice's Adventures in Wonderland", "url": "https://www.gutenberg.org/files/11/11-h/11-h.htm" }
+    "title": "Beside the chair",
+    "text": "A book beside the chair waited for me",
+    "source": "original"
   },
   {
     "id": "en-quote-alice-puzzle",
-    "title": "Alice in Wonderland",
-    "text": "Who in the world am I Ah thats the great puzzle",
-    "source": "quote",
-    "credit": { "author": "Alice", "source": "Alice's Adventures in Wonderland", "url": "https://www.gutenberg.org/files/11/11-h/11-h.htm" }
+    "title": "A curious question",
+    "text": "One curious question opened the next page",
+    "source": "original"
   },
   {
     "id": "en-quote-christmas-bless",
-    "title": "A Christmas Carol",
-    "text": "God bless us every one",
-    "source": "quote",
-    "credit": { "author": "Tiny Tim", "source": "A Christmas Carol", "url": "https://www.gutenberg.org/files/46/46-h/46-h.htm" }
+    "title": "Winter kindness",
+    "text": "Every small kindness brightened the winter street",
+    "source": "original"
   },
   {
     "id": "en-quote-tale-times",
-    "title": "A Tale of Two Cities",
-    "text": "It was the best of times it was the worst of times",
-    "source": "quote",
-    "credit": { "author": "Charles Dickens", "source": "A Tale of Two Cities", "url": "https://www.gutenberg.org/files/98/98-h/98-h.htm" }
+    "title": "Another season",
+    "text": "One season felt bright then another felt cold",
+    "source": "original"
   },
   {
     "id": "en-original-paper-boat",

@@ -31,6 +31,7 @@ test("history and backup settings subviews are keyboard reachable in Korean and 
     await page.keyboard.press("End");
     await page.keyboard.press("ArrowUp");
     await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowUp");
     const historyEntry = page.getByRole("button", { name: historyLabel });
     await expect(historyEntry).toBeFocused();
     await page.keyboard.press("Enter");
@@ -55,6 +56,19 @@ test("history and backup settings subviews are keyboard reachable in Korean and 
   await checkSettingsSubviews("Recent practice", "Back up and restore data", "Back up and restore data");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: "Settings" })).toBeFocused();
+});
+
+test("offline copyright and third-party notices open from settings", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "환경설정" }).click();
+  await page.getByRole("button", { name: "저작권·제3자 고지" }).click();
+
+  await expect(page).toHaveURL(/\/THIRD-PARTY-NOTICES\.html$/);
+  await expect(page.getByRole("heading", { name: "타각 저작권·제3자 고지" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /CC BY-SA 4\.0 연습 글/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Rust 네이티브 의존성/ })).toContainText("247개");
+  await page.getByRole("link", { name: "타각으로 돌아가기" }).click();
+  await expect(page.getByRole("heading", { name: "타자 연습" })).toBeVisible();
 });
 
 test("completion sound is off by default", async ({ page }) => {

@@ -2,7 +2,7 @@ export type Language = "ko" | "en";
 export type TextMode = "line";
 export type NonEmpty<T> = readonly [T, ...T[]];
 
-export type TextSource = "original" | "quote" | "traditional";
+export type TextSource = "original" | "traditional";
 
 export type TextCredit = {
   author: string;

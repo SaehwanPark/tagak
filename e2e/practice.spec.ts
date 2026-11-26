@@ -104,10 +104,10 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
   const koreanLines = activities.find((activity) => activity.id === "ko-line");
   if (koreanLines?.kind !== "line") throw new Error("Korean one-line content is unavailable");
 
-  const quoteSeed = Array.from({ length: 1_000 }, (_, index) => index + 1).find((seed) =>
+  const traditionalSeed = Array.from({ length: 1_000 }, (_, index) => index + 1).find((seed) =>
     shuffleWithSeed(koreanLines.lessons, seed).slice(0, linePracticeSessionLength)
-      .some((lesson) => lesson.source === "quote"));
-  if (quoteSeed === undefined) throw new Error("Could not find a seed with a quote in the first 20 lessons");
+      .some((lesson) => lesson.source === "traditional"));
+  if (traditionalSeed === undefined) throw new Error("Could not find a seed with a traditional saying in the first 20 lessons");
   await page.addInitScript((seed) => {
     Object.defineProperty(window.crypto, "getRandomValues", {
       configurable: true,
@@ -116,22 +116,22 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
         return values;
       },
     });
-  }, quoteSeed);
+  }, traditionalSeed);
 
   await page.goto("/");
   await page.getByRole("button", { name: "한 줄", exact: true }).click();
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
   const target = page.locator("#typing-target");
   const credit = page.locator(".practice-credit");
-  const quoteUrls = new Set(koreanLines.lessons
-    .filter((lesson) => lesson.source === "quote")
+  const traditionalUrls = new Set(koreanLines.lessons
+    .filter((lesson) => lesson.source === "traditional")
     .map((lesson) => lesson.credit?.url));
   const sourceLink = credit.locator("a");
 
   for (let attempt = 0; attempt < linePracticeSessionLength; attempt += 1) {
     if (await sourceLink.count() > 0) {
       const href = await sourceLink.getAttribute("href");
-      if (href && quoteUrls.has(href)) break;
+      if (href && traditionalUrls.has(href)) break;
     }
     const prompt = await target.getAttribute("aria-label");
     expect(prompt).not.toBeNull();
@@ -141,10 +141,10 @@ test("one-line practice shows compact source attribution", async ({ page }) => {
 
   const href = await sourceLink.getAttribute("href");
   const sourceText = await credit.textContent();
-  const displayedQuote = koreanLines.lessons.find((lesson) =>
-    lesson.source === "quote" && lesson.credit?.url === href && sourceText?.includes(lesson.credit.author)
+  const displayedTraditional = koreanLines.lessons.find((lesson) =>
+    lesson.source === "traditional" && lesson.credit?.url === href && sourceText?.includes(lesson.credit.author)
       && sourceText.includes(lesson.credit.source));
-  expect(displayedQuote).toBeDefined();
+  expect(displayedTraditional).toBeDefined();
   await expect(sourceLink).toHaveAttribute("target", "_blank");
   await expect(credit).toHaveCSS("font-size", "12.8px");
 });

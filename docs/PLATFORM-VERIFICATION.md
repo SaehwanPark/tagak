@@ -16,6 +16,12 @@
 
 Playwright의 `CompositionEvent` 테스트는 앱이 합성 IME 이벤트 순서를 처리하는지 확인한다. 운영체제의 실제 입력기를 구동하는 검증으로 간주하지 않는다.
 
+## D1 · 공개 문서와 콘텐츠 권리 정리
+
+- 2026-11-26 `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 빌드, Playwright E2E 86개. E2E에서 환경설정의 저작권·제3자 고지 진입, CC BY-SA 안내와 Rust 의존성 목록, 앱 복귀를 확인했다. Playwright Chromium에서 캡처한 README 이미지는 실제 앱 빌드 UI이며 합성 목업이 아니다.
+- `npm run desktop:build` 통과: macOS ARM64 `Tagak_0.19.0_aarch64.dmg`(3.32 MiB)를 생성했다. DMG 안의 앱을 실행하고 환경설정에서 `tauri://localhost/THIRD-PARTY-NOTICES.html`을 열었다. CC BY-SA 4.0 글의 저자·출처·변경 사항, 저작권법 제7조 연결, 런타임 JavaScript 7개와 macOS 대상 Rust 247개 목록이 표시되는 것을 확인했다. 외부 링크는 열지 않아 고지 화면에 네트워크 연결이 필요하지 않다.
+- 이번 확인에서 실제 OS IME로 연습하거나 Windows 설치 패키지를 만들지는 않았다. D1은 입력·채점·저장 동작을 바꾸지 않았으며, Windows 릴리즈 빌드 자동화는 별도 D2 슬라이스에서 검증한다.
+
 ## A37 · 데스크톱 창 내 레이아웃과 내부 스크롤
 
 - 2026-11-24 macOS 호스트에서 `npm run verify`를 통과했다: Vitest 18개 파일 103개 테스트, 프로덕션 빌드, Playwright E2E 69개. Playwright Chromium은 1120×960, 900×700, 760×560, 1280×560 및 320×420 viewport에서 가로·세로 문서 바깥 스크롤, 내부 목록 스크롤과 포커스 reveal, 영어 UI·종이 테마·큰 글자, 백업 오류 알림, 지문·기록·베네치아 Top 10 키보드/포인터 스크롤, 연습·도전 필수 조작, 창 크기 변경 중 베네치아 보드 상태를 확인했다. 프로덕션 앱 JS 청크는 524.45KB로 Vite의 500KB 경고 기준을 넘는다.

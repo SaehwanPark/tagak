@@ -1,28 +1,58 @@
 # 타각 (Tagak)
 
-한메타자교실의 연습 경험에서 출발해 레트로 감성을 현대적으로 재해석한 타각(Tagak)은 **키보드 중심의 로컬 타자 연습 프로그램**입니다. 한글 우선으로 한 줄·짧은 글·긴 글을 오프라인으로 연습하고 게임을 즐길 수 있습니다.
+**한글을 매일 편하게 연습하는 오프라인 타자 앱.** 타각(Tagak)은 한 줄 연습, 짧은 글·긴 글, 30초 낱말 도전, 베네치아 게임을 제공합니다. 키보드 중심으로 설계했고 기록과 설정은 이 기기에 저장합니다.
 
-- **완전 로컬**: 인터넷 연결 없이 동작합니다. 계정·서버·공개 순위·원격 측정이 없고, 설정과 기록은 현재 브라우저 프로필 또는 앱의 로컬 저장소에만 남습니다.
-- **한글 우선**: 운영체제의 한글 입력기(IME)를 그대로 사용합니다. 한글·영문 각 100문장의 한 줄 연습과 68편의 글 연습을 제공합니다.
-- **키보드 중심**: 메뉴, 설정, 연습, 결과를 마우스 없이 조작할 수 있습니다.
+## 다운로드와 지원 OS
 
-현재 버전은 `v0.18.0`입니다. 개발 기준 환경은 **macOS 14+ 데스크톱 앱(Tauri 2 · WebKit)** 입니다. Windows 11 데스크톱 앱(Tauri 2 · WebView2)도 설치·오프라인 실행·한국어 IME·저장 흐름을 확인했습니다. 브라우저 경로도 개발과 대체 실행용으로 유지합니다.
+| 플랫폼 | 상태 | 다운로드 |
+| --- | --- | --- |
+| macOS 14+ · Apple Silicon | 기준 데스크톱 환경 | [GitHub Releases](https://github.com/SaehwanPark/tagak/releases) |
+| Windows 11 · x64 | 데스크톱 앱 흐름 확인 | [GitHub Releases](https://github.com/SaehwanPark/tagak/releases) |
+| Intel Mac | 이번 배포 대상 아님 | — |
+| Linux 데스크톱 앱 | 지원하지 않음 | — |
 
-화면은 앱 창 안에서 배치됩니다. 긴 라이브러리·설정·지문·기록·결과는 각 화면의 내부 영역에서 스크롤하며, 작은 브라우저 viewport는 화면 내부 스크롤을 사용합니다.
+현재 안정 릴리즈가 게시되기 전에는 Releases 페이지에 설치 파일이 없을 수 있습니다. macOS 앱은 Apple Silicon DMG, Windows 앱은 x64 per-user NSIS 설치 파일로 배포합니다. 서명·공증 상태와 SHA-256 체크섬은 릴리즈 페이지에 함께 표시합니다.
 
-데스크톱 창은 현재 모니터의 작업 영역에 맞춰 열리고 마지막 크기·위치·최대화 상태를 복원합니다. 창 상태는 앱 설정 디렉터리에 저장하며, 연습 설정과 기록은 기존처럼 앱의 로컬 WebView 저장소에 남습니다. 브라우저 실행 경로에는 네이티브 창 상태 저장을 적용하지 않습니다.
+## 빠른 시작
 
-## 무엇을 할 수 있나
+1. 위 Releases 페이지에서 사용 중인 OS의 설치 파일을 받습니다.
+2. macOS에서는 DMG를 열어 앱을 응용 프로그램 폴더에 복사합니다. Windows에서는 설치 파일을 실행하면 현재 사용자 계정에 설치됩니다.
+3. 앱을 열고 `한 줄`을 선택합니다. 처음에는 환경설정에서 5문장 세션으로 시작해도 됩니다.
+4. 지문을 끝까지 입력하고 `Enter` 또는 `Space`를 눌러 제출합니다. 한글 입력은 평소 사용하는 OS 한글 입력기를 그대로 사용합니다.
+
+`?`는 홈의 사용 안내, `s`는 환경설정, `r`은 최근 기록을 엽니다. 화면 PNG 저장은 macOS `⌘S`, Windows `Ctrl+S` 또는 화면의 저장 버튼으로 시작합니다.
+
+타각은 계정·서버·공개 순위·원격 측정을 사용하지 않으며, 설치 후 오프라인에서 실행됩니다. 환경설정과 연습 기록은 앱의 로컬 저장소에만 남습니다. 기기를 바꾸거나 앱을 다시 설치하기 전에 환경설정의 **데이터 백업·가져오기**에서 JSON 백업을 저장하세요. 업데이트는 새 설치 파일을 받아 설치하는 방식이며, 같은 앱 ID와 저장소를 유지합니다.
+
+현재 버전은 `v0.19.0`입니다. 개발 기준 환경은 **macOS 14+ Apple Silicon Tauri 앱(WebKit)** 이며 Windows 11 x64 Tauri 앱도 설치·오프라인 실행·한국어 IME·저장 흐름을 확인했습니다. 상세 증거와 미확인 범위는 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)를 참고하세요.
+
+## 화면 미리보기
+
+아래 이미지는 앱 화면을 브라우저에서 실제 렌더링해 캡처한 것입니다. 합성 목업이 아닙니다.
+
+| 홈 · 터미널 야간 | 한 줄 연습 |
+| --- | --- |
+| ![터미널 야간 테마 홈 메뉴](docs/images/home-terminal.png) | ![전승 속담 한 줄 연습 화면](docs/images/line-practice.png) |
+
+| 베네치아 게임 | 종이 밝음 테마 |
+| --- | --- |
+| ![낱말이 내려오는 베네치아 게임 화면](docs/images/venice-game.png) | ![종이 밝음 테마 홈 메뉴](docs/images/home-paper-light.png) |
+
+| 카푸치노 모카 테마 | 베네치아 준비 화면 |
+| --- | --- |
+| ![카푸치노 모카 테마 홈 메뉴](docs/images/home-catppuccin-mocha.png) | ![베네치아 레벨 선택 준비 화면](docs/images/venice-setup.png) |
+
+## 기능 둘러보기
 
 홈 메뉴는 `한 줄`, `짧은 글`, `긴 글`, `게임`, `환경설정` 순서로 열립니다. 최근 기록과 백업·가져오기는 환경설정에서 엽니다. 홈의 `사용 안내 (?)` 버튼이나 `?` 키로 선택형 키보드 도움말을 열 수 있습니다. 도움말에서는 한글 IME 제출, 작은 세션 시작, 게임 레벨 선택을 안내합니다.
 
 | 메뉴 | 내용 |
 | --- | --- |
-| 한 줄 | 한글·영문 각각 100문장을 매 시작마다 섞어 연습합니다. 문장 수는 설정에서 5·10·20·30·50·75·100개로 고릅니다. 제시문은 4어절 이상이며 연습 언어의 문자와 공백으로 정리됩니다. 세션 결과에서 이상치를 제외한 평균·표준편차·중간값과 P25–P75 속도 범위를 보고, 자격을 갖춘 세션은 설정한 기준에 따라 하이스코어에 반영합니다. 애니메이션·게임·영화 명대사와 격언·속담도 연습하며, 출처는 제시문 아래에서 확인할 수 있습니다. |
+| 한 줄 | 한글·영문 각각 100문장을 매 시작마다 섞어 연습합니다. 문장 수는 설정에서 5·10·20·30·50·75·100개로 고릅니다. 제시문은 4어절 이상이며 연습 언어의 문자와 공백으로 정리됩니다. 세션 결과에서 이상치를 제외한 평균·표준편차·중간값과 P25–P75 속도 범위를 보고, 자격을 갖춘 세션은 설정한 기준에 따라 하이스코어에 반영합니다. 타각이 직접 쓴 문장과 전승된 격언·속담을 섞어 연습합니다. 격언·속담의 참고 출처는 제시문 아래에서 확인할 수 있습니다. |
 | 짧은 글 | 문학·비문학·기술·생활·서브컬쳐 장르의 글을 5줄 묶음으로 읽으며 한 줄씩 입력합니다. |
 | 긴 글 | 같은 방식으로 더 긴 글을 연습합니다. |
 | 게임 | 하위 메뉴에서 30초 낱말 도전 또는 베네치아를 고릅니다. 두 게임은 한글 낱말을 사용합니다. |
-| 환경설정 | 언어·속도 단위·글자 크기·14개 테마·글꼴·효과음을 바꾸고, 최근 연습 기록 또는 데이터 백업·가져오기를 엽니다. |
+| 환경설정 | 언어·속도 단위·글자 크기·14개 테마·글꼴·효과음을 바꾸고, 최근 연습 기록·데이터 백업·가져오기·오프라인 저작권 및 제3자 고지를 엽니다. |
 
 기존 버전에서 저장했거나 백업으로 가져온 자리·낱말 기록도 최근 연습 기록에서 확인할 수 있습니다. 해당 연습을 새로 시작하는 메뉴는 제공하지 않습니다.
 
@@ -71,62 +101,13 @@
 
 `s`/`r`/`?` 바로 가기는 편집 가능한 요소에 초점이 있거나 한글 IME 조합 중, 키 반복 입력 중에는 동작하지 않습니다. `Tab`/`Shift+Tab`으로 버튼·입력창·읽기 전용 스크롤 영역을 옮길 수 있습니다. 다른 탭이나 창에서 돌아오면 마지막으로 사용한 앱 컨트롤로 초점이 돌아옵니다.
 
-## 실행하기
+## 브라우저 대체 실행
 
-### macOS 데스크톱 앱
+타각은 설치 후 오프라인에서 실행됩니다. 웹 브라우저에서 소스를 실행하는 방법과 데스크톱 앱 빌드 도구는 [개발 안내](docs/DEVELOPMENT.md)에 있습니다.
 
-A31에서 Tauri 앱과 DMG 패키징을 구현하고 macOS 14+에서 수동 검증했습니다. 로컬 개발 실행에는 Node.js LTS **22.12.0 이상**, Rust stable, macOS Command Line Tools가 필요합니다. 데스크톱 개발 명령은 로컬 개발 의존성 `@tauri-apps/cli`를 사용합니다. 일반 사용자는 미리 빌드된 패키지를 실행하는 데 이 개발 도구를 설치할 필요가 없습니다.
+## 검증 범위
 
-```sh
-npm ci --include=dev
-npm run desktop:dev
-```
-
-`NODE_ENV=production` 또는 `npm ci --omit=dev`로 개발 의존성을 제외해 설치했다면 `npm ci --include=dev`를 실행해야 Tauri CLI를 사용할 수 있습니다. 검증된 DMG를 만들 때는 macOS에서 `npm run desktop:build`를 실행합니다. 출력은 `src-tauri/target/release/bundle/dmg/`에 생성됩니다. 아직 사용자용으로 배포한 DMG는 없습니다.
-
-### Windows 11 데스크톱 앱
-
-A32에서 Tauri 2/WebView2 앱과 per-user NSIS 설치 파일을 추가하고 Windows 11에서 확인했습니다. Windows 개발 실행에는 Node.js **22.12.0 이상**, Rust stable의 MSVC 도구 모음과 Visual Studio Build Tools가 필요합니다. Windows 11에는 WebView2 Runtime이 제공됩니다.
-
-Windows PowerShell에서 저장소를 연 뒤 실행합니다.
-
-```powershell
-npm ci --include=dev
-npm run desktop:dev
-npm run desktop:build:windows
-```
-
-설치 파일은 `src-tauri/target/release/bundle/nsis/`에 생성됩니다. WSL2 Fedora 43에서도 Windows 호스트의 Node, Rust/MSVC, Visual Studio Build Tools를 호출해 Windows 파일 시스템에 준비한 소스 스냅샷으로 같은 패키지를 만들었습니다. 앱 설치 파일은 저장소에 포함하거나 게시하지 않습니다.
-
-### Linux · WSL2 Fedora
-
-Linux Tauri 데스크톱 앱은 현재 지원 대상이 아닙니다. Fedora/WSL2에서 `npm run desktop:dev`를 실행하지 말고, 브라우저 경로를 사용하려면 아래의 [브라우저 대체 실행](#브라우저-대체-실행)을 따르세요. Windows 데스크톱 앱은 Windows PowerShell에서 위 명령을 실행합니다. WSL2에서 Windows용 패키지를 만드는 경우에도 Windows 호스트의 도구 체인을 사용합니다.
-
-### 브라우저 대체 실행
-
-Node.js LTS **22.12.0 이상**을 준비한 뒤 기존 로컬 서버를 실행합니다.
-
-```sh
-npm ci
-npm run build
-node serve.mjs
-```
-
-브라우저에서 [http://127.0.0.1:41793/](http://127.0.0.1:41793/)을 엽니다. 배포 시에는 `dist/`와 `serve.mjs`를 같은 디렉터리에 두면 됩니다.
-
-## 지원 환경
-
-| 환경 | 상태 |
-| --- | --- |
-| macOS 14+ · Tauri 2/WebKit | **기준 환경·기존 앱 흐름 검증 완료.** 사용자가 오프라인 첫 실행, 실제 한글 IME·키보드 동작, `⌘S`·선택 경로 PNG, 두 번째 실행과 설정·연습·베네치아 기록의 재실행 보존을 확인했습니다. A37의 viewport 레이아웃은 Playwright와 macOS DMG 빌드에서 확인했으나 실제 Tauri 창 resize는 수동 확인하지 않았습니다. 범위는 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 있습니다. |
-| Windows 11 · Tauri 2/WebView2 | **데스크톱 지원·기존 앱 흐름 검증 완료.** NSIS 설치, 오프라인 실행, Type 3 Microsoft 한국어 IME(Shift+Space), 조합 확정/제출 Enter, `Ctrl+S` 선택 경로 PNG, 백업 내보내기·가져오기, 단일 인스턴스와 재실행 후 설정·연습·베네치아 기록 보존을 확인했습니다. A37 viewport 변경은 실제 WebView2 창에서 수동 검증하지 않았습니다. |
-| Linux · Tauri 데스크톱 앱 | 지원 대상이 아닙니다. Linux에서는 브라우저 대체 경로를 사용합니다. |
-| macOS Tahoe · Chrome 157 | 브라우저 대체 경로에서 이슈 범위의 한국어 IME `Space` 동작(공백 1칸, 단일 단계 이동)과 베네치아를 확인했습니다. 전체 macOS 지원 선언과는 별도입니다. |
-| Windows 11 · Chrome | 보조 환경. 실제 Microsoft 한국어 IME 조합, 제출, 오프라인 프로필, 200% 확대와 베네치아 동작을 확인했습니다. |
-| Ubuntu · Firefox · IBus 한글 두벌식 | 보조 환경으로 확인했습니다. |
-| Windows Edge · macOS Safari | 후속 범위입니다. |
-
-환경별 확인 범위와 남은 항목은 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 정리되어 있습니다.
+macOS 14+ Apple Silicon Tauri 앱이 기준 환경입니다. Windows 11 x64 Tauri 앱도 기존 설치·오프라인 실행·한국어 IME·저장 흐름을 확인했습니다. Intel Mac과 Linux 데스크톱 앱은 이번 배포 대상이 아니며, 브라우저별 보조 확인은 전체 OS 지원 선언과 구분합니다. 날짜별 실행 환경과 미확인 항목은 [플랫폼 검증표](docs/PLATFORM-VERIFICATION.md)에 있습니다.
 
 ## 내 데이터는 어디에 있나
 
@@ -138,25 +119,13 @@ node serve.mjs
 - 연습 중 입력 원문은 저장하지 않습니다. 화면 PNG는 사용자가 저장을 요청했을 때만 만들어집니다.
 - 브라우저 저장소를 지우면 설정과 기록도 함께 사라집니다.
 
-## 개발
+## 개발자
 
-```sh
-npm run dev                     # 개발 서버
-npm run build                   # 타입 검사 + 프로덕션 빌드
-npm run desktop:dev             # 현재 OS의 Tauri 개발 앱
-npm run desktop:build           # macOS DMG 패키지 빌드
-npm run desktop:build:windows   # Windows NSIS 설치 패키지 빌드
-npm run test                    # 도메인 단위 테스트 (Vitest)
-npm run text-licenses:update    # TEXT-LICENSES.md 다시 생성
-npx playwright install chromium # 최초 1회
-npm run test:e2e                # 브라우저 E2E (Playwright)
-npm run verify                  # 위 테스트 + 빌드 + E2E 전체
-```
-
-코드 구조와 설계 원칙은 [ARCHITECTURE.md](ARCHITECTURE.md), 변경 이력은 [CHANGELOG.md](CHANGELOG.md)에서 볼 수 있습니다.
+저장소에서 개발·검증·데스크톱 패키지를 만드는 방법은 [개발 안내](docs/DEVELOPMENT.md)를 참고하세요.
 
 ## 프로젝트 문서
 
+- [RIGHTS.md](RIGHTS.md) — 프로젝트 소프트웨어 권리 상태와 사용 허가
 - [ARCHITECTURE.md](ARCHITECTURE.md) — 구조, 데이터 흐름, 핵심 규칙(개발자용)
 - [TEXT-LICENSES.md](TEXT-LICENSES.md) — 연습문별 출처·라이선스와 추가 절차
 - [CHANGELOG.md](CHANGELOG.md) — 버전별 변경 이력
@@ -169,11 +138,11 @@ npm run verify                  # 위 테스트 + 빌드 + E2E 전체
 
 ## 연습 자료 출처
 
-한 줄 인용·전승 표현의 출처는 제시문 아래에 작게 표시하고, 링크를 선택하면 새 탭에서 원문이나 참고 자료를 엽니다. 글의 저자·출처·라이선스는 글 고르기 목록에 표시합니다. 모든 자료 출처와 애셋에 기록하는 메타데이터는 [TEXT-LICENSES.md](TEXT-LICENSES.md)에서 확인할 수 있습니다.
+전승 표현의 참고 출처는 제시문 아래에 작게 표시하고, 링크를 선택하면 새 탭에서 자료를 엽니다. 현대 작품의 대사는 별도 이용 허가가 확인되지 않으면 연습문에 넣지 않습니다. 글의 저자·출처·라이선스는 글 고르기 목록에 표시합니다. 글별 저자·출처·라이선스·발췌 및 표시 변경 사항은 [TEXT-LICENSES.md](TEXT-LICENSES.md)와 설치본의 환경설정에서 여는 오프라인 제3자 고지에서 확인할 수 있습니다.
 
 - [한국어 위키문헌](https://ko.wikisource.org/) · [영어 위키문헌](https://en.wikisource.org/) — CC BY-SA 4.0, 원문은 저작권 만료 작품
 - [한국어 위키백과](https://ko.wikipedia.org/) · [영어 위키백과](https://en.wikipedia.org/) — CC BY-SA 4.0
-- 대한민국헌법 전문 — 저작권법 제7조에 따라 보호받지 않는 저작물
+- 대한민국헌법 전문 — 저작권법 제7조에 따라 보호받지 않는 저작물 ([국가법령정보센터](https://www.law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&lsJoLnkSeq=1029423769))
 - 그 밖의 원문 — 직접 작성, `license: "original"`
 
 `TEXT-LICENSES.md`는 콘텐츠 애셋에서 자동 생성됩니다. 애셋을 바꾼 뒤 `npm run text-licenses:update`로 갱신하고, `npm run test`로 애셋 메타데이터와 문서가 일치하는지 확인합니다.

@@ -24,7 +24,7 @@ function readCredit(value: unknown): TextCredit | null | undefined {
 }
 
 function isTextSource(value: unknown): value is TextSource {
-  return value === "original" || value === "quote" || value === "traditional";
+  return value === "original" || value === "traditional";
 }
 
 function readLessons(value: unknown, language: Language): TextLesson[] {

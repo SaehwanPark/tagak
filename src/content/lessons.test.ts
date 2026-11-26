@@ -66,16 +66,16 @@ it("bundles line, short passage, and long passage assets for both languages", ()
   }
 });
 
-it("loads attributed animation, game, film, and traditional lines", () => {
+it("loads original and traditional lines with source references", () => {
   const koreanLines = activities.find((activity) => activity.id === "ko-line");
   const englishLines = activities.find((activity) => activity.id === "en-line");
   const koreanLessons = koreanLines?.kind === "line" ? koreanLines.lessons : [];
   const englishLessons = englishLines?.kind === "line" ? englishLines.lessons : [];
 
-  expect(koreanLessons.filter((lesson) => lesson.source === "quote").length).toBeGreaterThanOrEqual(10);
-  expect(koreanLessons.filter((lesson) => lesson.source === "traditional").length).toBeGreaterThanOrEqual(50);
-  expect(englishLessons.filter((lesson) => lesson.source === "quote").length).toBeGreaterThanOrEqual(12);
-  expect(englishLessons.filter((lesson) => lesson.source === "traditional").length).toBeGreaterThanOrEqual(50);
+  expect(koreanLessons.filter((lesson) => lesson.source === "original")).toHaveLength(48);
+  expect(koreanLessons.filter((lesson) => lesson.source === "traditional")).toHaveLength(52);
+  expect(englishLessons.filter((lesson) => lesson.source === "original")).toHaveLength(43);
+  expect(englishLessons.filter((lesson) => lesson.source === "traditional")).toHaveLength(57);
 
   for (const lesson of [...koreanLessons, ...englishLessons]) {
     if (lesson.source === "original") {
