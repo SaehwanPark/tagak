@@ -550,6 +550,25 @@ h1 { margin: 0; font-size: clamp(1.55rem, 4vw, 2.55rem); line-height: 1.25; }
 .help-dialog-content dd { margin: .2rem 0 0; }
 .help-dialog-content:focus-visible { outline-offset: -2px; }
 
+.practice-exit-dialog:not([open]) { display: none; }
+.practice-exit-dialog[open] {
+  width: min(32rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  max-height: min(82vh, 26rem);
+  max-height: min(82dvh, 26rem);
+  margin: auto;
+  padding: 1.2rem clamp(.9rem, 4vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: .35rem;
+  color: var(--ink);
+  background: var(--shell);
+  box-shadow: 0 1rem 4rem var(--shadow);
+}
+.practice-exit-dialog::backdrop { background: #0009; }
+.practice-exit-dialog h2 { margin: 0 0 .55rem; font-size: clamp(1.2rem, 4vw, 1.55rem); }
+.practice-exit-dialog p { margin: 0; color: var(--quiet); line-height: 1.5; }
+.practice-exit-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .6rem; margin-top: 1.25rem; }
+
 .back {
   color: var(--accent);
   background: transparent;

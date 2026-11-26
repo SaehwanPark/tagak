@@ -19,8 +19,8 @@
 | `src/domain/` | 세션 타입, 상태 전이, 입력 비교, 점수 계산, 줄바꿈, 기록 정렬 | 없음 (순수) |
 | `src/content/` | 애셋 JSON 읽기·검증, 화면 문구, 연습 자료 구성 | 없음 (모듈 로드 시 검증) |
 | `src/storage/` | localStorage 읽기·검증·마이그레이션·저장·가져오기 | `localStorage`, `navigator.locks` |
-| `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐 | React 훅 |
-| `src/ui/` | React 화면, IME 입력 어댑터, 초점, 도움말·화면 이동 단축키, PNG 저장, 데이터 이전, 효과음 | DOM, React |
+| `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐, 연습 종료 보호 조건 | React 훅 |
+| `src/ui/` | React 화면, IME 입력 어댑터, 초점, 도움말·종료 확인·화면 이동 단축키, PNG 저장, 데이터 이전, 효과음 | DOM, React |
 | `src/platform/` | Tauri 앱 생명주기, 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
 | `src-tauri/` | macOS·Windows 앱 창과 패키지, 작업 영역 기반 창 상태 저장·복원, macOS WebKit 저장소 식별자, Windows WebView2 키 이벤트, 사용자 선택 파일 I/O | Tauri/Rust |
 
@@ -59,6 +59,7 @@ src/
 │   └── storageEvents.ts    # 현재 창의 설정·기록 상태 갱신 알림
 ├── app/
 │   ├── usePractice.ts      # 화면 전환 reducer + 줄별 기록·세션 큐
+│   ├── practiceExitGuard.ts # 제출 줄·현재 입력의 종료 확인 조건
 │   ├── useHistory.ts       # 기록 저장·동기화·초기화
 │   ├── useAppPreferences.ts
 │   ├── useTextSize.ts
@@ -68,6 +69,7 @@ src/
 └── ui/
     ├── App.tsx             # 화면 조립, 효과음 트리거, 앱 전역 이동 키 경계
     ├── HelpDialog.tsx      # 키보드 조작·IME·저장·초보자 도움말
+    ├── PracticeExitDialog.tsx # 계속 연습 초점의 조건부 종료 확인
     ├── appShortcuts.ts     # 수정키·IME·편집 상태를 확인하는 이동 키 매핑
     ├── randomSeed.ts       # 실행 시드 생성 (Web Crypto, 시계 fallback)
     ├── useScreenFocus.ts   # 탭 복귀·환경설정 왕복 초점 복구

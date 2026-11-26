@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.15.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.16.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -14,6 +14,13 @@
 현재 구현 중인 기능 슬라이스는 없다.
 
 ## 완료
+
+- [x] **C3 · 세션 종료 보호** · `v0.16.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 한 줄·짧은 글·긴 글에서 완료한 줄이 있거나 현재 제시문의 문자소 10개 이상 입력했으면 Esc/뒤로를 누를 때 확인한다. 제시문이 10문자소보다 짧으면 전체 길이를 기준으로 삼고, 입력이 기준보다 적으면 즉시 이전 화면으로 간다.
+  - `계속 연습`에 기본 초점을 두고, Enter/계속 또는 Esc/취소 후 입력과 초점을 복구한다. 종료를 확정하면 현재 줄의 미제출 입력을 버리고 제출된 줄만 기존 `early-exit` 세션으로 기록한다. 중도 종료는 하이스코어에 등록되지 않는다. 홈의 데스크톱 Esc 종료와 IME 조합 중 무시는 유지한다.
+  - `npm run verify` 통과: Vitest 24개 파일 162개 테스트, 프로덕션 빌드, Playwright E2E 83개. 앱 JS 청크는 588.57KB로 Vite의 500KB 경고 기준을 넘는다. `npm run desktop:build`가 macOS ARM64 DMG(3.32 MiB)를 생성했다.
+  - v0.16.0 DMG의 macOS 앱에서 10자 입력 후 Esc 확인, `계속 연습` 기본 초점, Esc 취소 후 입력·초점 복구, 뒤로 버튼 재확인과 종료를 직접 확인했다. 반복 키와 조합 중 Esc는 자동 검증했다. 실제 OS 한글 IME 조합과 Windows Tauri 앱은 이번 슬라이스에서 직접 확인하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.16.0`으로 맞췄다.
 
 - [x] **C2 · 조작 발견 가능성** · `v0.15.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 홈에 선택형 도움말 버튼과 `?` 진입을 추가했다. 도움말은 Tab/Shift+Tab, 메뉴·읽기 영역 이동, 한글 IME 확정 뒤 재입력 제출, Esc, 화면 PNG 저장, 한 줄 5문장과 베네치아 레벨 1을 한국어·영어로 설명한다.

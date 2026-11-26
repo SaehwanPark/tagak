@@ -51,6 +51,7 @@ test("a passage exited after submitted lines stays in session history without a 
   await page.clock.fastForward(1_200);
   await input.press("Space");
   await input.press("Escape");
+  await page.getByRole("button", { name: "연습 종료" }).click();
   await expect(page.getByRole("heading", { name: "짧은 글 고르기" })).toBeVisible();
   await expect.poll(() => page.evaluate((key) => {
     const stored = JSON.parse(localStorage.getItem(key) ?? "null");

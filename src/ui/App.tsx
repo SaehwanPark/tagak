@@ -37,6 +37,8 @@ import { createRunSeed } from "./randomSeed";
 import { contentState, useScreenFocus } from "./useScreenFocus";
 import { appShortcutFor } from "./appShortcuts";
 import { HelpDialog } from "./HelpDialog";
+import { PracticeExitDialog } from "./PracticeExitDialog";
+import { shouldConfirmPracticeExit } from "../app/practiceExitGuard";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
 const DataTransferView = lazy(() => import("./DataTransferView").then(({ DataTransferView: view }) => ({ default: view })));
@@ -73,6 +75,8 @@ export function App() {
   const screenCapture = useScreenCapture(shell);
   const [helpOpen, setHelpOpen] = useState(false);
   const helpReturnFocus = useRef<HTMLElement | null>(null);
+  const [practiceExitOpen, setPracticeExitOpen] = useState(false);
+  const practiceExitReturnFocus = useRef<HTMLElement | null>(null);
   const desktopApp = isTauri();
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
@@ -80,9 +84,27 @@ export function App() {
     settingsReturnScreen === "venice" || settingsReturnScreen === "result";
   const settingsNotice = [appPreferences.notice, textSize.notice, colorTheme.notice, practiceFont.notice]
     .filter(Boolean).join(" ");
-  const back = () => currentScreen.screen === "practice" || currentScreen.screen === "passage"
-    ? dispatch({ type: "return-to-menu", sessionId: crypto.randomUUID(), completedAt: Date.now() })
-    : dispatch({ type: "return-to-menu" });
+  const endCurrentPractice = () => dispatch({
+    type: "return-to-menu",
+    sessionId: crypto.randomUUID(),
+    completedAt: Date.now(),
+  });
+  const back = () => {
+    if (currentScreen.screen === "practice" || currentScreen.screen === "passage") {
+      if (shouldConfirmPracticeExit(currentScreen)) {
+        practiceExitReturnFocus.current = shell.current?.querySelector<HTMLElement>("#typing-input") ?? null;
+        setPracticeExitOpen(true);
+      } else {
+        endCurrentPractice();
+      }
+      return;
+    }
+    dispatch({ type: "return-to-menu" });
+  };
+  const confirmPracticeExit = () => {
+    setPracticeExitOpen(false);
+    endCurrentPractice();
+  };
   const openSettings = () => {
     if (state.screen !== "settings") captureSettingsOrigin();
     dispatch({ type: "open-settings" });
@@ -178,7 +200,7 @@ export function App() {
       className="shell"
       data-text-size={textSize.size}
       onKeyDown={(event) => {
-        if (helpOpen) return;
+        if (helpOpen || practiceExitOpen) return;
         if (state.screen === "menu" && desktopApp && event.key === "Escape" && !event.defaultPrevented &&
           !event.repeat && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
           event.preventDefault();
@@ -433,6 +455,14 @@ export function App() {
         </Suspense>
       )}
 
+      {practiceExitOpen && (
+        <PracticeExitDialog
+          copy={copy}
+          returnFocusTo={practiceExitReturnFocus.current}
+          onContinue={() => setPracticeExitOpen(false)}
+          onConfirmExit={confirmPracticeExit}
+        />
+      )}
       {helpOpen && <HelpDialog copy={copy} returnFocusTo={helpReturnFocus.current} onClose={() => setHelpOpen(false)} />}
 
     </main>
