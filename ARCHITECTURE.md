@@ -21,7 +21,7 @@
 | `src/storage/` | localStorage 읽기·검증·마이그레이션·저장·가져오기 | `localStorage`, `navigator.locks` |
 | `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐 | React 훅 |
 | `src/ui/` | React 화면, IME 입력 어댑터, 초점, PNG 저장, 데이터 이전, 효과음 | DOM, React |
-| `src/platform/` | Tauri 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
+| `src/platform/` | Tauri 앱 생명주기, 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
 | `src-tauri/` | macOS·Windows 앱 창과 패키지, macOS WebKit 저장소 식별자, Windows WebView2 키 이벤트, 사용자 선택 파일 I/O | Tauri/Rust |
 
 의존 방향은 대체로 `ui → app → storage → domain`이고, `content/`는 `domain/` 위에 놓입니다. 지켜야 할 규칙은 **`domain/`이 브라우저·React·저장소에 의존하지 않는다**는 점입니다. `domain/`은 `content/`에서 `Language`·`NonEmpty` 같은 **타입만** 가져오고, `content/`는 `domain/`의 순수 함수(`splitCharacters`, `wrapText`)를 값으로 씁니다. 이 경계가 깨지면 순수 함수 테스트가 브라우저 환경을 요구하게 되므로 리뷰에서 우선 확인합니다.
@@ -81,7 +81,7 @@ src/
     └── styles.css          # CSS 사용자 정의 속성 기반 테마·글꼴
 ```
 
-데스크톱 호스트는 별도 `src-tauri/`에 둡니다. Tauri는 현재 앱의 정적 빌드만 제공하며, React 상태·채점·입력 규칙은 웹 공통 코드에 남습니다. 네이티브 `dialog`·`fs` 권한은 파일 선택 대화상자를 연 뒤 그 경로에만 사용합니다. `src/platform/fileAccess.ts`가 선택 경로 읽기·쓰기와 브라우저 다운로드를 나눕니다.
+데스크톱 호스트는 별도 `src-tauri/`에 둡니다. Tauri는 현재 앱의 정적 빌드만 제공하며, React 상태·채점·입력 규칙은 웹 공통 코드에 남습니다. 네이티브 `dialog`·`fs` 권한은 파일 선택 대화상자를 연 뒤 그 경로에만 사용합니다. `src/platform/fileAccess.ts`가 선택 경로 읽기·쓰기와 브라우저 다운로드를 나누고, `src/platform/appLifecycle.ts`는 데스크톱 종료 API를 감쌉니다. 홈의 `Esc`만 앱 종료를 요청하며 브라우저에서는 종료 동작을 노출하지 않습니다.
 
 ## 핵심 도메인 모델
 

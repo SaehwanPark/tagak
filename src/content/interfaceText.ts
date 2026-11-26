@@ -11,6 +11,7 @@ export type InterfaceText = Readonly<{
   backToMenu: string;
   backToSettings: string;
   start: string;
+  quitApp: string;
   navigationHint: string;
   screenCapture: string;
   saving: string;
@@ -211,6 +212,7 @@ const ko: InterfaceText = {
   backToMenu: "← 메뉴",
   backToSettings: "← 환경설정",
   start: "시작",
+  quitApp: "앱 종료",
   navigationHint: "선택 · 시작",
   screenCapture: "화면 저장",
   saving: "저장 중…",
@@ -442,6 +444,7 @@ const en: InterfaceText = {
   backToMenu: "← Menu",
   backToSettings: "← Settings",
   start: "Start",
+  quitApp: "Quit app",
   navigationHint: "Select · Start",
   screenCapture: "Save screen",
   saving: "Saving…",
