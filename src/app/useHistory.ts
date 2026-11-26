@@ -19,6 +19,7 @@ export function useHistory(
     id: string;
     completion: PracticeSessionRecord["completion"];
     decision: HighScoreDecision | null;
+    highScoreDecisionFailed: boolean;
     ok: boolean;
     duplicate: boolean;
   }> | null>(null);
@@ -77,6 +78,7 @@ export function useHistory(
           id: session.id,
           completion: session.completion,
           decision: result.decision,
+          highScoreDecisionFailed: result.highScoreDecisionFailed,
           ok: true,
           duplicate: result.duplicate,
         });
@@ -91,6 +93,7 @@ export function useHistory(
           id: session.id,
           completion: session.completion,
           decision: null,
+          highScoreDecisionFailed: false,
           ok: false,
           duplicate: false,
         });

@@ -73,7 +73,24 @@ describe("one-sided Mann–Whitney randomization", () => {
     );
     expect(large.method).toBe("normal-approximation");
     expect(large.pValue).toBeLessThan(0.05);
+    const negative = mannWhitneyGreater(
+      Array.from({ length: 20 }, (_, index) => index + 1),
+      Array.from({ length: 20 }, (_, index) => index + 101),
+    );
+    expect(negative.method).toBe("normal-approximation");
+    expect(negative.pValue).toBeGreaterThan(0.5);
     expect(mannWhitneyGreater([3, 4], [1, 2, 3]).method).toBe("exact");
+  });
+
+  it("returns p=0.5 for a zero continuity-corrected z score", () => {
+    const baseline = [100, 101, 102, 103, 104, 105, 106, 107, 108, 109];
+    const current = [100.5, 101, 102, 103, 104, 105, 106, 107, 108, 109];
+
+    expect(mannWhitneyGreater(current, baseline)).toEqual({
+      uStatistic: 50.5,
+      pValue: 0.5,
+      method: "normal-approximation",
+    });
   });
 });
 

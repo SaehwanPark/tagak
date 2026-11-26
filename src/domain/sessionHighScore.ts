@@ -124,7 +124,8 @@ function exactPermutationPValue(
 }
 
 function normalSurvival(value: number): number {
-  if (value <= 0) return 1 - normalSurvival(-value);
+  if (value === 0) return 0.5;
+  if (value < 0) return 1 - normalSurvival(-value);
   // Abramowitz-Stegun 7.1.26; sufficient for the product's p < .05 gate.
   const t = 1 / (1 + 0.2316419 * value);
   const density = Math.exp(-0.5 * value * value) / Math.sqrt(2 * Math.PI);

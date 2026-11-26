@@ -238,39 +238,110 @@ export async function saveRecord(record: PracticeRecord): Promise<HistoryRead> {
 }
 
 export type PracticeSessionSave =
-  | Readonly<{ ok: true; history: Extract<HistoryRead, { ok: true }>; decision: HighScoreDecision; duplicate: boolean }>
-  | Readonly<{ ok: false; history: Extract<HistoryRead, { ok: false }>; decision: null; duplicate: false }>;
+  | Readonly<{
+      ok: true;
+      history: Extract<HistoryRead, { ok: true }>;
+      decision: HighScoreDecision;
+      highScoreDecisionFailed: false;
+      duplicate: boolean;
+    }>
+  | Readonly<{
+      ok: true;
+      history: Extract<HistoryRead, { ok: true }>;
+      decision: null;
+      highScoreDecisionFailed: true;
+      duplicate: false;
+    }>
+  | Readonly<{
+      ok: false;
+      history: Extract<HistoryRead, { ok: false }>;
+      decision: null;
+      highScoreDecisionFailed: false;
+      duplicate: false;
+    }>;
 
 export async function savePracticeSession(session: PracticeSessionRecord): Promise<PracticeSessionSave> {
   try {
     return await withStorageEntryLock("history", () => {
       if (!migrateStorageValue("history", (raw) => decodeHistory(raw).ok)) {
-        return { ok: false, history: { ok: false, records: [], sessions: [], highScores: [] }, decision: null, duplicate: false };
+        return {
+          ok: false,
+          history: { ok: false, records: [], sessions: [], highScores: [] },
+          decision: null,
+          highScoreDecisionFailed: false,
+          duplicate: false,
+        };
       }
       const previous = readHistory();
-      if (!previous.ok) return { ok: false, history: previous, decision: null, duplicate: false };
+      if (!previous.ok) {
+        return {
+          ok: false,
+          history: previous,
+          decision: null,
+          highScoreDecisionFailed: false,
+          duplicate: false,
+        };
+      }
       if (previous.sessions.some((entry) => entry.id === session.id)) {
-        return { ok: true, history: previous, decision: { status: "already-saved" }, duplicate: true };
+        return {
+          ok: true,
+          history: previous,
+          decision: { status: "already-saved" },
+          highScoreDecisionFailed: false,
+          duplicate: true,
+        };
       }
 
       const key = highScoreScopeKey(session.mode, session.language, session.lineSessionLength);
       const currentHighScore = previous.highScores.find((entry) => entry.scopeKey === key);
-      const result = decidePracticeHighScore(session, currentHighScore);
+      let result: ReturnType<typeof decidePracticeHighScore> | null = null;
+      try {
+        result = decidePracticeHighScore(session, currentHighScore);
+      } catch {
+        // A failed decision must not discard a completed session or replace its current high score.
+      }
       const nextHistory = {
         records: previous.records,
         sessions: uniqueSessions([...previous.sessions, session]),
-        highScores: uniqueHighScores(result.next && result.next !== currentHighScore
+        highScores: uniqueHighScores(result?.next && result.next !== currentHighScore
           ? [...previous.highScores, result.next]
           : previous.highScores),
       };
       localStorage.setItem(historyKey, JSON.stringify({ version: historyVersion, ...nextHistory }));
       const saved = readHistory();
-      return saved.ok
-        ? { ok: true, history: saved, decision: result.decision, duplicate: false }
-        : { ok: false, history: { ok: false, records: [], sessions: [], highScores: [] }, decision: null, duplicate: false };
+      if (!saved.ok) {
+        return {
+          ok: false,
+          history: { ok: false, records: [], sessions: [], highScores: [] },
+          decision: null,
+          highScoreDecisionFailed: false,
+          duplicate: false,
+        };
+      }
+      return result
+        ? {
+            ok: true,
+            history: saved,
+            decision: result.decision,
+            highScoreDecisionFailed: false,
+            duplicate: false,
+          }
+        : {
+            ok: true,
+            history: saved,
+            decision: null,
+            highScoreDecisionFailed: true,
+            duplicate: false,
+          };
     });
   } catch {
-    return { ok: false, history: { ok: false, records: [], sessions: [], highScores: [] }, decision: null, duplicate: false };
+    return {
+      ok: false,
+      history: { ok: false, records: [], sessions: [], highScores: [] },
+      decision: null,
+      highScoreDecisionFailed: false,
+      duplicate: false,
+    };
   }
 }
 
