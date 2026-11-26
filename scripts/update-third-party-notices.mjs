@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
+const projectLicense = readFileSync(path.join(root, "LICENSE"), "utf8");
 const targetByPlatform = {
   "darwin-arm64": "aarch64-apple-darwin",
   "darwin-x64": "x86_64-apple-darwin",
@@ -150,6 +151,7 @@ const html = `<!doctype html>
     th, td { border: 1px solid currentColor; padding: .45rem .6rem; text-align: left; vertical-align: top; }
     th { position: sticky; top: 0; background: Canvas; }
     .return { display: inline-block; margin-bottom: 1.5rem; }
+    .license-text { max-height: 42rem; overflow: auto; white-space: pre-wrap; }
     @media (prefers-color-scheme: light) { a { color: #0645ad; } }
   </style>
 </head>
@@ -160,7 +162,12 @@ const html = `<!doctype html>
     <p>이 페이지는 설치된 앱에 포함된 연습 자료, 테마 참고 출처, 런타임 및 네이티브 의존성을 정리합니다. 이 앱에는 원격 측정이나 서버 연결이 없습니다. 페이지의 외부 출처 링크를 열 때만 네트워크가 필요합니다.</p>
 
     <h2>Tagak 소프트웨어</h2>
-    <p>Tagak 소프트웨어와 직접 작성한 콘텐츠에는 현재 포괄적인 오픈소스 라이선스가 부여되어 있지 않습니다. 공개 저장소의 열람은 복제·수정·재배포 허가를 뜻하지 않습니다. 각 제3자 자료에는 아래에 표시한 개별 조건이 적용됩니다. 자세한 안내는 저장소의 <a href="https://github.com/SaehwanPark/tagak/blob/main/RIGHTS.md">RIGHTS.md</a>에 있습니다.</p>
+    <p>Tagak 소유의 소스 코드, 문서, 직접 작성한 연습 자료는 Apache License 2.0으로 제공합니다. 전체 조건은 아래에서 확인할 수 있습니다. 이 라이선스는 타각 이름·로고에 대한 상표권을 부여하지 않으며, 제3자 자료에는 개별 라이선스와 출처가 계속 적용됩니다.</p>
+    <details>
+      <summary>Apache License 2.0 전문</summary>
+      <pre class="license-text">${escapeHtml(projectLicense)}</pre>
+    </details>
+    <p>공개 v1.0.0 릴리즈는 이 라이선스 도입 이전에 게시했으며, 기존 설치 파일과 체크섬은 변경하지 않았습니다. 프로젝트 저작권 및 제3자 권리 범위는 저장소의 <a href="https://github.com/SaehwanPark/tagak/blob/main/RIGHTS.md">RIGHTS.md</a>를 참고하세요.</p>
 
     <h2>CC BY-SA 4.0 연습 글 (${copiedPassages.length}편)</h2>
     <p>아래 글은 위키문헌·위키백과 원문에서 발췌했습니다. 타자 연습에 맞춰 발췌 범위와 문단·줄바꿈을 조정했습니다. 각 출처의 저자·제목·원문 링크를 표시하고, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> 조건으로 제공합니다. 저작자나 출처가 Tagak을 후원·승인한다는 뜻은 아닙니다.</p>

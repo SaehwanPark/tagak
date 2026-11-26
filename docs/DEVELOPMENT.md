@@ -2,6 +2,8 @@
 
 타각 사용자용 설치 파일은 [GitHub Releases](https://github.com/SaehwanPark/tagak/releases)에서 받습니다. 이 문서는 저장소를 수정하거나 앱 패키지를 직접 만들 개발자를 위한 안내입니다.
 
+제품 동작은 [PROJECT-SPEC.md](PROJECT-SPEC.md), 모듈 경계는 [ARCHITECTURE.md](../ARCHITECTURE.md), 사용자의 설치·데이터 안내는 [USER-GUIDE.md](USER-GUIDE.md)를 참고하세요.
+
 ## 도구
 
 - Node.js LTS 22.12.0 이상
