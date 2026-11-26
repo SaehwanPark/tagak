@@ -14,6 +14,12 @@ export function nextRandom(seed: number): { value: number; randomState: number }
   return { value: randomState / 0x1_0000_0000, randomState };
 }
 
+export function pickWithSeed<T>(values: readonly T[], seed: number): T | undefined {
+  if (values.length === 0) return undefined;
+  const index = Math.floor(nextRandom(seed).value * values.length);
+  return values[Math.min(index, values.length - 1)];
+}
+
 export function shuffleWithSeed<T>(values: readonly [T, ...T[]], seed: number): [T, ...T[]] {
   const shuffled = [...values];
   let randomState = normalizeSeed(seed);
