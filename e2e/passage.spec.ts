@@ -9,9 +9,9 @@ test("short passage lines advance in five-line pages and return to the selected 
   await page.goto("/");
   const library = page.getByRole("button", { name: "짧은 글" });
   await library.click();
-  const entry = page.getByRole("button", { name: /새벽 강변/ });
-  await expect(entry).toBeFocused();
-  await entry.press("Enter");
+  const entry = page.locator(`button[data-activity="${passage.id}"]`);
+  await expect(page.getByRole("button", { name: /무작위 글/ })).toBeFocused();
+  await entry.click();
 
   const input = page.getByRole("textbox", { name: "따라 입력하기" });
   for (const [index, line] of passage.lines.entries()) {
@@ -110,6 +110,52 @@ test("bundle speed and completion sound appear only when a five-line bundle ends
   await input.fill(passage.lines[5]!);
   await input.press("Space");
   await expect.poll(tones).toBe(1);
+});
+
+test("the library starts a random passage and hides the recent shortcut without history", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "짧은 글" }).click();
+  const random = page.getByRole("button", { name: /무작위 글/ });
+  await expect(random).toBeVisible();
+  await expect(page.getByRole("button", { name: /최근 연습한 글/ })).toHaveCount(0);
+
+  await random.click();
+  const title = (await page.locator(".practice-screen h1").textContent())?.trim();
+  expect(passagesFor("ko", "short").map((passage) => passage.label)).toContain(title);
+  await expect(page.getByRole("textbox", { name: "따라 입력하기" })).toBeFocused();
+});
+
+test("the library starts the most recently practiced matching passage", async ({ page }) => {
+  const recent = passagesFor("ko", "short")[1]!;
+  const storedSession = {
+    id: "recent-passage-session",
+    completedAt: 1,
+    mode: "short",
+    language: "ko",
+    materialIds: [recent.id],
+    lineSessionLength: null,
+    completion: "early-exit",
+    lineScores: [{
+      accuracy: 100,
+      correctCount: 4,
+      typedCount: 4,
+      elapsedMs: 2_000,
+      charactersPerMinute: 120,
+      keystrokeCount: null,
+      keystrokesPerMinute: null,
+    }],
+  };
+  await page.addInitScript(({ key, session }) => {
+    localStorage.setItem(key, JSON.stringify({ version: 4, records: [], sessions: [session], highScores: [] }));
+  }, { key: historyKey, session: storedSession });
+  await page.goto("/");
+  await page.getByRole("button", { name: "짧은 글" }).click();
+
+  const recentButton = page.getByRole("button", { name: /최근 연습한 글/ });
+  await expect(recentButton).toContainText(recent.label);
+  await recentButton.click();
+  await expect(page.getByRole("heading", { name: recent.label })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "따라 입력하기" })).toBeFocused();
 });
 
 test("copied passages show their author, source, and license in the list", async ({ page }) => {

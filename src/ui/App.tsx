@@ -22,7 +22,8 @@ import type { PassageActivity } from "../content/passages";
 import { interfaceText } from "../content/interfaceText";
 import { submissionEndsBundle } from "../domain/passagePractice";
 import { calculateLiveAccuracy, hasReachedEnd } from "../domain/typing";
-import { comparableRecord } from "../domain/history";
+import { comparableRecord, recentPassageMaterialId } from "../domain/history";
+import { pickWithSeed } from "../domain/random";
 import { defaultColorTheme, defaultSize } from "../storage/settingsStorage";
 import { ActivityMenu } from "./ActivityMenu";
 import { PassageView } from "./PassageView";
@@ -195,6 +196,32 @@ export function App() {
       ? `${passage.credit.author} · ${passage.credit.source} · ${copy.licenseLabel(passage.license)}`
       : "",
   }));
+  const recentPassage = currentScreen.screen === "library"
+    ? passageList.find((passage) => passage.id === recentPassageMaterialId(
+        history.sessions,
+        currentScreen.length,
+        practiceLanguage,
+      )) ?? null
+    : null;
+  const libraryActivities = currentScreen.screen === "library"
+    ? [
+        {
+          id: "random-passage",
+          kind: "shortcut" as const,
+          shortcut: "random" as const,
+          label: copy.randomPassage,
+          detail: copy.randomPassageDetail,
+        },
+        ...(recentPassage ? [{
+          id: "recent-passage",
+          kind: "shortcut" as const,
+          shortcut: "recent" as const,
+          label: copy.recentPassage,
+          detail: copy.recentPassageDetail(recentPassage.label),
+        }] : []),
+        ...passageList,
+      ]
+    : [];
 
   const historyMessages: Readonly<Record<string, string>> = {
     "history-save-failed": copy.historySaveFailed,
@@ -329,10 +356,19 @@ export function App() {
       {currentScreen.screen === "library" && (
         <ActivityMenu
           title={currentScreen.length === "short" ? copy.chooseShortPassage : copy.chooseLongPassage}
-          activities={passageList}
+          activities={libraryActivities}
           selected={currentScreen.selected}
           copy={copy}
-          onStart={(activity) => dispatch({ type: "start-passage", activity })}
+          onStart={(activity) => {
+            if (activity.kind === "shortcut") {
+              const passage = activity.shortcut === "recent"
+                ? recentPassage
+                : pickWithSeed(libraryPassages, createRunSeed());
+              if (passage) dispatch({ type: "start-passage", activity: passage });
+              return;
+            }
+            dispatch({ type: "start-passage", activity });
+          }}
           onBack={back}
         />
       )}
