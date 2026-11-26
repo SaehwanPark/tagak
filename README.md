@@ -157,6 +157,7 @@ npm run verify                  # 위 테스트 + 빌드 + E2E 전체
 
 ## 프로젝트 문서
 
+- [RIGHTS.md](RIGHTS.md) — 프로젝트 소프트웨어 권리 상태와 사용 허가
 - [ARCHITECTURE.md](ARCHITECTURE.md) — 구조, 데이터 흐름, 핵심 규칙(개발자용)
 - [TEXT-LICENSES.md](TEXT-LICENSES.md) — 연습문별 출처·라이선스와 추가 절차
 - [CHANGELOG.md](CHANGELOG.md) — 버전별 변경 이력
