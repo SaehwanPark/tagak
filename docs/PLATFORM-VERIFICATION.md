@@ -22,6 +22,13 @@ Playwright의 `CompositionEvent` 테스트는 앱이 합성 IME 이벤트 순서
 - `npm run desktop:build` 통과: macOS ARM64 `Tagak_0.19.0_aarch64.dmg`(3.32 MiB)를 생성했다. DMG 안의 앱을 실행하고 환경설정에서 `tauri://localhost/THIRD-PARTY-NOTICES.html`을 열었다. CC BY-SA 4.0 글의 저자·출처·변경 사항, 저작권법 제7조 연결, 런타임 JavaScript 7개와 macOS 대상 Rust 247개 목록이 표시되는 것을 확인했다. 외부 링크는 열지 않아 고지 화면에 네트워크 연결이 필요하지 않다.
 - 이번 확인에서 실제 OS IME로 연습하거나 Windows 설치 패키지를 만들지는 않았다. D1은 입력·채점·저장 동작을 바꾸지 않았으며, Windows 릴리즈 빌드 자동화는 별도 D2 슬라이스에서 검증한다.
 
+## D2 · 네이티브 릴리즈 자동화
+
+- 2026-11-26 PR [#85](https://github.com/SaehwanPark/tagak/pull/85)의 [Actions run 45847973680](https://github.com/SaehwanPark/tagak/actions/runs/45847973680)에서 `macos-15` ARM64와 `windows-2025` x64 검증·패키지 작업이 모두 통과했다. 두 runner에서 lockfile 기반 설치, Vitest 176개, 프로덕션 웹 빌드, Playwright E2E 86개와 Tauri 패키징을 확인했다. PR 이벤트라 공개 Release job은 실행하지 않았다.
+- macOS artifact `Tagak_0.19.0_aarch64.dmg`는 3,483,269 bytes이며 다운로드한 DMG에서 `hdiutil verify` 체크섬 검증이 통과했다. 포함 앱의 서명은 `Signature=adhoc`, `TeamIdentifier=not set`; Developer ID 서명이나 공증이 없다. 로컬 `spctl -a -vv` 평가는 `code has no resources but signature indicates they must be present`를 반환했으므로, 다운로드한 앱의 Gatekeeper 경고·실행 제한 가능성을 릴리즈 노트에서 알린다. 최종 v1.0.0 산출물에서도 서명과 실행 평가를 다시 확인한다.
+- Windows artifact `Tagak_0.19.0_x64-setup.exe`는 2,418,489 bytes이고 PE32/NSIS 설치 프로그램으로 식별됐다. Actions에서 빌드와 업로드는 통과했으나 실제 Windows 11 호스트에서 설치·실행하거나 Authenticode 상태를 확인한 것은 아니다. 최종 산출물에서 서명 상태를 확인하고 릴리즈 노트에 실제 결과를 적는다.
+- 이 검증은 최종 버전 정렬·태그 기반 정식 게시 경로를 실행하지 않았다. 최종 릴리즈에서 태그가 현재 `main` HEAD와 버전에 일치하는지, 첨부 자산·체크섬·노트와 공개 Release 상태를 다시 확인한다. 두 runner는 [GitHub-hosted runner labels](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)에 따라 macOS ARM64와 Windows x64를 제공한다.
+
 ## A37 · 데스크톱 창 내 레이아웃과 내부 스크롤
 
 - 2026-11-24 macOS 호스트에서 `npm run verify`를 통과했다: Vitest 18개 파일 103개 테스트, 프로덕션 빌드, Playwright E2E 69개. Playwright Chromium은 1120×960, 900×700, 760×560, 1280×560 및 320×420 viewport에서 가로·세로 문서 바깥 스크롤, 내부 목록 스크롤과 포커스 reveal, 영어 UI·종이 테마·큰 글자, 백업 오류 알림, 지문·기록·베네치아 Top 10 키보드/포인터 스크롤, 연습·도전 필수 조작, 창 크기 변경 중 베네치아 보드 상태를 확인했다. 프로덕션 앱 JS 청크는 524.45KB로 Vite의 500KB 경고 기준을 넘는다.

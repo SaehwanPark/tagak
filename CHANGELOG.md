@@ -6,6 +6,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): macOS ARM64 DMG와 Windows x64 per-user NSIS 설치 파일을 검증·생성하고, 버전 태그에서 체크섬과 한국어 설치 안내를 포함한 정식 GitHub Release를 게시하는 Actions workflow를 추가했습니다.
+
 ## [0.19.0] - 2026-11-26
 
 ### Changed
