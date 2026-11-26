@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.14.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.15.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -11,11 +11,16 @@
 
 ## 진행 중
 
-- [ ] **C2 · 조작 발견 가능성 [진행 중]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
-  - 홈에서 키보드 사용법을 자발적으로 열어볼 수 있게 안내하고, 환경설정·기록·화면 저장과 한글 IME 제출 흐름을 한국어·영어로 설명한다.
-  - OS/WebView/IME 충돌과 반복 입력을 확인해 도움말·환경설정·기록 단축키를 정하고, 한 줄 5문장과 베네치아 레벨 1을 처음 사용자에게 안내한다.
+현재 구현 중인 기능 슬라이스는 없다.
 
 ## 완료
+
+- [x] **C2 · 조작 발견 가능성** · `v0.15.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 홈에 선택형 도움말 버튼과 `?` 진입을 추가했다. 도움말은 Tab/Shift+Tab, 메뉴·읽기 영역 이동, 한글 IME 확정 뒤 재입력 제출, Esc, 화면 PNG 저장, 한 줄 5문장과 베네치아 레벨 1을 한국어·영어로 설명한다.
+  - 편집 요소·IME 조합·반복 키에서는 전역 단축키를 무시한다. `s`는 환경설정, `r`은 최근 기록을 직접 열고 초점을 복구한다. 설정/기록이 연습 화면에서도 열리도록 화면 전환을 연결했다.
+  - `npm run verify` 통과: Vitest 23개 파일 159개 테스트, 프로덕션 빌드, Playwright E2E 80개. 앱 JS 청크는 586.29KB로 Vite의 기존 500KB 경고 기준을 넘는다. `npm run desktop:build`가 macOS ARM64 DMG(3.32 MiB)를 생성했다.
+  - 0.15.0 DMG의 macOS Tauri 앱에서 `?` 도움말, Esc 닫기와 초점 복귀, `s` 설정, `r` 기록, 설정↔기록 이동, 연습 입력 중 `s`가 문자로 입력되는 것을 확인했다. 실제 OS 한글 IME 조합·물리 키 반복과 Windows Tauri 앱은 이번 슬라이스에서 직접 확인하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.15.0`으로 맞췄다.
 
 - [x] **C1 · 창 크기 및 위치 복원** · `v0.14.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - Tauri 창은 기본 1120×960 논리 픽셀로 열고 현재 모니터의 작업 영역과 창 장식을 고려해 크기를 제한한다. 최소 크기는 고정 760×560에서 320×420으로 낮추고, 연결된 화면 중 작은 작업 영역에 맞춰 동적으로 줄인다.

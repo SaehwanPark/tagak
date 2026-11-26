@@ -129,7 +129,7 @@ export function useScreenFocus(state: PracticeState) {
   useEffect(() => {
     if (settingsWereOpen.current && state.screen !== "settings") {
       const previousFocus = focusBeforeSettings.current;
-      if (previousFocus?.isConnected) focusWithinScrollRegion(previousFocus);
+      if (previousFocus && canRestoreFocus(shell.current, previousFocus)) focusWithinScrollRegion(previousFocus);
       else restoreContentFocus(screenContent.current, state);
       focusBeforeSettings.current = null;
     }

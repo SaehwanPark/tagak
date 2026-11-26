@@ -6,6 +6,19 @@
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-26
+
+### Added
+
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): 홈의 도움말 버튼과 `?` 키로 선택형 한국어·영어 키보드 안내를 엽니다. Tab 이동, 메뉴·읽기 영역, Enter/Space와 한글 IME 입력 제출, Esc, 화면 PNG 저장 및 처음 시작할 때의 설정을 안내합니다.
+- 입력란 밖에서 `s`로 환경설정, `r`로 최근 연습 기록을 직접 엽니다. 편집 중, IME 조합 중, 반복 키 입력 중에는 전역 이동 단축키가 동작하지 않습니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 23개 파일 159개 테스트, 프로덕션 빌드, Playwright E2E 80개. 앱 JS 청크는 586.29KB로 Vite의 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build` 통과: macOS ARM64 DMG 3.32 MiB 생성. 앱에서 도움말 열기·닫기와 초점 복귀, 설정·기록 이동, 연습 입력 중 단축키 미가로채기를 수동 확인했습니다.
+- 실제 OS 한글 IME 조합과 물리 키 반복, Windows Tauri 앱의 수동 검증은 수행하지 않았습니다.
+
 ## [0.14.0] - 2026-11-26
 
 ### Changed

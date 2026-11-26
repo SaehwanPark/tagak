@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { isTauri } from "@tauri-apps/api/core";
 import {
   challengeEntry,
@@ -35,6 +35,8 @@ import { ScreenCaptureControl } from "./ScreenCaptureControl";
 import { playCompletionTone, playHighScoreTone } from "./completionSound";
 import { createRunSeed } from "./randomSeed";
 import { contentState, useScreenFocus } from "./useScreenFocus";
+import { appShortcutFor } from "./appShortcuts";
+import { HelpDialog } from "./HelpDialog";
 
 const VeniceView = lazy(() => import("./VeniceView").then(({ VeniceView: view }) => ({ default: view })));
 const DataTransferView = lazy(() => import("./DataTransferView").then(({ DataTransferView: view }) => ({ default: view })));
@@ -69,6 +71,8 @@ export function App() {
   const colorTheme = useColorTheme();
   const practiceFont = usePracticeFont(practiceLanguage);
   const screenCapture = useScreenCapture(shell);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helpReturnFocus = useRef<HTMLElement | null>(null);
   const desktopApp = isTauri();
   const settingsReturnScreen = state.screen === "settings" ? state.returnState.screen : null;
   const practiceLanguageLocked = settingsReturnScreen === "practice" || settingsReturnScreen === "passage" ||
@@ -80,8 +84,16 @@ export function App() {
     ? dispatch({ type: "return-to-menu", sessionId: crypto.randomUUID(), completedAt: Date.now() })
     : dispatch({ type: "return-to-menu" });
   const openSettings = () => {
-    captureSettingsOrigin();
+    if (state.screen !== "settings") captureSettingsOrigin();
     dispatch({ type: "open-settings" });
+  };
+  const openHistory = () => {
+    if (state.screen !== "settings") captureSettingsOrigin();
+    dispatch({ type: "open-settings-history" });
+  };
+  const openHelp = () => {
+    helpReturnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setHelpOpen(true);
   };
   const closeSettings = () => dispatch({ type: "close-settings" });
   const onInput = (input: string, at: number) => dispatch({ type: "input-changed", input, at });
@@ -166,10 +178,36 @@ export function App() {
       className="shell"
       data-text-size={textSize.size}
       onKeyDown={(event) => {
-        if (state.screen !== "menu" || !desktopApp || event.key !== "Escape" || event.defaultPrevented ||
-          event.repeat || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
+        if (helpOpen) return;
+        if (state.screen === "menu" && desktopApp && event.key === "Escape" && !event.defaultPrevented &&
+          !event.repeat && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
+          event.preventDefault();
+          quitDesktopApp();
+          return;
+        }
+
+        const target = event.target;
+        const editableTarget = target instanceof HTMLElement && (
+          target.isContentEditable || target.matches("input, textarea, select, [role='textbox']")
+        );
+        const shortcut = appShortcutFor({
+          key: event.key,
+          code: event.code,
+          altKey: event.altKey,
+          ctrlKey: event.ctrlKey,
+          metaKey: event.metaKey,
+          shiftKey: event.shiftKey,
+          repeat: event.repeat,
+          isComposing: event.nativeEvent.isComposing,
+          keyCode: event.nativeEvent.keyCode,
+          defaultPrevented: event.defaultPrevented,
+          editableTarget,
+        });
+        if (!shortcut || (shortcut === "help" && state.screen !== "menu")) return;
         event.preventDefault();
-        quitDesktopApp();
+        if (shortcut === "help") openHelp();
+        else if (shortcut === "settings") openSettings();
+        else openHistory();
       }}
     >
       <header className="masthead">
@@ -203,6 +241,7 @@ export function App() {
           home
           showQuitHint={desktopApp}
           copy={copy}
+          onOpenHelp={openHelp}
           onStart={(activity) => {
             if (activity.kind === "short-library") dispatch({ type: "open-library", length: "short" });
             else if (activity.kind === "long-library") dispatch({ type: "open-library", length: "long" });
@@ -393,6 +432,8 @@ export function App() {
           <DataTransferView onBack={() => dispatch({ type: "return-to-settings" })} copy={copy} />
         </Suspense>
       )}
+
+      {helpOpen && <HelpDialog copy={copy} returnFocusTo={helpReturnFocus.current} onClose={() => setHelpOpen(false)} />}
 
     </main>
   );

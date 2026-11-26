@@ -173,4 +173,14 @@ describe("home navigation", () => {
     expect(settings).toMatchObject({ screen: "settings", returnState: game });
     expect(reducePracticeState(settings, { type: "close-settings" })).toEqual(game);
   });
+
+  it("opens history directly from practice and lets settings switch back to its menu", () => {
+    const practice = startLines();
+    const history = reducePracticeState(practice, { type: "open-settings-history" });
+    expect(history).toMatchObject({ screen: "settings", returnState: practice, view: "history" });
+
+    const settings = reducePracticeState(history, { type: "open-settings" });
+    expect(settings).toMatchObject({ screen: "settings", returnState: practice, view: "menu" });
+    expect(reducePracticeState(settings, { type: "close-settings" })).toEqual(practice);
+  });
 });
