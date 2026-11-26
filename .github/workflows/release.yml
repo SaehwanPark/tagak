@@ -108,7 +108,11 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          app="src-tauri/target/release/bundle/macos/Tagak.app"
+          version="$(node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version")"
+          dmg="src-tauri/target/release/bundle/dmg/Tagak_${version}_aarch64.dmg"
+          mount_point="$(mktemp -d)"
+          hdiutil attach -nobrowse -readonly -mountpoint "$mount_point" "$dmg"
+          app="$mount_point/Tagak.app"
           test -d "$app"
           codesign -dv --verbose=4 "$app" 2>&1 || true
           set +e
@@ -116,6 +120,8 @@ jobs:
           assessment_status=$?
           set -e
           echo "Gatekeeper assessment exit status: $assessment_status"
+          hdiutil detach "$mount_point"
+          rmdir "$mount_point"
 
       - name: Build Windows x64 per-user NSIS installer
         if: runner.os == 'Windows'
