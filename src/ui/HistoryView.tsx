@@ -8,6 +8,7 @@ import type { Language } from "../content/lessons";
 import { toDisplayedTypingSpeed } from "../domain/typingSpeed";
 import type { TypingSpeedUnits } from "../domain/typingSpeed";
 import { sessionAccuracy, sessionSpeedSamples } from "../domain/sessionHighScore";
+import { buildPracticeTrend, trendRecentAverageCount } from "../domain/practiceTrend";
 import { summarizeTypingRates } from "../domain/typingStatistics";
 
 type HistoryViewProps = {
@@ -39,6 +40,7 @@ export function HistoryView({
   const highScoreConfirmTrigger = useRef<HTMLButtonElement>(null);
   const visible = records.filter((record) => filter === "all" || record.mode === filter);
   const visibleSessions = sessions.filter((session) => filter === "all" || session.mode === filter);
+  const trendGroups = buildPracticeTrend(visibleSessions);
 
   // The confirmation opens on Cancel so a stray Enter or Esc cannot erase the records.
   useEffect(() => {
@@ -172,6 +174,71 @@ export function HistoryView({
                     {median === null ? "—" : copy.speedValue(Math.round(median), unit, score.language)}
                     {` · ${copy.sessionSamples(score.rawRates.length)}`}
                   </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+      {trendGroups.length > 0 && (
+        <section className="history-section" aria-labelledby="trend-title">
+          <h2 id="trend-title">{copy.trendTitle}</h2>
+          <p className="trend-note">{copy.trendScopeNote}</p>
+          <ul className="trend-list">
+            {trendGroups.map((group) => {
+              const unit = typingSpeedUnits[group.language];
+              const languageLabel = group.language === "ko" ? copy.korean : copy.english;
+              const scope = copy.highScoreScope(copy.modeLabel(group.mode), languageLabel, group.lineSessionLength);
+              const rates = group.points.map((point) => toDisplayedTypingSpeed(
+                group.language === "en" ? point.rate : null,
+                group.language === "ko" ? point.rate : null,
+                group.language,
+                unit,
+              ));
+              const visibleRates = rates.filter((rate): rate is number => rate !== null);
+              const maxRate = Math.max(...visibleRates, 1);
+              const lowestRate = Math.min(...visibleRates);
+              const firstPoint = group.points[0];
+              const lastPoint = group.points.at(-1);
+              return (
+                <li key={group.key}>
+                  <div className="trend-heading">
+                    <strong>{scope}</strong>
+                    <span>{copy.trendRecentAverage(
+                      copy.speedValue(Math.round(group.recentAverage), unit, group.language),
+                      Math.min(group.sessionCount, trendRecentAverageCount),
+                    )}</span>
+                  </div>
+                  {group.sessionCount < group.minimumSessions ? (
+                    <p className="trend-insufficient">{copy.trendInsufficientSessions(group.sessionCount, group.minimumSessions)}</p>
+                  ) : firstPoint && lastPoint && (
+                    <>
+                      <ol className="trend-bars" aria-label={copy.trendChartLabel(scope)}>
+                        {group.points.map((point, index) => {
+                          const rate = rates[index] ?? 0;
+                          return (
+                            <li key={point.sessionId} className="trend-bar-item">
+                              <span
+                                className="trend-bar"
+                                style={{ height: `${Math.max(6, (rate / maxRate) * 100)}%` }}
+                                aria-hidden="true"
+                              />
+                              <span className="visually-hidden">
+                                {copy.trendPointLabel(
+                                  dateFormat.format(point.completedAt),
+                                  copy.speedValue(Math.round(rate), unit, group.language),
+                                )}
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ol>
+                      <p className="trend-range">
+                        {copy.trendRange(dateFormat.format(firstPoint.completedAt), dateFormat.format(lastPoint.completedAt))}
+                        {` · ${copy.speedValue(Math.round(lowestRate), unit, group.language)} – ${copy.speedValue(Math.round(maxRate), unit, group.language)}`}
+                      </p>
+                    </>
+                  )}
                 </li>
               );
             })}

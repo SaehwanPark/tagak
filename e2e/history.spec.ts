@@ -19,6 +19,32 @@ async function openHistory(page: Page) {
   await page.getByRole("button", { name: "최근 연습 기록" }).click();
 }
 
+function practiceSession(
+  id: string,
+  mode: "line" | "short" | "long",
+  rates: readonly number[],
+  completedAt: number,
+) {
+  return {
+    id,
+    completedAt,
+    mode,
+    language: "ko",
+    materialIds: ["trend-material"],
+    lineSessionLength: mode === "line" ? rates.length : null,
+    completion: "completed",
+    lineScores: rates.map((rate) => ({
+      accuracy: 100,
+      correctCount: 100,
+      typedCount: 100,
+      elapsedMs: 60_000,
+      charactersPerMinute: null,
+      keystrokeCount: 100,
+      keystrokesPerMinute: rate,
+    })),
+  };
+}
+
 test("history keeps readable records from removed practice modes", async ({ page }) => {
   await page.addInitScript((key) => {
     const score = {
@@ -48,6 +74,39 @@ test("history keeps readable records from removed practice modes", async ({ page
   await page.getByRole("button", { name: "← 메뉴" }).click();
   await expect(page.locator(".home-menu-screen .activity-menu button"))
     .toHaveText(["한 줄↵", "짧은 글↵", "긴 글↵", "게임↵", "환경설정↵"]);
+});
+
+test("history compares recent speeds only within the same session scope", async ({ page }) => {
+  const sessions = [
+    ...[100, 200, 300, 400].map((rate, index) => practiceSession(
+      `line-trend-${index}`,
+      "line",
+      [rate, rate, rate, rate, rate],
+      index + 1,
+    )),
+    practiceSession("short-trend", "short", [250, 250, 250], 10),
+  ];
+  await page.addInitScript(({ key, stored }) => {
+    localStorage.setItem(key, JSON.stringify({ version: 4, records: [], sessions: stored, highScores: [] }));
+  }, { key: historyKey, stored: sessions });
+  await page.goto("/");
+  await openHistory(page);
+
+  await expect(page.getByRole("heading", { name: "속도 추이" })).toBeVisible();
+  const groups = page.locator(".trend-list > li");
+  await expect(groups).toHaveCount(2);
+
+  const lineGroup = groups.filter({ hasText: "한 줄 · 한국어 · 5문장" });
+  await expect(lineGroup.locator(".trend-bars li")).toHaveCount(4);
+  await expect(lineGroup).toContainText("최근 4회 평균 250 타수/분");
+
+  const shortGroup = groups.filter({ hasText: "짧은 글 · 한국어" });
+  await expect(shortGroup).toContainText("비교할 완료 세션이 3회 이상 필요합니다. 현재 1회입니다.");
+  await expect(shortGroup.locator(".trend-bars")).toHaveCount(0);
+
+  await page.getByRole("combobox").selectOption("short");
+  await expect(groups).toHaveCount(1);
+  await expect(groups.first()).toContainText("짧은 글 · 한국어");
 });
 
 test("simultaneous completions persist across tabs and can be compared and cleared", async ({ page, context }) => {

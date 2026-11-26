@@ -142,6 +142,13 @@ export type InterfaceText = Readonly<{
   highScoreDecisionFailed: string;
   highScoresCleared: string;
   sessionHistoryTitle: string;
+  trendTitle: string;
+  trendScopeNote: string;
+  trendRecentAverage: (speed: string, sessions: number) => string;
+  trendChartLabel: (scope: string) => string;
+  trendPointLabel: (date: string, speed: string) => string;
+  trendRange: (earliest: string, latest: string) => string;
+  trendInsufficientSessions: (count: number, minimum: number) => string;
   highScoresTitle: string;
   clearHighScores: string;
   confirmClearHighScores: string;
@@ -375,6 +382,13 @@ const ko: InterfaceText = {
   highScoreDecisionFailed: "세션은 저장했지만 최고 기록을 계산하지 못했습니다. 기존 최고 기록은 그대로 유지됩니다.",
   highScoresCleared: "최고 기록을 지웠습니다.",
   sessionHistoryTitle: "연습 세션 기록",
+  trendTitle: "속도 추이",
+  trendScopeNote: "완료한 세션만 모드·연습 언어·한 줄 문장 수별로 비교합니다. 최근 100개 세션 기록을 사용합니다.",
+  trendRecentAverage: (speed, sessions) => `최근 ${sessions}회 평균 ${speed}`,
+  trendChartLabel: (scope) => `${scope} 최근 세션 속도 추이`,
+  trendPointLabel: (date, speed) => `${date}: ${speed}`,
+  trendRange: (earliest, latest) => `${earliest} → ${latest}`,
+  trendInsufficientSessions: (count, minimum) => `비교할 완료 세션이 ${minimum}회 이상 필요합니다. 현재 ${count}회입니다.`,
   highScoresTitle: "최고 기록",
   clearHighScores: "최고 기록 지우기",
   confirmClearHighScores: "최고 기록만 지울까요? 연습 기록은 그대로 보존됩니다.",
@@ -639,6 +653,13 @@ const en: InterfaceText = {
   highScoreDecisionFailed: "The session was saved, but its high score could not be evaluated. Your existing high score is unchanged.",
   highScoresCleared: "High scores were cleared.",
   sessionHistoryTitle: "Practice sessions",
+  trendTitle: "Speed trend",
+  trendScopeNote: "Completed sessions are compared only within the same mode, practice language, and one-line sentence count. The recent 100 sessions are used.",
+  trendRecentAverage: (speed, sessions) => `${sessions}-session recent average: ${speed}`,
+  trendChartLabel: (scope) => `Recent speed trend for ${scope}`,
+  trendPointLabel: (date, speed) => `${date}: ${speed}`,
+  trendRange: (earliest, latest) => `${earliest} → ${latest}`,
+  trendInsufficientSessions: (count, minimum) => `At least ${minimum} completed sessions are needed to compare. ${count} available.`,
   highScoresTitle: "High scores",
   clearHighScores: "Clear high scores",
   confirmClearHighScores: "Clear only high scores? Practice history will be kept.",
