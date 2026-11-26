@@ -20,7 +20,7 @@
 | `src/content/` | 애셋 JSON 읽기·검증, 화면 문구, 연습 자료 구성 | 없음 (모듈 로드 시 검증) |
 | `src/storage/` | localStorage 읽기·검증·마이그레이션·저장·가져오기 | `localStorage`, `navigator.locks` |
 | `src/app/` | 화면 전환 reducer, 저장·설정 훅, 결과 기록 큐, 연습 종료 보호 조건 | React 훅 |
-| `src/ui/` | React 화면, IME 입력 어댑터, 초점, 도움말·종료 확인·화면 이동 단축키, PNG 저장, 데이터 이전, 효과음 | DOM, React |
+| `src/ui/` | React 화면, IME 입력 어댑터, 초점, 결과의 하이스코어 피드백, 도움말·종료 확인·화면 이동 단축키, PNG 저장, 데이터 이전, 효과음 | DOM, React |
 | `src/platform/` | Tauri 앱 생명주기, 파일 대화상자·경로 I/O와 브라우저 다운로드 경계 | Tauri API, DOM |
 | `src-tauri/` | macOS·Windows 앱 창과 패키지, 작업 영역 기반 창 상태 저장·복원, macOS WebKit 저장소 식별자, Windows WebView2 키 이벤트, 사용자 선택 파일 I/O | Tauri/Rust |
 
@@ -79,6 +79,7 @@ src/
     ├── PassageView.tsx     # 5줄 묶음 문맥
     ├── ChallengeView.tsx / VeniceView.tsx
     ├── ResultView.tsx / HistoryView.tsx / DisplaySettings.tsx / DataTransferView.tsx
+    ├── highScoreFeedback.ts # 판정 결과의 단위·변화율·이유를 표시용 문구로 구성
     ├── Scoreboard.tsx / ActivityMenu.tsx / ScreenCaptureControl.tsx
     ├── useFocus.ts         # 마운트 시 초점
     ├── completionSound.ts / veniceSound.ts # Web Audio 피드백

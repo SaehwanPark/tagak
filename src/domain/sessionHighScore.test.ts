@@ -130,7 +130,7 @@ describe("practice session high-score policy", () => {
       session("threshold", [100.3, 100.3, 100.3, 100.3, 100.3]),
       previous,
     );
-    expect(exactThreshold.decision.status).toBe("new-record");
+    expect(exactThreshold.decision).toMatchObject({ status: "new-record", pValue: 1 / 252 });
 
     const notSignificant = decidePracticeHighScore(
       session("noisy", [100, 100, 103, 103, 103]),

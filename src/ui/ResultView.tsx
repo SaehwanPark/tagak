@@ -6,6 +6,7 @@ import type { InterfaceText } from "../content/interfaceText";
 import type { Language } from "../content/lessons";
 import type { PracticeSessionRecord } from "../domain/history";
 import type { HighScoreDecision } from "../domain/sessionHighScore";
+import { buildHighScoreFeedback } from "./highScoreFeedback";
 import { Scoreboard } from "./Scoreboard";
 import { useFocus } from "./useFocus";
 import { handleScrollRegionKeyDown } from "./focusWithinScrollRegion";
@@ -45,50 +46,12 @@ export function ResultView({
     sessionStatistics?.upperQuartile === null || !sessionStatistics
     ? "—"
     : `${formattedStatistic(sessionStatistics.lowerQuartile)}–${formattedStatistic(sessionStatistics.upperQuartile)}`;
-  const displayRawRate = (value: number) => toDisplayedTypingSpeed(
-    language === "en" ? value : null,
-    language === "ko" ? value : null,
-    language,
-    speedUnit,
-  );
-  const formatImprovement = (improvement: number) => String(Number((improvement * 100).toFixed(4)));
-  const formatPValue = (pValue: number) => pValue.toFixed(3);
-  const highScoreMessage = (() => {
+  const highScoreFeedback = (() => {
     if (!sessionRecord) return null;
-    if (sessionSaveFailed) return copy.sessionSaveFailed;
-    if (highScoreDecisionFailed) return copy.highScoreDecisionFailed;
+    if (sessionSaveFailed) return { message: copy.sessionSaveFailed, details: null };
+    if (highScoreDecisionFailed) return { message: copy.highScoreDecisionFailed, details: null };
     if (!sessionDecision) return null;
-    switch (sessionDecision.status) {
-      case "already-saved": return null;
-      case "first-record": return copy.highScoreFirstRecord;
-      case "new-record": {
-        const current = displayRawRate(sessionDecision.median);
-        const previous = displayRawRate(sessionDecision.previousMedian);
-        return current === null || previous === null ? null : copy.highScoreUpdated(
-          Math.round(current), Math.round(previous), formatImprovement(sessionDecision.improvement),
-        );
-      }
-      case "kept": {
-        const current = displayRawRate(sessionDecision.median);
-        const previous = displayRawRate(sessionDecision.previousMedian);
-        if (current === null || previous === null) return null;
-        const improvement = formatImprovement(sessionDecision.improvement);
-        const pValue = formatPValue(sessionDecision.pValue);
-        const reason = sessionDecision.reason === "below-improvement"
-          ? copy.highScoreBelowThreshold(improvement)
-          : sessionDecision.reason === "not-significant"
-            ? copy.highScoreNotSignificant(improvement, pValue)
-            : copy.highScoreBothFailed(improvement, pValue);
-        return `${copy.highScoreKept(Math.round(current), Math.round(previous))}. ${reason}`;
-      }
-      case "ineligible":
-        switch (sessionDecision.reason) {
-          case "early-exit": return copy.highScoreIncompleteReason;
-          case "accuracy": return copy.highScoreAccuracyReason;
-          case "samples": return copy.highScoreSamplesReason(5);
-          case "invalid-rate": return copy.highScoreInvalidRateReason;
-        }
-    }
+    return buildHighScoreFeedback(sessionRecord, sessionDecision, speedUnit, copy);
   })();
 
   return (
@@ -108,7 +71,14 @@ export function ResultView({
         data-scroll-region
         onKeyDown={handleScrollRegionKeyDown}
       >
-        {highScoreMessage && <p className="high-score-status" role="status">{highScoreMessage}</p>}
+        {highScoreFeedback && <p className="high-score-status" role="status">{highScoreFeedback.message}</p>}
+        {highScoreFeedback?.details && (
+          <details className="high-score-explanation">
+            <summary>{highScoreFeedback.details.title}</summary>
+            <p>{highScoreFeedback.details.rules}</p>
+            {highScoreFeedback.details.comparison && <p>{highScoreFeedback.details.comparison}</p>}
+          </details>
+        )}
         {sessionStatistics && (
           <section className="previous-score line-session-statistics" aria-labelledby="line-session-statistics-title">
             <h2 id="line-session-statistics-title">{copy.lineSessionStatistics} · {copy.speedLabel(speedUnit, language)}</h2>

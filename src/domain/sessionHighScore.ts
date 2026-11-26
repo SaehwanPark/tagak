@@ -19,7 +19,7 @@ export type MannWhitneyResult = Readonly<{
 export type HighScoreDecision =
   | Readonly<{ status: "ineligible"; reason: "early-exit" | "accuracy" | "samples" | "invalid-rate" }>
   | Readonly<{ status: "first-record"; median: number }>
-  | Readonly<{ status: "new-record"; median: number; previousMedian: number; improvement: number }>
+  | Readonly<{ status: "new-record"; median: number; previousMedian: number; improvement: number; pValue: number }>
   | Readonly<{
       status: "kept";
       reason: "below-improvement" | "not-significant" | "below-improvement-and-not-significant";
@@ -235,7 +235,7 @@ export function decidePracticeHighScore(
         median: currentMedian,
         previousMedian: previous.median,
         improvement,
-        pValue: test.pValue,
+      pValue: test.pValue,
       },
       next: previous,
     };
@@ -246,6 +246,7 @@ export function decidePracticeHighScore(
       median: currentMedian,
       previousMedian: previous.median,
       improvement,
+        pValue: test.pValue,
     },
     next,
   };

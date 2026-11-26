@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.17.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.18.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -8,10 +8,6 @@
 - 현재 구현 중인 사용자 기능 슬라이스에 [지금 구현중]을 붙인다. 완료 후 체크하고 레이블을 뗀다.
 - 선행 작업과 완료 조건이 정해진 다음 한 항목에 [바로 다음에 구현해야 함]을 붙인다.
 - 플랫폼 검증의 미확인 항목은 별도의 비차단 후속으로 관리한다. macOS 14+ Tauri 앱의 설치·실행 또는 기본 한글 연습을 막는 치명적 문제가 재현된 경우에만 현재 개발을 멈춘다.
-
-## 진행 중
-
-- [ ] **C5 · 하이스코어 피드백 [바로 다음에 구현해야 함]** · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
 
 ## 완료
 
@@ -21,6 +17,13 @@
   - `npm run verify` 통과: Vitest 24개 파일 169개 테스트, 프로덕션 빌드, Playwright E2E 85개. 앱 JS 청크는 592.96KB로 Vite의 500KB 경고 기준을 넘는다. E2E는 설정·비활성 구간 겹침, 복귀, 중복 blur/visibility, pause 안내, IME 합성 종료, 도전 만료, 비활성 중 제출 방지를 확인했다.
   - `npm run desktop:build`가 macOS ARM64 DMG(3.32 MiB)를 생성했다. v0.17.0 DMG 앱의 30초 도전을 설정·기록 화면에서 약 7초 기다린 뒤 복귀해 타이머가 멈췄다가 이어지는 것을 확인했다. 실제 OS IME, 네이티브 창 비활성 전환, Windows Tauri 앱은 이번 슬라이스에서 직접 확인하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
   - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.17.0`으로 맞췄다.
+
+- [x] **C5 · 하이스코어 피드백** · `v0.18.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
+  - 첫 최고 기록에는 중간값·속도 단위를, 비교 결과에는 이번/기존 중간값과 부호가 있는 변화율을 먼저 보여준다. 낮은 정확도는 실제 세션 정확도를, 표본 부족은 실제 유효 개수를 표시하며, 중도 종료와 각 미달 조건을 구분한다. 감소·동일·작은 증가를 모두 “향상”으로 부르지 않는다.
+  - 키보드로 여는 네이티브 상세 disclosure에 갱신 기준, 비교 p값, 표시 반올림과 원시 판정 값 차이, Mann–Whitney의 기록 규칙 목적과 한계를 설명한다. 기존 판정 수학·저장 형식·기록 종류는 유지하고 성공 판정 결과에 p값 정보만 더했다.
+  - `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 빌드, Playwright E2E 85개. JS 청크는 595.95KB로 Vite의 500KB 경고 기준을 넘는다. E2E는 한국어/영어 첫 기록, 안정적인 갱신, 키보드 disclosure 열기를 확인했다.
+  - `npm run desktop:build` 통과: macOS ARM64 `Tagak_0.18.0_aarch64.dmg` 3.32 MiB 생성. DMG 앱에서 5문장 첫 기록(757 타수/분)과 상세 설명, 정확도 0% 세션의 97% 미달 안내를 WebKit에서 확인했다. CUA 접근성 입력으로 문장을 넣었으며 실제 OS IME, 비교 갱신 결과, Windows Tauri 앱은 수동 확인하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+  - npm/Cargo/Tauri와 README·프로젝트/구조 명세·변경 이력을 `v0.18.0`으로 맞췄다.
 
 - [x] **C3 · 세션 종료 보호** · `v0.16.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 한 줄·짧은 글·긴 글에서 완료한 줄이 있거나 현재 제시문의 문자소 10개 이상 입력했으면 Esc/뒤로를 누를 때 확인한다. 제시문이 10문자소보다 짧으면 전체 길이를 기준으로 삼고, 입력이 기준보다 적으면 즉시 이전 화면으로 간다.
