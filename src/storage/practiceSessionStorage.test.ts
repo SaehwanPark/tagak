@@ -98,13 +98,13 @@ describe("practice session storage", () => {
 
   it("updates only after both median and significance rules pass, preserving the prior winner otherwise", async () => {
     await savePracticeSession(session("session-10", [100, 100, 100, 100, 100]));
-    const belowThreshold = await savePracticeSession(session("session-11", [102, 102, 102, 102, 102]));
+    const belowThreshold = await savePracticeSession(session("session-11", [100.2, 100.2, 100.2, 100.2, 100.2]));
     expect(belowThreshold.ok && belowThreshold.decision).toMatchObject({ status: "kept", reason: "below-improvement" });
     const prior = readHistory();
     if (!prior.ok) throw new Error("Expected readable history");
     expect(prior.highScores[0]?.sessionId).toBe("session-10");
 
-    const update = await savePracticeSession(session("session-12", [103, 103, 103, 103, 103]));
+    const update = await savePracticeSession(session("session-12", [100.3, 100.3, 100.3, 100.3, 100.3]));
     expect(update.ok && update.decision.status).toBe("new-record");
     const saved = readHistory();
     if (!saved.ok) throw new Error("Expected readable history");

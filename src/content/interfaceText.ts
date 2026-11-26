@@ -87,10 +87,11 @@ export type InterfaceText = Readonly<{
   median: string;
   interquartileRange: string;
   highScoreFirstRecord: string;
-  highScoreUpdated: (current: number, previous: number, improvementPercent: number) => string;
+  highScoreUpdated: (current: number, previous: number, improvementPercent: string) => string;
   highScoreKept: (current: number, previous: number) => string;
-  highScoreBelowThreshold: string;
-  highScoreNotSignificant: string;
+  highScoreBelowThreshold: (improvementPercent: string) => string;
+  highScoreNotSignificant: (improvementPercent: string, pValue: string) => string;
+  highScoreBothFailed: (improvementPercent: string, pValue: string) => string;
   highScoreAccuracyReason: string;
   highScoreSamplesReason: (count: number) => string;
   highScoreIncompleteReason: string;
@@ -290,8 +291,9 @@ const ko: InterfaceText = {
   highScoreFirstRecord: "첫 최고 기록이 등록되었습니다.",
   highScoreUpdated: (current, previous, improvementPercent) => `🏆 새로운 최고 기록! 중간값 ${current} (이전 ${previous}, ${improvementPercent}% 향상)`,
   highScoreKept: (current, previous) => `현재 중간값 ${current} · 최고 기록 ${previous}`,
-  highScoreBelowThreshold: "중간값 향상이 3%에 미치지 않아 최고 기록을 유지했습니다.",
-  highScoreNotSignificant: "속도 차이가 안정적인 갱신 기준에 미치지 않아 최고 기록을 유지했습니다.",
+  highScoreBelowThreshold: (improvementPercent) => `중간값 향상 ${improvementPercent}%가 최소 0.3%에 못 미쳐 최고 기록을 유지했습니다.`,
+  highScoreNotSignificant: (improvementPercent, pValue) => `중간값은 ${improvementPercent}% 올랐지만, 이번 표본만으로는 우연이 아닌 속도 향상이라고 단정하기 어렵습니다 (p=${pValue}, 기준 p<0.05). 최고 기록을 유지했습니다.`,
+  highScoreBothFailed: (improvementPercent, pValue) => `중간값 향상 ${improvementPercent}%가 최소 0.3%에 못 미쳤고, 이번 표본만으로는 우연이 아닌 속도 향상이라고 단정하기 어렵습니다 (p=${pValue}, 기준 p<0.05). 최고 기록을 유지했습니다.`,
   highScoreAccuracyReason: "세션 정확도 97% 이상일 때 최고 기록에 도전할 수 있습니다.",
   highScoreSamplesReason: (count) => `유효한 속도 표본이 ${count}개 이상 필요합니다.`,
   highScoreIncompleteReason: "세션을 끝까지 완료하지 않아 최고 기록을 갱신하지 않았습니다.",
@@ -522,8 +524,9 @@ const en: InterfaceText = {
   highScoreFirstRecord: "First high score recorded.",
   highScoreUpdated: (current, previous, improvementPercent) => `🏆 New high score! Median ${current} (previous ${previous}, up ${improvementPercent}%)`,
   highScoreKept: (current, previous) => `Current median ${current} · high score ${previous}`,
-  highScoreBelowThreshold: "The median improvement was below 3%, so the high score stays.",
-  highScoreNotSignificant: "The speed difference did not meet the stable update rule, so the high score stays.",
+  highScoreBelowThreshold: (improvementPercent) => `The median improved by ${improvementPercent}%, below the 0.3% minimum, so the high score stays.`,
+  highScoreNotSignificant: (improvementPercent, pValue) => `The median improved by ${improvementPercent}%, but these samples do not establish a speed increase beyond chance (p=${pValue}; update requires p<0.05), so the high score stays.`,
+  highScoreBothFailed: (improvementPercent, pValue) => `The median improved by ${improvementPercent}%, below the 0.3% minimum, and these samples do not establish a speed increase beyond chance (p=${pValue}; update requires p<0.05), so the high score stays.`,
   highScoreAccuracyReason: "Reach at least 97% session accuracy to qualify for a high score.",
   highScoreSamplesReason: (count) => `At least ${count} valid speed samples are required.`,
   highScoreIncompleteReason: "The session was not completed, so the high score was not updated.",
