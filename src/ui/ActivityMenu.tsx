@@ -11,12 +11,13 @@ type ActivityMenuProps<Entry extends MenuEntry> = {
   home?: boolean;
   showQuitHint?: boolean;
   onStart: (activity: Entry) => void;
+  onOpenHelp?: () => void;
   onBack?: () => void;
   copy: InterfaceText;
 };
 
 export function ActivityMenu<Entry extends MenuEntry>({
-  activities, title, selected, home = false, showQuitHint = false, onStart, onBack, copy,
+  activities, title, selected, home = false, showQuitHint = false, onStart, onOpenHelp, onBack, copy,
 }: ActivityMenuProps<Entry>) {
   const list = useRef<HTMLDivElement>(null);
 
@@ -93,6 +94,15 @@ export function ActivityMenu<Entry extends MenuEntry>({
         <kbd>↑</kbd> <kbd>↓</kbd> {copy.select} <kbd>Home</kbd> <kbd>End</kbd> {copy.firstLast} <kbd>Enter</kbd> {copy.start}
         {showQuitHint && <> <kbd>Esc</kbd> {copy.quitApp}</>}
       </p>
+      {home && onOpenHelp && (
+        <div className="home-shortcuts">
+          <button type="button" className="home-help-link" onClick={onOpenHelp}>
+            <kbd>?</kbd> {copy.helpEntry}
+          </button>
+          <span><kbd>s</kbd> {copy.settings}</span>
+          <span><kbd>r</kbd> {copy.activityLabel("history", "")}</span>
+        </div>
+      )}
     </section>
   );
 }

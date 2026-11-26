@@ -497,6 +497,58 @@ h1 { margin: 0; font-size: clamp(1.55rem, 4vw, 2.55rem); line-height: 1.25; }
 .home-menu-screen .activity-menu { gap: .4rem; margin-top: 1.2rem; }
 .home-menu-screen .lesson-button { padding-block: .65rem; }
 .home-menu-screen .keys { margin-block: .8rem 0; }
+.home-shortcuts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .4rem .75rem;
+  margin-top: .45rem;
+  color: var(--quiet);
+  font-size: .8rem;
+}
+.home-shortcuts kbd { margin: 0 .2rem 0 0; }
+.home-help-link {
+  padding: 0;
+  border: 0;
+  color: var(--accent);
+  background: transparent;
+  font: inherit;
+}
+.home-help-link:hover { text-decoration: underline; }
+
+.help-dialog:not([open]) { display: none; }
+.help-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  width: min(42rem, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  max-height: min(82vh, 44rem);
+  max-height: min(82dvh, 44rem);
+  padding: 1rem clamp(.85rem, 4vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: .35rem;
+  color: var(--ink);
+  background: var(--shell);
+  box-shadow: 0 1rem 4rem var(--shadow);
+  overflow: hidden;
+}
+.help-dialog::backdrop { background: #0009; }
+.help-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex: 0 0 auto; }
+.help-dialog-header h2 { margin: .1rem 0 .5rem; font-size: clamp(1.25rem, 4vw, 1.7rem); }
+.help-dialog-header .button { flex: 0 0 auto; padding: .35rem .6rem; }
+.help-dialog-content {
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  line-height: 1.55;
+}
+.help-dialog-content > p { margin: .35rem 0 1rem; color: var(--quiet); }
+.help-dialog-content dl { display: grid; gap: .9rem; margin: 0; }
+.help-dialog-content dt { color: var(--accent); font-weight: 700; }
+.help-dialog-content dd { margin: .2rem 0 0; }
+.help-dialog-content:focus-visible { outline-offset: -2px; }
 
 .back {
   color: var(--accent);
@@ -859,6 +911,7 @@ kbd:not(:first-child) { margin-inline-start: .55rem; }
   .home-menu-screen .activity-menu { gap: .25rem; margin-top: .6rem; }
   .home-menu-screen .lesson-button { padding-block: .42rem; }
   .home-menu-screen .keys { margin-block: .45rem 0; }
+  .home-shortcuts { margin-top: .25rem; }
   .practice-screen > .back { margin-block-end: .25rem; }
   .practice-screen .target { margin-block: .25rem; padding-block: .35rem; }
   .practice-screen .target p { margin-top: .3rem; line-height: 1.25; }

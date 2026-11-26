@@ -219,14 +219,16 @@ function reducePassagePractice(state: Extract<PracticeState, { screen: "passage"
 
 export function reducePracticeState(state: PracticeState, action: AppAction): PracticeState {
   if (action.type === "open-settings") {
-    if (state.screen === "settings") return state;
+    if (state.screen === "settings") {
+      return state.view === "menu" ? state : { ...state, view: "menu", focusRow: "interface-language" };
+    }
     const returnState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
     return { screen: "settings", returnState, view: "menu", focusRow: "interface-language" };
   }
   if (action.type === "open-settings-history") {
-    return state.screen === "settings" && state.view === "menu"
-      ? { ...state, view: "history", focusRow: "open-history" }
-      : state;
+    if (state.screen === "settings") return { ...state, view: "history", focusRow: "open-history" };
+    const returnState = state.screen === "menu" ? { ...state, selected: settingsEntry.id } : state;
+    return { screen: "settings", returnState, view: "history", focusRow: "open-history" };
   }
   if (action.type === "open-settings-data-transfer") {
     return state.screen === "settings" && state.view === "menu"

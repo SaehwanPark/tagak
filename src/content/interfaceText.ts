@@ -15,6 +15,22 @@ export type InterfaceText = Readonly<{
   start: string;
   quitApp: string;
   navigationHint: string;
+  helpEntry: string;
+  helpTitle: string;
+  closeHelp: string;
+  helpIntro: string;
+  helpNavigationLabel: string;
+  helpNavigation: string;
+  helpTypingLabel: string;
+  helpTyping: string;
+  helpBackLabel: string;
+  helpBack: string;
+  helpShortcutsLabel: string;
+  helpShortcuts: string;
+  helpScreenCaptureLabel: string;
+  helpScreenCapture: string;
+  helpBeginnerLabel: string;
+  helpBeginner: string;
   screenCapture: string;
   saving: string;
   captureDisclosure: string;
@@ -220,6 +236,22 @@ const ko: InterfaceText = {
   start: "시작",
   quitApp: "앱 종료",
   navigationHint: "선택 · 시작",
+  helpEntry: "사용 안내 (?)",
+  helpTitle: "키보드 사용 안내",
+  closeHelp: "닫기",
+  helpIntro: "필요할 때 확인하고 바로 연습으로 돌아오세요. Tab과 Shift+Tab은 버튼·입력창·읽기 스크롤 영역 사이를 이동합니다.",
+  helpNavigationLabel: "메뉴와 목록",
+  helpNavigation: "↑/↓로 이동하고 Enter로 선택합니다. Home/End는 목록의 처음과 끝으로 이동합니다. 읽기 영역에 초점을 두고 ↑/↓ 또는 PageUp/PageDown으로 스크롤할 수 있습니다.",
+  helpTypingLabel: "입력과 제출",
+  helpTyping: "한 줄·글은 제시문을 입력한 뒤 Enter 또는 Space로 제출합니다. 한글 IME 조합 중 Enter/Space는 글자를 먼저 확정합니다. 조합 확정에 쓴 키를 놓았다가 다시 눌러 제출하세요. Space는 제시문을 다 입력하기 전까지 공백으로 들어갑니다.",
+  helpBackLabel: "뒤로 가기",
+  helpBack: "Esc는 이전 화면으로 돌아갑니다. 연습 중 Esc는 현재 연습을 마치고 돌아갑니다. 데스크톱 앱은 홈에서 Esc로 종료하며 브라우저에서는 종료하지 않습니다.",
+  helpShortcutsLabel: "바로 가기",
+  helpShortcuts: "홈의 ?는 이 안내를 엽니다. 입력란 밖에서 s는 환경설정, r은 최근 연습 기록을 엽니다. IME 조합 중, 편집 가능한 요소에 초점이 있을 때, 키 반복 입력에서는 동작하지 않습니다.",
+  helpScreenCaptureLabel: "화면 저장",
+  helpScreenCapture: "macOS에서는 ⌘S, Windows와 브라우저에서는 Ctrl+S를 누르거나 머리글의 화면 저장을 선택합니다. 저장되는 PNG에는 화면에 보이는 연습 내용도 포함됩니다.",
+  helpBeginnerLabel: "처음 시작한다면",
+  helpBeginner: "환경설정의 한 줄 문장 수에서 5문장을 고를 수 있습니다. 베네치아를 시작할 때는 레벨 1부터 선택할 수 있습니다.",
   screenCapture: "화면 저장",
   saving: "저장 중…",
   captureDisclosure: "화면 저장을 선택하면 입력 내용도 PNG에 포함됩니다.",
@@ -456,6 +488,22 @@ const en: InterfaceText = {
   start: "Start",
   quitApp: "Quit app",
   navigationHint: "Select · Start",
+  helpEntry: "How to use (?)",
+  helpTitle: "Keyboard help",
+  closeHelp: "Close",
+  helpIntro: "Check these controls when you need them, then return to practice. Tab and Shift+Tab move through buttons, inputs, and read-only scroll areas.",
+  helpNavigationLabel: "Menus and lists",
+  helpNavigation: "Use Up/Down and press Enter to select. Home/End move to the beginning or end of a list. Focus a reading area and use Up/Down or PageUp/PageDown to scroll.",
+  helpTypingLabel: "Typing and submitting",
+  helpTyping: "Type the prompt in one-line or passage practice, then submit with Enter or Space. During Korean IME composition, Enter/Space commits the text first. Release that key and press it again to submit. Space inserts a space until the prompt is complete.",
+  helpBackLabel: "Going back",
+  helpBack: "Escape returns to the previous screen. Escape during practice ends the current run and returns. Escape on the desktop app home quits the app; it does not quit the browser version.",
+  helpShortcutsLabel: "Shortcuts",
+  helpShortcuts: "Press ? on the home screen for this guide. Press s outside an editable field for Settings, or r for Recent practice. These shortcuts are ignored during IME composition, while an editable field has focus, and on repeated key events.",
+  helpScreenCaptureLabel: "Save the screen",
+  helpScreenCapture: "Press ⌘S on macOS or Ctrl+S on Windows and in a browser, or choose Save screen in the header. The PNG includes practice text visible on the screen.",
+  helpBeginnerLabel: "For a first session",
+  helpBeginner: "Choose 5 sentences in Settings. When starting Venice, you can select level 1.",
   screenCapture: "Save screen",
   saving: "Saving…",
   captureDisclosure: "Saving the screen includes the visible text in the PNG.",
