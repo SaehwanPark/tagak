@@ -1,0 +1,196 @@
+name: Release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS ARM64
+            runner: macos-15
+            artifact: macos-aarch64
+          - platform: Windows x64
+            runner: windows-2025
+            artifact: windows-x64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the event commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.12.0
+          cache: npm
+
+      - name: Confirm the checked out commit
+        shell: bash
+        run: |
+          actual_commit="$(git rev-parse HEAD^{commit})"
+          if [ "$actual_commit" != "$GITHUB_SHA" ]; then
+            echo "Checkout $actual_commit does not match event commit $GITHUB_SHA" >&2
+            exit 1
+          fi
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            tag_commit="$(git rev-parse "refs/tags/$GITHUB_REF_NAME^{commit}")"
+            if [ "$tag_commit" != "$GITHUB_SHA" ]; then
+              echo "Tag $GITHUB_REF_NAME no longer points to the event commit" >&2
+              exit 1
+            fi
+            git fetch origin main
+            main_commit="$(git rev-parse refs/remotes/origin/main^{commit})"
+            if [ "$main_commit" != "$GITHUB_SHA" ]; then
+              echo "Release tag $GITHUB_REF_NAME must point to the current main commit" >&2
+              exit 1
+            fi
+            node scripts/verify-release-version.mjs "$GITHUB_REF_NAME"
+          else
+            node scripts/verify-release-version.mjs
+          fi
+
+      - name: Set up Rust stable
+        uses: actions-rust-lang/setup-rust-toolchain@v2
+
+      - name: Install JavaScript dependencies from the lockfile
+        run: npm ci --include=dev
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
+
+      - name: Run unit tests, web build, and browser E2E
+        run: npm run verify
+
+      - name: Install NSIS
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if (-not (Get-Command makensis -ErrorAction SilentlyContinue)) {
+            choco install nsis --yes --no-progress
+          }
+
+      - name: Build macOS ARM64 DMG
+        if: runner.os == 'macOS'
+        run: npm run desktop:build
+
+      - name: Stage macOS ARM64 DMG
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          version="$(node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version")"
+          asset="src-tauri/target/release/bundle/dmg/Tagak_${version}_aarch64.dmg"
+          test -f "$asset"
+          mkdir -p release-assets
+          cp "$asset" release-assets/
+
+      - name: Build Windows x64 per-user NSIS installer
+        if: runner.os == 'Windows'
+        run: npm run desktop:build:windows
+
+      - name: Stage Windows x64 per-user NSIS installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version"
+          $asset = "src-tauri/target/release/bundle/nsis/Tagak_${version}_x64-setup.exe"
+          if (-not (Test-Path $asset)) { throw "Expected installer not found: $asset" }
+          New-Item -ItemType Directory -Path release-assets -Force | Out-Null
+          Copy-Item $asset release-assets/
+
+      - name: Upload platform package
+        uses: actions/upload-artifact@v7
+        with:
+          name: tagak-${{ matrix.artifact }}
+          path: release-assets/*
+          if-no-files-found: error
+          compression-level: 0
+
+  publish:
+    name: Publish GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Confirm tag, commit, and package versions
+        shell: bash
+        run: |
+          actual_commit="$(git rev-parse HEAD^{commit})"
+          tag_commit="$(git rev-parse "refs/tags/$GITHUB_REF_NAME^{commit}")"
+          if [ "$actual_commit" != "$GITHUB_SHA" ] || [ "$tag_commit" != "$GITHUB_SHA" ]; then
+            echo "Release tag, checkout, and workflow event must point to the same commit" >&2
+            exit 1
+          fi
+          git fetch origin main
+          main_commit="$(git rev-parse refs/remotes/origin/main^{commit})"
+          if [ "$main_commit" != "$GITHUB_SHA" ]; then
+            echo "Release tag must point to the current main commit" >&2
+            exit 1
+          fi
+          node scripts/verify-release-version.mjs "$GITHUB_REF_NAME"
+
+      - name: Download macOS package
+        uses: actions/download-artifact@v8
+        with:
+          name: tagak-macos-aarch64
+          path: release-assets
+
+      - name: Download Windows installer
+        uses: actions/download-artifact@v8
+        with:
+          name: tagak-windows-x64
+          path: release-assets
+
+      - name: Generate checksums and release notes
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          dmg="Tagak_${version}_aarch64.dmg"
+          installer="Tagak_${version}_x64-setup.exe"
+          test -f "release-assets/$dmg"
+          test -f "release-assets/$installer"
+          if [ "$(find release-assets -maxdepth 1 -type f | wc -l | tr -d ' ')" -ne 2 ]; then
+            echo "Release assets must contain exactly one DMG and one NSIS installer" >&2
+            exit 1
+          fi
+          (cd release-assets && sha256sum "$dmg" "$installer" > SHA256SUMS.txt)
+          node scripts/create-release-notes.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/release-notes.md"
+
+      - name: Publish release without replacing existing releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --verify-tag \
+            --title "Tagak $GITHUB_REF_NAME" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            release-assets/Tagak_"${GITHUB_REF_NAME#v}"_aarch64.dmg \
+            release-assets/Tagak_"${GITHUB_REF_NAME#v}"_x64-setup.exe \
+            release-assets/SHA256SUMS.txt
