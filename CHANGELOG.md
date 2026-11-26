@@ -6,6 +6,18 @@
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-11-26
+
+### Changed
+
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): 하이스코어 첫 기록은 이번 중간값을, 비교 결과는 이번·기존 속도와 부호가 있는 변화율을 먼저 보여줍니다. 미자격 결과에는 실제 정확도·유효 표본 수·조기 종료 사유를 표시합니다.
+- 키보드로 열 수 있는 상세 정보에 p값·유의수준과 단측 Mann–Whitney 규칙의 목적·한계를 설명합니다. 속도는 선택한 단위로 소수 첫째 자리까지 표시하고 판정은 반올림 전 값을 사용합니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 빌드, Playwright E2E 85개. JS 청크는 595.95KB로 Vite의 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build` 통과: macOS ARM64 DMG 3.32 MiB 생성. 패키지 앱에서 첫 기록·상세 설명과 정확도 0% 미자격 안내를 WebKit에서 확인했습니다. 실제 OS IME는 이번 확인에서 사용하지 않았습니다.
+
 ## [0.17.0] - 2026-11-26
 
 ### Changed

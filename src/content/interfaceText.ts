@@ -110,16 +110,19 @@ export type InterfaceText = Readonly<{
   standardDeviation: string;
   median: string;
   interquartileRange: string;
-  highScoreFirstRecord: string;
-  highScoreUpdated: (current: number, previous: number, improvementPercent: string) => string;
-  highScoreKept: (current: number, previous: number) => string;
-  highScoreBelowThreshold: (improvementPercent: string) => string;
-  highScoreNotSignificant: (improvementPercent: string, pValue: string) => string;
-  highScoreBothFailed: (improvementPercent: string, pValue: string) => string;
-  highScoreAccuracyReason: string;
-  highScoreSamplesReason: (count: number) => string;
+  highScoreFirstRecord: (median: string, speedUnit: string) => string;
+  highScoreUpdated: (current: string, previous: string, speedUnit: string, changePercent: string) => string;
+  highScoreKept: (current: string, previous: string, speedUnit: string, changePercent: string) => string;
+  highScoreBelowThreshold: (changePercent: string, minimumChange: string) => string;
+  highScoreNotSignificant: (improvementPercent: string) => string;
+  highScoreBothFailed: (changePercent: string) => string;
+  highScoreAccuracyReason: (accuracy: string | null, minimumAccuracy: number) => string;
+  highScoreSamplesReason: (count: number, minimum: number) => string;
   highScoreIncompleteReason: string;
   highScoreInvalidRateReason: string;
+  highScoreExplanationTitle: string;
+  highScoreRulesExplanation: (minimumAccuracy: number, minimumSamples: number, minimumChange: string, significanceLevel: string) => string;
+  highScoreComparisonDetails: (changePercent: string, pValue: string, minimumChange: string, significanceLevel: string) => string;
   returnTo: (destination: string) => string;
   openPractice: string;
   blockedPracticeInput: string;
@@ -337,16 +340,21 @@ const ko: InterfaceText = {
   standardDeviation: "표준편차",
   median: "중간값",
   interquartileRange: "IQR (P25–P75)",
-  highScoreFirstRecord: "첫 최고 기록이 등록되었습니다.",
-  highScoreUpdated: (current, previous, improvementPercent) => `🏆 새로운 최고 기록! 중간값 ${current} (이전 ${previous}, ${improvementPercent}% 향상)`,
-  highScoreKept: (current, previous) => `현재 중간값 ${current} · 최고 기록 ${previous}`,
-  highScoreBelowThreshold: (improvementPercent) => `중간값 향상 ${improvementPercent}%가 최소 0.3%에 못 미쳐 최고 기록을 유지했습니다.`,
-  highScoreNotSignificant: (improvementPercent, pValue) => `중간값은 ${improvementPercent}% 올랐지만, 이번 표본만으로는 우연이 아닌 속도 향상이라고 단정하기 어렵습니다 (p=${pValue}, 기준 p<0.05). 최고 기록을 유지했습니다.`,
-  highScoreBothFailed: (improvementPercent, pValue) => `중간값 향상 ${improvementPercent}%가 최소 0.3%에 못 미쳤고, 이번 표본만으로는 우연이 아닌 속도 향상이라고 단정하기 어렵습니다 (p=${pValue}, 기준 p<0.05). 최고 기록을 유지했습니다.`,
-  highScoreAccuracyReason: "세션 정확도 97% 이상일 때 최고 기록에 도전할 수 있습니다.",
-  highScoreSamplesReason: (count) => `유효한 속도 표본이 ${count}개 이상 필요합니다.`,
+  highScoreFirstRecord: (median, speedUnit) => `첫 최고 기록! 중간값: ${median} ${speedUnit}.`,
+  highScoreUpdated: (current, previous, speedUnit, changePercent) => `🏆 새 최고 기록! 이번 ${current} ${speedUnit} · 기존 ${previous} ${speedUnit} · 변화 ${changePercent}%`,
+  highScoreKept: (current, previous, speedUnit, changePercent) => `이번 ${current} ${speedUnit} · 최고 기록 ${previous} ${speedUnit} · 변화 ${changePercent}%`,
+  highScoreBelowThreshold: (changePercent, minimumChange) => `중간값 변화 ${changePercent}%가 갱신 기준 +${minimumChange}%에 미달해 최고 기록을 유지했습니다.`,
+  highScoreNotSignificant: (changePercent) => `중간값은 ${changePercent}% 높지만, 이번 표본 비교 기준을 충족하지 못해 최고 기록을 유지했습니다.`,
+  highScoreBothFailed: (changePercent) => `중간값 변화 ${changePercent}%와 표본 비교가 갱신 기준에 미달해 최고 기록을 유지했습니다.`,
+  highScoreAccuracyReason: (accuracy, minimumAccuracy) => accuracy === null
+    ? `입력된 글자가 없어 세션 정확도를 계산할 수 없습니다. 최고 기록 기준은 정확도 ${minimumAccuracy}% 이상입니다.`
+    : `세션 정확도 ${accuracy}%가 최고 기록 기준 ${minimumAccuracy}%에 미달합니다.`,
+  highScoreSamplesReason: (count, minimum) => `유효한 속도 표본 ${count}개로, 최고 기록에 필요한 ${minimum}개에 미달합니다.`,
   highScoreIncompleteReason: "세션을 끝까지 완료하지 않아 최고 기록을 갱신하지 않았습니다.",
   highScoreInvalidRateReason: "유효한 속도 값이 없어 최고 기록을 갱신하지 않았습니다.",
+  highScoreExplanationTitle: "하이스코어 판정 기준",
+  highScoreRulesExplanation: (minimumAccuracy, minimumSamples, minimumChange, significanceLevel) => `첫 자격 세션은 바로 기록합니다. 이후에는 정확도 ${minimumAccuracy}%·유효 표본 ${minimumSamples}개를 충족하고, 원시 중간값이 ${minimumChange}% 이상 높으며 단측 Mann–Whitney 검정 p<${significanceLevel}일 때 갱신합니다. 이 검정은 두 세션의 속도 표본 순위를 비교하는 타각의 규칙이며, 실력 향상의 과학적 증명이 아닙니다. 표본 수·문장 난이도·줄 간 상관·반복 비교의 영향을 받을 수 있습니다. 속도 표시는 소수 첫째 자리까지 반올림하고 판정은 원시 값으로 합니다.`,
+  highScoreComparisonDetails: (changePercent, pValue, minimumChange, significanceLevel) => `이번 비교: 중간값 변화 ${changePercent}%, ${pValue.startsWith("<") ? `p${pValue}` : `p=${pValue}`}. 갱신 기준은 변화 +${minimumChange}% 이상 및 p<${significanceLevel}입니다.`,
   returnTo: (destination) => destination === "메뉴" ? "메뉴로 돌아가기" : `${destination}으로 돌아가기`,
   openPractice: "연습으로 돌아가기",
   blockedPracticeInput: "연습 문장은 키보드로 직접 입력하세요.",
@@ -595,16 +603,21 @@ const en: InterfaceText = {
   standardDeviation: "Standard deviation",
   median: "Median",
   interquartileRange: "IQR (P25–P75)",
-  highScoreFirstRecord: "First high score recorded.",
-  highScoreUpdated: (current, previous, improvementPercent) => `🏆 New high score! Median ${current} (previous ${previous}, up ${improvementPercent}%)`,
-  highScoreKept: (current, previous) => `Current median ${current} · high score ${previous}`,
-  highScoreBelowThreshold: (improvementPercent) => `The median improved by ${improvementPercent}%, below the 0.3% minimum, so the high score stays.`,
-  highScoreNotSignificant: (improvementPercent, pValue) => `The median improved by ${improvementPercent}%, but these samples do not establish a speed increase beyond chance (p=${pValue}; update requires p<0.05), so the high score stays.`,
-  highScoreBothFailed: (improvementPercent, pValue) => `The median improved by ${improvementPercent}%, below the 0.3% minimum, and these samples do not establish a speed increase beyond chance (p=${pValue}; update requires p<0.05), so the high score stays.`,
-  highScoreAccuracyReason: "Reach at least 97% session accuracy to qualify for a high score.",
-  highScoreSamplesReason: (count) => `At least ${count} valid speed samples are required.`,
+  highScoreFirstRecord: (median, speedUnit) => `First high score! Median: ${median} ${speedUnit}.`,
+  highScoreUpdated: (current, previous, speedUnit, changePercent) => `🏆 New high score! This session ${current} ${speedUnit} · previous ${previous} ${speedUnit} · change ${changePercent}%`,
+  highScoreKept: (current, previous, speedUnit, changePercent) => `This session ${current} ${speedUnit} · high score ${previous} ${speedUnit} · change ${changePercent}%`,
+  highScoreBelowThreshold: (changePercent, minimumChange) => `The median changed by ${changePercent}%, below the +${minimumChange}% update threshold, so the high score stays.`,
+  highScoreNotSignificant: (changePercent) => `The median is ${changePercent}% higher, but the sample comparison did not meet its update criterion, so the high score stays.`,
+  highScoreBothFailed: (changePercent) => `The median change of ${changePercent}% and sample comparison did not meet the update criteria, so the high score stays.`,
+  highScoreAccuracyReason: (accuracy, minimumAccuracy) => accuracy === null
+    ? `No characters were entered, so session accuracy could not be calculated. High scores require at least ${minimumAccuracy}% accuracy.`
+    : `Session accuracy ${accuracy}% is below the ${minimumAccuracy}% high-score requirement.`,
+  highScoreSamplesReason: (count, minimum) => `${count} valid speed samples were available; high scores require at least ${minimum}.`,
   highScoreIncompleteReason: "The session was not completed, so the high score was not updated.",
   highScoreInvalidRateReason: "No valid speed value was available for a high score update.",
+  highScoreExplanationTitle: "High-score rules",
+  highScoreRulesExplanation: (minimumAccuracy, minimumSamples, minimumChange, significanceLevel) => `The first eligible session becomes the record. Later updates need ${minimumAccuracy}% accuracy, ${minimumSamples} valid samples, a raw median at least ${minimumChange}% higher, and a one-sided Mann–Whitney p<${significanceLevel}. It compares speed-sample ranks between sessions; this is Tagak’s record rule, not scientific proof of a skill increase. Sample size, passage difficulty, line correlation, and repeated comparisons can affect results. Displayed speed rounds to one decimal; decisions use raw values.`,
+  highScoreComparisonDetails: (changePercent, pValue, minimumChange, significanceLevel) => `This comparison: median change ${changePercent}%, ${pValue.startsWith("<") ? `p${pValue}` : `p=${pValue}`}. An update requires a change of at least +${minimumChange}% and p<${significanceLevel}.`,
   returnTo: (destination) => `Return to ${destination}`,
   openPractice: "Return to practice",
   blockedPracticeInput: "Type the prompt with your keyboard.",

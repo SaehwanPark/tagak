@@ -229,7 +229,13 @@ test("high scores update only after a stable session improvement and can be rese
 
   await page.goto("/");
   await completeSession(10_000);
-  await expect(page.getByText("첫 최고 기록이 등록되었습니다.")).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("첫 최고 기록! 중간값:");
+  await expect(page.getByRole("status")).toContainText("타수/분");
+  const highScoreRules = page.locator(".high-score-explanation summary");
+  await highScoreRules.focus();
+  await highScoreRules.press("Enter");
+  await expect(page.locator(".high-score-explanation")).toContainText("Mann–Whitney");
+  await expect(page.locator(".high-score-explanation")).toContainText("실력 향상의 과학적 증명이 아닙니다");
   await expect.poll(tones).toBe(5);
 
   await page.getByRole("button", { name: "다시 연습" }).click();
@@ -242,7 +248,8 @@ test("high scores update only after a stable session improvement and can be rese
     await page.clock.fastForward(1_200);
     await input.press("Enter");
   }
-  await expect(page.getByText(/새로운 최고 기록/)).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("새 최고 기록!");
+  await expect(page.getByRole("status")).toContainText("변화 +");
   await expect.poll(tones).toBe(10);
   await expect.poll(() => page.evaluate((key) => {
     const data = JSON.parse(localStorage.getItem(key) ?? "null");
@@ -286,8 +293,12 @@ test("English results and history label the first eligible high score", async ({
     await page.clock.fastForward(1_200);
     await input.press("Enter");
   }
-  await expect(page.getByText("First high score recorded.")).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("First high score! Median:");
   await expect(page.getByRole("heading", { name: "Session speed statistics" })).toBeVisible();
+  const highScoreRules = page.locator(".high-score-explanation summary");
+  await highScoreRules.focus();
+  await highScoreRules.press("Enter");
+  await expect(page.locator(".high-score-explanation")).toContainText("one-sided Mann–Whitney");
   await page.getByRole("button", { name: "Return to Menu" }).click();
   await page.getByRole("button", { name: "Settings" }).click();
   await page.getByRole("button", { name: "Recent practice" }).click();
