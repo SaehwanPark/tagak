@@ -70,6 +70,8 @@ jobs:
 
       - name: Set up Rust stable
         uses: actions-rust-lang/setup-rust-toolchain@v2
+        with:
+          cache-workspaces: src-tauri -> src-tauri/target
 
       - name: Install JavaScript dependencies from the lockfile
         run: npm ci --include=dev
