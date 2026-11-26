@@ -1,13 +1,24 @@
-# 저장소 작업 지침
+# Repository guidelines
 
-타각(Tagak)은 한메타자교실의 연습 경험을 현대적으로 재해석한 로컬 타자 연습 앱이다. 현재 개발과 차단 판단의 기준 환경은 macOS 14+의 Tauri 앱(WebKit)이다. macOS Chrome은 브라우저 실행 경로를 확인하는 보조 환경이고, Windows 11 + Chrome과 Linux는 후속 검증 범위다. macOS 기준 환경에서 설치·빌드·실행 또는 기본 한글 연습 흐름을 막는 치명적 문제가 재현된 경우에만 개발을 멈춘다. 검증 도구의 한계나 미확인 항목은 실패로 간주하지 않고 기록한 뒤 독립적으로 진행할 수 있는 개발을 계속한다.
+Tagak is a local typing-practice app inspired by the nostalgic Korean typing classroom experience. The current desktop development baseline is macOS 14+ with Tauri/WebKit; Windows 11 x64 with Tauri/WebView2 is also a supported desktop target. Browser execution is a development and alternate-use path.
 
-- 제품의 의도와 기술 설계는 [docs/PROJECT-SPEC.md](docs/PROJECT-SPEC.md), 실행 순서와 구현 상태는 [docs/SPEC.md](docs/SPEC.md)를 읽는다. 구현을 시작하거나 끝낼 때 상태를 맞추고, README의 사용법과 지원 범위도 실제 동작에 맞춘다.
-- 함수형·도메인 및 타입 주도·제약 주도 설계를 적용한다. 순수 함수에 연습 규칙을 두고 브라우저 입출력은 경계에 둔다. 유효한 상태를 타입으로 표현하고 외부 데이터는 경계에서 검증한다.
-- 이름에 도메인 용어를 쓰고 함수와 모듈은 하나의 응집된 책임을 갖도록 나눈다. 읽기 쉬운 코드와 단순한 흐름을 우선하고, 주석에는 이유나 제약을 남긴다. 들여쓰기는 2스페이스다.
-- 구현 슬라이스는 [typing-slice-workflow](.agents/skills/typing-slice-workflow/SKILL.md)를 따른다. 초기에 Draft PR을 열고 진행 중 같은 PR에 커밋을 푸시한다. 완료 시 문서를 맞춘 후 `main`에 머지하고 임시 브랜치를 삭제한다.
-- 입력·채점·세션·저장 동작에는 [typing-domain](.agents/skills/typing-domain/SKILL.md)을 적용한다.
-- 구현 중 입력, 화면 전환, 키보드 조작 등 사용 흐름이 불명확하면 [온라인 타자교실](https://typing.zidell.me/)을 브라우저에서 직접 열어 반응을 확인한다. 관찰로 프로젝트 동작을 새로 정하거나 바꾸면 근거와 적용 범위를 제품 명세와 해당 슬라이스의 완료 조건에 반영한다.
-- 코드베이스와 런타임 동작에 변화가 없는 변경은 테스트와 CI 실행을 생략한다. 문서의 링크, 상태, 명세 일관성은 검토한다.
-- 따로 지정하지 않는다면 이 워크플로를 **기본 방침으로** 삼는다: 1) 깃헙에 WIP PR을 일찍 연다, 2) 이 PR에서의 구현/수정의 개요를 적는다 (무엇을, 어떻게, 왜 + 필요하다면 추가적인 맥락도), 3) 작업이 진척됨에 따라 커밋/푸쉬한다, 4) 완료되면 versioning 및 프로젝트 핵심 문서들을 갱신해서 문서간 잘 정렬되도록 한다, 5) main에 머지한다, 6) 머지 후 임시 브랜치를 지운다. 
-- 깃헙 이슈를 처리/해결할때의 워크플로: 위의 기본 워크플로 + 이슈 포스트에 체크리스트가 있을 경우 업데이트 + 답글로 이슈를 어떻게 해결했는지 짧게 요약한다
+## Sources of truth
+
+- [docs/PROJECT-SPEC.md](docs/PROJECT-SPEC.md) owns current user behavior and product constraints.
+- GitHub issues track planned work and checklists. Pull requests hold implementation scope and one-time verification. Merged pull requests and tagged releases preserve history.
+- [README.md](README.md) is the English product landing page and [README.ko.md](README.ko.md) its Korean counterpart. Keep their product facts and download links aligned; put detailed help in [docs/USER-GUIDE.md](docs/USER-GUIDE.md).
+- Read the documents relevant to the requested change. Update only documents affected by that change; architecture, platform evidence, development commands, and release history each have their own owner.
+
+## Implementation
+
+- Use functional, domain-first and type-driven design. Keep practice rules in pure functions and browser or native I/O at the boundary. Represent valid states in types and validate external data when it enters the app.
+- Use domain names and small cohesive modules. Prefer clear control flow, two-space indentation, and comments that explain a constraint or reason.
+- For input, scoring, sessions, content, or persistence, follow [typing-domain](.agents/skills/typing-domain/SKILL.md). For implementation and GitHub issue work, follow [typing-slice-workflow](.agents/skills/typing-slice-workflow/SKILL.md).
+- When an interaction or keyboard flow is unclear, inspect the [online typing classroom](https://typing.zidell.me/) in a browser. If that observation changes Tagak's behavior, record the product contract and issue completion criterion.
+- For code or runtime changes, run focused verification that covers the changed behavior. Documentation-only changes do not require app tests, builds, or CI; check their links, facts, references, and agreement with the product contract instead.
+
+## Platform and release decisions
+
+Stop development only when a fatal problem is reproduced on the macOS baseline and blocks installation, build, launch, or basic Korean practice. A tool limitation or unverified platform is an evidence gap: record it and continue independent work. Keep macOS baseline evidence, Windows support evidence, and browser checks distinct.
+
+Use the repository workflow for Draft PRs, issue checklists, commits, merges, and branch cleanup. Documentation changes do not change the app version or create a release.

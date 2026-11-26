@@ -1,7 +1,19 @@
-# 저작권과 사용 허가
+# License and third-party rights
 
-Tagak 저장소는 현재 Tagak 소프트웨어와 직접 작성한 콘텐츠에 대한 포괄적인 오픈소스 라이선스를 선언하지 않습니다. GitHub에서 소스와 자료를 읽을 수 있다는 사실만으로 복제·수정·재배포 허가가 생기지는 않습니다. 별도로 명시하지 않은 Tagak 코드와 독자 자료는 각 권리자에게 권리가 유보되어 있습니다.
+## Tagak project work
 
-이 문서는 제3자 자료까지 하나의 라이선스로 묶지 않습니다. 연습 글, 전승 표현, 색상 참고, 런타임 및 개발 의존성은 각각 표시된 출처와 라이선스가 적용될 수 있습니다. 설치본에서 볼 수 있는 오프라인 고지는 [`THIRD-PARTY-NOTICES.html`](public/THIRD-PARTY-NOTICES.html)입니다. 연습 자료별 출처·변경 사항은 [TEXT-LICENSES.md](TEXT-LICENSES.md), 색상 참고는 [테마 크레딧](docs/THEME-CREDITS.md)에 정리합니다.
+The project-owned source code, documentation, and directly authored practice content in this repository are licensed under the Apache License, Version 2.0. The complete license is in [`LICENSE`](LICENSE). The license does not grant rights to the Tagak or 타각 names, logos, or other trademarks.
 
-Tagak의 코드를 사용하거나 배포할 수 있는 명시적인 라이선스가 필요하다면, 이 저장소에 추후 추가되는 라이선스 문서를 확인하세요. 이 안내는 특정 국가의 저작권 판단이나 법률 자문을 대신하지 않습니다.
+This license is adopted for the repository from the revision that adds it. The public v1.0.0 release predates that change: its installers, checksums, and release notes have not been modified and do not include this new license text.
+
+The license applies only to work the project can license. It does not replace a license, attribution, or usage condition attached to third-party material. A file's own license and credit take precedence where they identify third-party work.
+
+## Third-party material
+
+- Practice passages marked `CC BY-SA 4.0` remain under that license, with author, title, source, and change notes in [TEXT-LICENSES.md](TEXT-LICENSES.md) and the app's offline notice.
+- Public-domain excerpts and traditional sayings keep their documented source and legal or reference context. A source link does not turn a modern quotation into an authorized passage.
+- Runtime and build dependencies keep the licenses declared by their locked package metadata. The app notice lists the resolved runtime dependencies for the target platform.
+- Color themes are adjusted palette references. The source projects and their licenses are listed in [docs/THEME-CREDITS.md](docs/THEME-CREDITS.md); Tagak does not claim that those projects endorse the app.
+- Venice is an independent game inspired by a nostalgic typing-game experience. The app does not include the original game's code, executable, images, fonts, audio, or word database.
+
+The offline notice is generated from its source at [`scripts/update-third-party-notices.mjs`](scripts/update-third-party-notices.mjs) and published as [`public/THIRD-PARTY-NOTICES.html`](public/THIRD-PARTY-NOTICES.html). Update the generator and regenerate the page instead of editing the generated HTML by hand.

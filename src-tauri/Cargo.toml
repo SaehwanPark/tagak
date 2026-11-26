@@ -3,6 +3,7 @@ name = "tagak"
 version = "1.0.0"
 description = "Tagak desktop typing practice"
 authors = ["SaehwanPark"]
+license = "Apache-2.0"
 edition = "2021"
 
 [build-dependencies]
