@@ -1,6 +1,6 @@
 # SPEC
 
-현재 버전은 `v0.18.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
+현재 버전은 `v0.19.0`이다. 제품의 동작과 기술 결정은 [프로젝트 명세](PROJECT-SPEC.md)를 따른다. 사용자 안내는 [README](../README.md), 구조는 [ARCHITECTURE](../ARCHITECTURE.md), 버전별 변경은 [CHANGELOG](../CHANGELOG.md)에 있다.
 
 ## 상태 표시
 
@@ -10,6 +10,14 @@
 - 플랫폼 검증의 미확인 항목은 별도의 비차단 후속으로 관리한다. macOS 14+ Tauri 앱의 설치·실행 또는 기본 한글 연습을 막는 치명적 문제가 재현된 경우에만 현재 개발을 멈춘다.
 
 ## 완료
+
+- [x] **D1 · 공개 문서와 콘텐츠 권리 정리** · `v0.19.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76) · PR [#84](https://github.com/SaehwanPark/tagak/pull/84)
+  - README 상단에 다운로드·지원 범위·빠른 시작과 실제 렌더링 홈·연습·베네치아 및 세 테마 이미지를 추가하고 개발 안내를 별도 문서로 옮겼다. 스크린샷은 Playwright Chromium으로 앱의 실제 빌드 화면을 렌더링해 캡처했다.
+  - 출처·이용 허가가 확인되지 않던 현대 작품 문장 26개를 타각 독자 문장으로 교체하고, 미사용 인용 행도 번들에서 제거했다. 한 줄 한국어·영어 각 100개, 직접 작성 48/43개와 전승 표현 52/57개로 인벤토리를 맞췄다. 기존 로컬 기록 호환을 위해 일부 lesson ID는 유지하며, ID와 현 출처 유형의 차이는 `TEXT-LICENSES.md`에서 설명한다.
+  - `RIGHTS.md`에 Tagak 코드와 직접 작성 콘텐츠의 권리 유보 상태를 명시했다. CC BY-SA 4.0 글의 저자·제목·원문 URL·라이선스·발췌/줄바꿈 변경을 표시하고, 런타임 JavaScript 및 대상별 Rust 의존성을 포함한 오프라인 고지를 환경설정에 연결했다.
+  - `npm run verify` 통과: Vitest 25개 파일 176개 테스트, 프로덕션 빌드, Playwright E2E 86개. 앱 JS 청크는 583.19KB로 Vite의 500KB 경고 기준을 넘는다. 새 검증은 사용되지 않는 인용 행 제거와 오프라인 고지의 화면 진입을 포함한다.
+  - `npm run desktop:build` 통과: macOS ARM64 `Tagak_0.19.0_aarch64.dmg` 3.32 MiB 생성. 마운트한 DMG 앱을 실행해 환경설정에서 `tauri://localhost/THIRD-PARTY-NOTICES.html`을 열고 CC BY-SA 글, 법률 출처, JavaScript 7개, Rust 247개 의존성 목록을 확인했다. 실제 OS IME와 Windows 패키지는 이번 D1 검증 범위에 포함하지 않았다([플랫폼 검증표](PLATFORM-VERIFICATION.md)).
+  - README·프로젝트/실행 명세·변경 이력과 npm/Cargo/Tauri 버전을 `v0.19.0`으로 맞췄다.
 
 - [x] **C4 · 인터럽트와 측정** · `v0.17.0` · 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76)
   - 한 줄·짧은 글·긴 글의 타수 계산에서 환경설정과 앱/창 비활성 구간만 제외한다. 입력 없이 생각하거나 읽은 시간은 포함하며, 글의 줄 전환 대기 시간 제외 계약을 유지한다. pause 이유가 겹쳐도 첫 pause부터 마지막 resume까지 한 번만 뺀다.

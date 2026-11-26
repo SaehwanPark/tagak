@@ -465,6 +465,13 @@ export function DisplaySettings({
           onClick={onOpenDataTransfer}
         />
         <ActionRow
+          id="open-third-party-notices"
+          label={copy.thirdPartyNotices}
+          active={focusedRow === "open-third-party-notices"}
+          onFocus={() => setFocusedRow("open-third-party-notices")}
+          onClick={() => window.location.assign("/THIRD-PARTY-NOTICES.html")}
+        />
+        <ActionRow
           id="reset-settings"
           label={copy.resetSettings}
           active={focusedRow === "reset-settings"}
