@@ -1,43 +1,72 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useLayoutEffect, useReducer, useState } from "react";
 import { challengeWords } from "../content/library";
-import { advanceChallenge, challengeDurationMs, targetWord } from "../domain/challenge";
+import { advanceChallenge, challengeDurationMs, challengeElapsedMs, targetWord } from "../domain/challenge";
 import type { ChallengeAction, ChallengeState } from "../domain/challenge";
 import { TypingInput } from "./TypingInput";
 import { useFocus } from "./useFocus";
 import { createRunSeed } from "./randomSeed";
 import type { InterfaceText } from "../content/interfaceText";
 
-type ChallengeViewProps = { onBack: () => void; copy: InterfaceText; onWordComplete: () => void };
+type ChallengeViewProps = {
+  onBack: () => void;
+  copy: InterfaceText;
+  onWordComplete: () => void;
+  appActive: boolean;
+  isAppActive: () => boolean;
+  settingsOpen: boolean;
+};
 
 function reduce(state: ChallengeState, action: ChallengeAction): ChallengeState {
   return advanceChallenge(challengeWords, state, action);
 }
 
-export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewProps) {
+export function ChallengeView({ onBack, copy, onWordComplete, appActive, isAppActive, settingsOpen }: ChallengeViewProps) {
   const [state, dispatch] = useReducer(reduce, { phase: "ready" });
   const [blocked, setBlocked] = useState(false);
   const startButton = useFocus<HTMLButtonElement>(state.phase === "ready");
   const result = useFocus<HTMLHeadingElement>(state.phase === "finished");
   const running = state.phase === "running";
+  const timerActive = running && state.pauseReasons.length === 0;
   const start = () => {
     setBlocked(false);
     dispatch({ type: "start", at: performance.now(), seed: createRunSeed() });
   };
-  const stop = () => dispatch({ type: "stop", at: performance.now() });
+  const stop = () => {
+    const at = performance.now();
+    if (!isAppActive()) {
+      dispatch({ type: "pause-reason", reason: "app-inactive", paused: true, at });
+      return;
+    }
+    dispatch({ type: "stop", at });
+  };
   const submit = (input?: string, at = performance.now()) => {
     setBlocked(false);
+    if (!isAppActive()) {
+      dispatch({ type: "pause-reason", reason: "app-inactive", paused: true, at });
+      if (input !== undefined) dispatch({ type: "input", input, at });
+      return;
+    }
     const inputToSubmit = input ?? (state.phase === "running" ? state.input : "");
-    if (state.phase === "running" && inputToSubmit === targetWord(state.words, state.solved) &&
-        at - state.startedAt < challengeDurationMs) onWordComplete();
+    if (state.phase === "running" && state.pauseReasons.length === 0 &&
+        inputToSubmit === targetWord(state.words, state.solved) &&
+        challengeElapsedMs(state, at) < challengeDurationMs) onWordComplete();
     if (input !== undefined) dispatch({ type: "input", input, at });
     dispatch({ type: "submit", at });
   };
 
   useEffect(() => {
-    if (!running) return;
+    if (!timerActive) return;
     const timer = window.setInterval(() => dispatch({ type: "tick", at: performance.now() }), 150);
     return () => window.clearInterval(timer);
-  }, [running]);
+  }, [timerActive]);
+
+  useLayoutEffect(() => {
+    dispatch({ type: "pause-reason", reason: "settings", paused: settingsOpen, at: performance.now() });
+  }, [settingsOpen]);
+
+  useLayoutEffect(() => {
+    dispatch({ type: "pause-reason", reason: "app-inactive", paused: !appActive, at: performance.now() });
+  }, [appActive]);
 
   if (state.phase === "ready") {
     return (
@@ -74,7 +103,7 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
     );
   }
 
-  const remaining = Math.max(0, challengeDurationMs - (state.now - state.startedAt));
+  const remaining = Math.max(0, challengeDurationMs - challengeElapsedMs(state));
   return (
     <section className="screen challenge-screen challenge-running-screen">
       <h1>{copy.challengeTitle}</h1>
@@ -94,6 +123,9 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
           target={targetWord(state.words, state.solved)}
           onInput={(input, at) => {
             setBlocked(false);
+            if (!isAppActive()) {
+              dispatch({ type: "pause-reason", reason: "app-inactive", paused: true, at });
+            }
             dispatch({ type: "input", input, at });
           }}
           onSubmit={submit}
@@ -102,6 +134,9 @@ export function ChallengeView({ onBack, copy, onWordComplete }: ChallengeViewPro
           onBlockedEdit={() => setBlocked(true)}
         />
       </div>
+      <p className="notice challenge-pause-note" role="status">
+        {state.pauseReasons.length > 0 ? copy.challengePaused : copy.challengePauseNotice}
+      </p>
       <div className="practice-actions">
         <p className="keys" id="typing-hint"><kbd>Enter</kbd> / <kbd>Space</kbd> {copy.submit} <kbd>Esc</kbd> {copy.stopChallenge}</p>
         <div className="result-actions">

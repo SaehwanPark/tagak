@@ -6,6 +6,19 @@
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-26
+
+### Changed
+
+- 이슈 [#76](https://github.com/SaehwanPark/tagak/issues/76): 한 줄·짧은 글·긴 글의 속도 계산에서 환경설정과 앱/창 비활성 시간을 제외합니다. 입력하지 않고 생각하거나 읽은 시간은 계속 포함하고, 글 연습의 줄 전환 대기 시간 제외 규칙은 유지합니다.
+- 30초 낱말 도전은 환경설정이나 앱 창이 비활성 상태가 되면 일시정지합니다. 일시정지 안내를 보여주고, 돌아오면 남은 시간부터 이어갑니다.
+
+### Verified
+
+- `npm run verify` 통과: Vitest 24개 파일 169개 테스트, 프로덕션 빌드, Playwright E2E 85개. 앱 JS 청크는 592.96KB로 Vite의 500KB 경고 기준을 넘습니다.
+- `npm run desktop:build` 통과: macOS ARM64 DMG 3.32 MiB 생성. 앱에서 도전을 설정·기록 화면에 둔 채 기다린 뒤 타이머가 멈췄다가 이어지는 것을 확인했습니다.
+- 실제 OS IME·네이티브 창 비활성 전환과 Windows Tauri 앱은 수동 검증하지 않았습니다. 합성 IME·blur/visibility 이벤트는 E2E에서 확인했습니다.
+
 ## [0.16.0] - 2026-11-26
 
 ### Changed
