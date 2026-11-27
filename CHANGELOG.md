@@ -7,6 +7,7 @@ Changes users can see are recorded here. Development history before v1.0.0 remai
 ### Added
 
 - Show a recent speed trend and recent-five-session average for comparable practice sessions in the local history screen.
+- Start a random short or long passage, or the most recently practiced matching passage, directly from the passage list.
 
 ### Changed
 

@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { normalizeSeed, nextRandom, shuffleWithSeed } from "./random";
+import { normalizeSeed, nextRandom, pickWithSeed, shuffleWithSeed } from "./random";
 
 it("normalizes invalid and zero seeds to a non-zero state", () => {
   expect(normalizeSeed(0)).toBe(0x9e3779b9);
@@ -16,4 +16,14 @@ it("shuffles a non-empty sequence reproducibly without changing its source", () 
   expect(shuffleWithSeed(values, 0x87654321)).not.toEqual(first);
   expect([...first].sort()).toEqual([...values].sort());
   expect(values).toEqual(["a", "b", "c", "d", "e"]);
+});
+
+it("picks reproducibly from an optional list", () => {
+  const values = ["a", "b", "c"] as const;
+  const seed = 0x12345678;
+  const expected = values[Math.floor(nextRandom(seed).value * values.length)];
+
+  expect(pickWithSeed(values, seed)).toBe(expected);
+  expect(pickWithSeed(values, seed)).toBe(pickWithSeed(values, seed));
+  expect(pickWithSeed([], seed)).toBeUndefined();
 });

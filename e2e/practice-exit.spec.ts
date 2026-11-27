@@ -110,7 +110,9 @@ test("short and long passages protect partial input and restore it on cancel", a
 
   for (const label of ["짧은 글", "긴 글"]) {
     await page.getByRole("button", { name: label, exact: true }).click();
-    await page.locator(".activity-menu button").first().click();
+    const passage = page.locator('.activity-menu button[data-activity]:not([data-activity="random-passage"]):not([data-activity="recent-passage"])').first();
+    const passageId = await passage.getAttribute("data-activity");
+    await passage.click();
     const input = page.getByRole("textbox", { name: "따라 입력하기" });
     await input.fill(partialInput);
     await page.locator(".practice-screen .back").click();
@@ -123,7 +125,7 @@ test("short and long passages protect partial input and restore it on cancel", a
 
     await input.press("Escape");
     await page.getByRole("button", { name: "연습 종료" }).click();
-    await expect(page.locator(".activity-menu button").first()).toBeFocused();
+    await expect(page.locator(`.activity-menu button[data-activity="${passageId}"]`)).toBeFocused();
     await page.locator(".screen .back").click();
   }
 });

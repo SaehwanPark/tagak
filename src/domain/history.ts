@@ -52,6 +52,17 @@ export function recentRecords(records: readonly PracticeRecord[]): PracticeRecor
     .slice(0, recordLimit);
 }
 
+export function recentPassageMaterialId(
+  sessions: readonly PracticeSessionRecord[],
+  mode: Extract<PracticeSessionRecord["mode"], "short" | "long">,
+  language: Language,
+): string | null {
+  const latest = sessions
+    .filter((session) => session.mode === mode && session.language === language)
+    .sort((left, right) => right.completedAt - left.completedAt || left.id.localeCompare(right.id))[0];
+  return latest?.materialIds[0] ?? null;
+}
+
 export function comparableRecord(
   current: PracticeRecord,
   records: readonly PracticeRecord[],

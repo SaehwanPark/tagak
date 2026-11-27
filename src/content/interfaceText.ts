@@ -78,6 +78,10 @@ export type InterfaceText = Readonly<{
   invalidSettings: string;
   chooseShortPassage: string;
   chooseLongPassage: string;
+  randomPassage: string;
+  randomPassageDetail: string;
+  recentPassage: string;
+  recentPassageDetail: (passage: string) => string;
   shortPassage: string;
   longPassage: string;
   select: string;
@@ -316,6 +320,10 @@ const ko: InterfaceText = {
   invalidSettings: "저장된 환경설정을 읽지 못했습니다. 기본값을 사용하며 기존 값은 보존했습니다.",
   chooseShortPassage: "짧은 글 고르기",
   chooseLongPassage: "긴 글 고르기",
+  randomPassage: "무작위 글",
+  randomPassageDetail: "목록에서 무작위로 골라 바로 시작",
+  recentPassage: "최근 연습한 글",
+  recentPassageDetail: (passage) => `최근 연습: ${passage}`,
   shortPassage: "짧은 글",
   longPassage: "긴 글",
   select: "선택",
@@ -587,6 +595,10 @@ const en: InterfaceText = {
   invalidSettings: "Saved settings could not be read. Defaults are in use; the stored value was preserved.",
   chooseShortPassage: "Choose a short passage",
   chooseLongPassage: "Choose a long passage",
+  randomPassage: "Random passage",
+  randomPassageDetail: "Pick one from the list and start immediately",
+  recentPassage: "Last practiced passage",
+  recentPassageDetail: (passage) => `Last practiced: ${passage}`,
   shortPassage: "Short passages",
   longPassage: "Long passages",
   select: "Select",
