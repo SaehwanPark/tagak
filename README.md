@@ -2,7 +2,7 @@
 
 # Tagak · 타각
 
-[![Apache-2.0 license](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE) [![Latest release](https://img.shields.io/github/v/release/SaehwanPark/tagak?label=Latest%20release)](https://github.com/SaehwanPark/tagak/releases/latest) [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-149ECA?logo=react&logoColor=white)](https://react.dev/) [![Tauri](https://img.shields.io/badge/Tauri-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/) [![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![Apache-2.0 license](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE) [![Latest release](https://img.shields.io/github/v/release/SaehwanPark/tagak)](https://github.com/SaehwanPark/tagak/releases/latest) [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-149ECA?logo=react&logoColor=white)](https://react.dev/) [![Tauri](https://img.shields.io/badge/Tauri-24C8DB?logo=tauri&logoColor=white)](https://tauri.app/) [![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)](https://www.rust-lang.org/)
 
 **A minimalist, keyboard-first typing practice app with a touch of nostalgia.** Practice Korean or English offline, keep your records on your device, and take a break with a Korean word game.
 
