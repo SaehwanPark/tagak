@@ -37,6 +37,8 @@ test("Venice starts from a keyboard-selected level, scores words, and saves a lo
   await expect(page.locator(".venice-collision-line")).toBeVisible();
   await expect(page.locator(".venice-collision-line")).toContainText("충돌선");
   expect(await fallingWords.first().evaluate((element) => getComputedStyle(element).whiteSpace)).toBe("nowrap");
+  expect(await fallingWords.first().evaluate((element) => parseFloat(getComputedStyle(element).fontSize)))
+    .toBeGreaterThanOrEqual(12.8);
   const word = (await fallingWords.first().textContent())?.trim();
   expect(word).toBeTruthy();
 

@@ -597,9 +597,13 @@ h1 { margin: 0; font-size: clamp(1.55rem, 4vw, 2.55rem); line-height: 1.25; }
   white-space: pre-wrap;
 }
 .target p, .entry input { font-size: var(--typing-size); }
-.target .current { border-bottom: 2px solid var(--accent); }
-.target .correct { color: var(--correct); text-decoration: underline; }
-.target .wrong { color: var(--wrong); text-decoration: underline wavy; }
+.target .current {
+  border-bottom: 2px solid var(--accent);
+  border-radius: .12rem;
+  background: var(--hover);
+}
+.target .correct { color: var(--correct); text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .12em; }
+.target .wrong { color: var(--wrong); text-decoration: underline wavy; text-decoration-thickness: .08em; text-underline-offset: .12em; }
 
 .practice-credit {
   margin: .45rem .15rem 1rem;

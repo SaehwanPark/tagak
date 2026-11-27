@@ -9,6 +9,13 @@ export const veniceRecentRunLimit = 30;
 export const veniceTopScoreLimit = 10;
 export const veniceHideDurationMs = 5_000;
 export const veniceHidePhaseMs = 1_500;
+/** Long words shrink to fit a lane but stay legible at the minimum viewport size. */
+export const veniceMinimumWordFontRem = 0.85;
+
+export function veniceWordFontRem(syllables: number): number {
+  const count = Number.isFinite(syllables) ? Math.max(1, Math.trunc(syllables)) : 1;
+  return Math.max(veniceMinimumWordFontRem, 1.15 - (count - 2) * 0.095);
+}
 
 export type VeniceEffect =
   | "clear"

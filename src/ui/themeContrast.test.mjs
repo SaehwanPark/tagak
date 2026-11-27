@@ -93,6 +93,7 @@ describe("color theme palettes", () => {
   });
 
   it("keeps typing correctness and focus distinguishable beyond color alone", () => {
+    expect(styles).toMatch(/\.target \.current\s*\{[^}]*background:\s*var\(--hover\);/);
     expect(styles).toMatch(/\.target \.correct\s*\{[^}]*text-decoration:\s*underline;/);
     expect(styles).toMatch(/\.target \.wrong\s*\{[^}]*text-decoration:\s*underline wavy;/);
     expect(styles).toMatch(/:focus-visible\s*\{\s*outline:\s*2px solid var\(--accent\)/);
