@@ -11,6 +11,7 @@ Changes users can see are recorded here. Development history before v1.0.0 remai
 
 ### Changed
 
+- Mark the current typing character with a background as well as a border, and keep long Venice falling words at a readable minimum size.
 - Publish an English project landing page with a Korean counterpart and a separate user guide.
 - Adopt Apache-2.0 for Tagak-owned source, documentation, and original content. Keep third-party text, dependencies, and theme credits under their listed terms.
 

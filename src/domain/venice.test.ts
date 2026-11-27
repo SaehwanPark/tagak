@@ -12,8 +12,10 @@ import {
   startVeniceGame,
   targetCpm,
   veniceLevelCount,
+  veniceMinimumWordFontRem,
   veniceStageConfig,
   veniceStageQuota,
+  veniceWordFontRem,
 } from "./venice";
 import type { FallingWord, VeniceLevelStats, VeniceRun, VeniceState } from "./venice";
 
@@ -124,6 +126,17 @@ describe("Venice level curve and scoring", () => {
     if (second.phase !== "playing") return;
     expect(new Set(second.runtime.words.map((word) => word.text)).size).toBe(2);
     expect(second.runtime.usedWordTexts).toHaveLength(2);
+  });
+});
+
+describe("Venice word readability", () => {
+  it("keeps long falling words above the minimum readable size", () => {
+    expect(veniceWordFontRem(2)).toBeCloseTo(1.15);
+    expect(veniceWordFontRem(4)).toBeCloseTo(0.96);
+    expect(veniceWordFontRem(7)).toBe(veniceMinimumWordFontRem);
+    expect(veniceWordFontRem(100)).toBe(veniceMinimumWordFontRem);
+    expect(veniceWordFontRem(Number.NaN)).toBeCloseTo(1.245);
+    expect(veniceMinimumWordFontRem).toBeGreaterThanOrEqual(0.85);
   });
 });
 

@@ -13,6 +13,7 @@ import {
   targetCpm,
   veniceLevelCount,
   veniceStageQuota,
+  veniceWordFontRem,
 } from "../domain/venice";
 import type { VeniceAction, VeniceRun, VeniceState } from "../domain/venice";
 import { readVeniceRecords, saveVeniceRun, veniceStorageKey } from "../storage/veniceStorage";
@@ -368,8 +369,7 @@ export function VeniceView({ onBack, copy, interfaceLanguage, soundEnabled, sett
         <div className="venice-collision-line" aria-hidden="true"><span>{copy.veniceCollisionLine}</span></div>
         {(runtime?.words ?? []).map((word) => {
           const hidden = runtime !== null && isVeniceWordHidden(word.id, runtime);
-          const syllables = Array.from(word.text).length;
-          const fontSizeRem = Math.max(0.58, 1.15 - (syllables - 2) * 0.095);
+          const fontSizeRem = veniceWordFontRem(Array.from(word.text).length);
           const lanePosition = ((word.lane + 0.5) / 7) * 100;
           return (
             <span
