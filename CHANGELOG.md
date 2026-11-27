@@ -2,7 +2,7 @@
 
 Changes users can see are recorded here. Development history before v1.0.0 remains in the [v1.0.0 tagged changelog](https://github.com/SaehwanPark/tagak/blob/v1.0.0/CHANGELOG.md).
 
-## [Unreleased]
+## [1.1.0] - 2026-11-26
 
 ### Added
 

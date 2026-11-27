@@ -4,4 +4,4 @@ Current work and its checklists live in GitHub issues and pull requests. Current
 
 This small compatibility page remains because `scripts/verify-release-version.mjs` reads the published version from this path. It is not a source of current plans, task status, or product behavior.
 
-현재 버전은 `v1.0.0`입니다.
+현재 버전은 `v1.1.0`입니다.
