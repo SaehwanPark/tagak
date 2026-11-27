@@ -2,7 +2,7 @@
 
 ## Tagak project work
 
-The project-owned source code, documentation, and directly authored practice content in this repository are licensed under the Apache License, Version 2.0. The complete license is in [`LICENSE`](LICENSE). The license does not grant rights to the Tagak or 타각 names, logos, or other trademarks.
+The project-owned source code, documentation, and directly authored practice content in this repository are licensed under the Apache License, Version 2.0. The complete license is in [`LICENSE`](LICENSE.md). The license does not grant rights to the Tagak or 타각 names, logos, or other trademarks.
 
 This license is adopted for the repository from the revision that adds it. The public v1.0.0 release predates that change: its installers, checksums, and release notes have not been modified and do not include this new license text.
 
